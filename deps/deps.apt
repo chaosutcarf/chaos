@@ -1,0 +1,15 @@
+# compile tools
+make gcc g++ gfortran git cmake
+# for openmp
+libomp-dev
+# linear algebra libs
+liblapack-dev libmetis-dev
+libblas-dev libblas64-dev libopenblas-dev libopenblas64-dev libopenblas-openmp-dev libopenblas64-openmp-dev
+# gui libs
+libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+# fast recompile tools.
+ccache
+# optional tools.
+doxygen graphviz
+# alglib
+libalglib-dev

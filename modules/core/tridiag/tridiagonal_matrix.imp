@@ -1,0 +1,246 @@
+#pragma once
+#include "tridiagonal_matrix.h"
+namespace chaos {
+////////////////////////////////////////////////////////////////////////
+//                       template implementation                      //
+////////////////////////////////////////////////////////////////////////
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+tridiagonal_matrix_t<Mode, BlockSize, Scalar>::tridiagonal_matrix_t(
+    size_t nBlocks)
+    : diag(nBlocks), m_nBlocks(nBlocks), m_nScalars(nBlocks * BlockSize) {
+  CHAOS_ASSERT(nBlocks > 1);
+  if constexpr (Mode == MATRIX_FILL_MODE::FULL) {
+    lower.resize(nBlocks - 1);
+    upper.resize(nBlocks - 1);
+  } else if constexpr (Mode == MATRIX_FILL_MODE::LOWER) {
+    lower.resize(nBlocks - 1);
+  } else {
+    upper.resize(nBlocks - 1);
+  }
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::get_lower() const
+    -> const vector_type & {
+  if constexpr (Mode == MATRIX_FILL_MODE::UPPER) {
+    return upper;
+  } else {
+    return lower;
+  }
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::get_upper() const
+    -> const vector_type & {
+  if constexpr (Mode == MATRIX_FILL_MODE::LOWER) {
+    return lower;
+  } else {
+    return upper;
+  }
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_lower()
+    -> vector_type & {
+  if constexpr (Mode == MATRIX_FILL_MODE::UPPER) {
+    return upper;
+  } else {
+    return lower;
+  }
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_upper()
+    -> vector_type & {
+  if constexpr (Mode == MATRIX_FILL_MODE::LOWER) {
+    return lower;
+  } else {
+    return upper;
+  }
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+void tridiagonal_matrix_t<Mode, BlockSize, Scalar>::fill(
+    size_t r, size_t c, const element_type &elem,
+    mat_t<scalar_type> &mat) const {
+  if constexpr (BlockSize == 1) {
+    mat(r, c) = elem;
+  } else {
+    mat.template block<BlockSize, BlockSize>(r, c) = elem;
+  }
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::to_dense_matrix() const
+    -> mat_t<scalar_type> {
+  mat_t<scalar_type> mat(m_nScalars, m_nScalars);
+  mat.setZero();
+  const auto &D = get_diag();
+  const auto &L = get_lower();
+  const auto &U = get_upper();
+  size_t N = m_nBlocks;
+  fill(0, 0, D[0], mat);
+  for (size_t i = 0; i < N - 1; ++i) {
+    size_t cur = i * BlockSize;
+    size_t next = cur + BlockSize;
+    fill(next, next, D[i + 1], mat);
+    fill(cur, next, U[i], mat);
+    fill(next, cur, L[i], mat);
+  }
+
+  return mat;
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::to_csr_matrix() const
+    -> csr_mat_t<scalar_type> {
+  //-> TODO. optimized.
+  coo_list_t<scalar_type> coo;
+  const auto &D = get_diag();
+  const auto &L = get_lower();
+  const auto &U = get_upper();
+  size_t N = m_nBlocks;
+
+  //-> fill diag.
+  for (size_t i = 0; i < N; ++i) {
+    fill<Mode == MATRIX_FILL_MODE::FULL>(i * BlockSize, i * BlockSize, D[i],
+                                         coo);
+  }
+  //-> fill upper.
+  if constexpr (Mode == MATRIX_FILL_MODE::UPPER ||
+                Mode == MATRIX_FILL_MODE::FULL) {
+    for (size_t i = 0; i < N - 1; ++i) {
+      fill<true>(i * BlockSize, (i + 1) * BlockSize, U[i], coo);
+    }
+  }
+
+  //-> fill lower.
+  if constexpr (Mode == MATRIX_FILL_MODE::LOWER ||
+                Mode == MATRIX_FILL_MODE::FULL) {
+    for (size_t i = 0; i < N - 1; ++i) {
+      fill<true>((i + 1) * BlockSize, i * BlockSize, L[i], coo);
+    }
+  }
+
+  csr_mat_t<scalar_type> csr(m_nScalars, m_nScalars);
+  csr.setFromTriplets(coo.begin(), coo.end());
+  return csr;
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_diag(size_t blk_id)
+    -> element_type & {
+  CHAOS_DEBUG_ASSERT(blk_id < m_nBlocks, "Out of bounds!", blk_id, m_nBlocks);
+  return diag[blk_id];
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_lower(size_t blk_id)
+    -> element_type & {
+  CHAOS_DEBUG_ASSERT(blk_id < m_nBlocks - 1, "Out of bounds!", blk_id,
+                     m_nBlocks - 1);
+  return set_lower()[blk_id];
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_upper(size_t blk_id)
+    -> element_type & {
+  CHAOS_DEBUG_ASSERT(blk_id < m_nBlocks - 1, "Out of bounds!", blk_id,
+                     m_nBlocks - 1);
+  return set_upper()[blk_id];
+}
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+auto tridiagonal_matrix_t<Mode, BlockSize, Scalar>::set_blk(size_t blk_r,
+                                                            size_t blk_c)
+    -> element_type & {
+  if (blk_r == blk_c) {
+    return set_diag(blk_r);
+  } else if (blk_r == blk_c - 1) {
+    return set_upper(blk_r);
+  } else if (blk_r == blk_c + 1) {
+    return set_lower(blk_c);
+  } else {
+    critical_msg("Is not tridiagonal!, r: {}, c: {}", blk_r, blk_c);
+  }
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+vecxr_t tridiagonal_matrix_t<Mode, BlockSize, Scalar>::operator*(
+    const Eigen::Ref<const vecxr_t> &rhs) const {
+  CHAOS_ASSERT(rhs.cols() == 1);
+  CHAOS_ASSERT(cols() == rhs.size());
+  vecxr_t res(rhs.size());
+  //-> pick data.
+  const auto &D = get_diag();
+  const auto &L = get_lower();
+  const auto &U = get_upper();
+
+#pragma omp parallel for
+  for (size_t i = 1; i < m_nBlocks - 1; ++i) {
+    part(res, i) = L[i - 1] * part(rhs, i - 1) + D[i] * part(rhs, i) +
+                   U[i] * part(rhs, i + 1);
+  }
+  part(res, 0) = D[0] * part(rhs, 0) + U[0] * part(rhs, 1);
+  size_t last = m_nBlocks - 1;
+  part(res, last) =
+      D[last] * part(rhs, last) + L[last - 1] * part(rhs, last - 1);
+
+  return res;
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+template <MATRIX_FILL_MODE _,
+          std::enable_if_t<_ == MATRIX_FILL_MODE::FULL, bool>>
+tridiagonal_matrix_t<Mode, BlockSize, Scalar>::tridiagonal_matrix_t(
+    const vector_type &diag, const vector_type &lower, const vector_type &upper)
+    : diag(diag),
+      upper(upper),
+      lower(lower),
+      m_nBlocks(diag.size()),
+      m_nScalars(BlockSize * diag.size()) {
+  CHAOS_ASSERT(m_nBlocks > 1);
+  CHAOS_ASSERT(diag.size() == lower.size() + 1);
+  CHAOS_ASSERT(lower.size() == upper.size());
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+template <MATRIX_FILL_MODE _,
+          std::enable_if_t<_ != MATRIX_FILL_MODE::FULL, bool>>
+tridiagonal_matrix_t<Mode, BlockSize, Scalar>::tridiagonal_matrix_t(
+    const vector_type &diag, const vector_type &off_diag)
+    : diag(diag), m_nBlocks(diag.size()), m_nScalars(BlockSize * diag.size()) {
+  CHAOS_ASSERT(m_nBlocks > 1);
+  CHAOS_ASSERT(diag.size() == off_diag.size() + 1, diag.size(),
+               off_diag.size());
+  if constexpr (Mode == MATRIX_FILL_MODE::UPPER) {
+    upper = off_diag;
+  } else {
+    lower = off_diag;
+  }
+}
+
+template <MATRIX_FILL_MODE Mode, int BlockSize, typename Scalar>
+template <bool full>
+void tridiagonal_matrix_t<Mode, BlockSize, Scalar>::fill(
+    size_t r, size_t c, const element_type &elem,
+    coo_list_t<scalar_type> &coo) const {
+  if constexpr (BlockSize == 1) {
+    coo.emplace_back(r, c, elem);
+  } else {
+    if constexpr (full) {
+      for (size_t i = 0; i < BlockSize; ++i) {
+        for (size_t j = 0; j < BlockSize; ++j) {
+          coo.emplace_back(r + i, c + j, elem(i, j));
+        }
+      }
+    } else if constexpr (Mode == MATRIX_FILL_MODE::UPPER) {
+      for (size_t i = 0; i < BlockSize; ++i) {
+        for (size_t j = i; j < BlockSize; ++j) {
+          coo.emplace_back(r + i, c + j, elem(i, j));
+        }
+      }
+    } else {
+      for (size_t i = 0; i < BlockSize; ++i) {
+        for (size_t j = 0; j <= i; ++j) {
+          coo.emplace_back(r + i, c + j, elem(i, j));
+        }
+      }
+    }
+  }
+}
+}  // namespace chaos

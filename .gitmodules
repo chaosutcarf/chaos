@@ -1,0 +1,9 @@
+[submodule "cmake"]
+	path = cmake
+	url = git@github.com:LamKamhang/cmake.git
+[submodule "data"]
+	path = data
+	url = git@github.com:chaosutcarf/chaos-data.git
+[submodule "scripts/maxima"]
+	path = scripts/maxima
+	url = git@github.com:chaosutcarf/chaos-maxima.git

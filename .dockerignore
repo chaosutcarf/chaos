@@ -1,0 +1,12 @@
+**/.git
+**/.ccls-cache
+**/.cache
+**/.snakemake
+**/.vscode
+**/3rd
+**/output
+**/build
+**/build-release
+**/build-debug
+compile_commands.json
+Dockerfile
