@@ -1,38 +1,38 @@
-SUBROUTINE &
-&linear_elas_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+SUBROUTINE & 
+&linear_elas_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 tt1 = 1.0E+0*F(1,1)
 tt2 = 1.0E+0*F(2,2)
 val(1,1) = 5.0E-1*lam(1,1)*(tt2+tt1-2)**2+mu(1,1)*((tt2-1)**2+5.0&
 &E-1*(F(2,1)+F(1,2))**2+(tt1-1)**2)
-END
-SUBROUTINE &
-&linear_elas_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&linear_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = 1.0E+0*F(1,1)
 tt2 = 1.0E+0*F(2,2)
 tt3 = 1.0E+0*lam(1,1)*(tt2+tt1-2)
@@ -41,23 +41,23 @@ jac(1,1) = tt3+2.0E+0*(tt1-1)*mu(1,1)
 jac(1,2) = tt4
 jac(1,3) = tt4
 jac(1,4) = tt3+2.0E+0*mu(1,1)*(tt2-1)
-END
-SUBROUTINE &
-&linear_elas_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&linear_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = 1.0E+0*lam(1,1)
 tt2 = 2.0E+0*mu(1,1)+tt1
 tt3 = 1.0E+0*mu(1,1)
@@ -77,43 +77,43 @@ hes(4,1) = tt1
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = tt2
-END
-SUBROUTINE &
-&stvk_elas_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&stvk_elas_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 tt1 = F(2,1)**2+F(1,1)**2-1
 tt2 = F(2,2)**2+F(1,2)**2-1
 val(1,1) = 5.0E-1*lam(1,1)*(5.0E-1*tt2+5.0E-1*tt1)**2+mu(1,1)*(2.&
 &5E-1*tt2**2+5.0E-1*(F(2,1)*F(2,2)+F(1,1)*F(1,2))**2+2.5E-1*tt1**2&
 &)
-END
-SUBROUTINE &
-&stvk_elas_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&stvk_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = F(2,1)**2+F(1,1)**2-1
 tt2 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(2,2)**2+F(1,2)**2-1
@@ -126,35 +126,35 @@ jac(1,3) = mu(1,1)*(1.0E+0*F(1,2)*tt3+1.0E+0*F(1,1)*tt2)+1.0E+0*l&
 &am(1,1)*F(1,2)*tt4
 jac(1,4) = mu(1,1)*(1.0E+0*F(2,2)*tt3+1.0E+0*F(2,1)*tt2)+1.0E+0*l&
 &am(1,1)*F(2,2)*tt4
-END
-SUBROUTINE &
-&stvk_elas_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
+END 
+SUBROUTINE & 
+&stvk_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(2,1)**2
@@ -197,45 +197,45 @@ hes(4,2) = tt14
 hes(4,3) = tt16
 hes(4,4) = mu(1,1)*(tt15+2.0E+0*tt6+1.0E+0*tt3)+tt8+1.0E+0*lam(1,&
 &1)*tt6
-END
-SUBROUTINE &
-&coro_elas_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&coro_elas_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = 5.0E-1*lam(1,1)*(5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,&
 &2))+5.0E-1*(2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-2)**2+mu(1,1)*((1.0E&
 &+0*F(2,2)*R(2,2)+1.0E+0*F(1,2)*R(1,2)-1)**2+5.0E-1*(F(2,1)*R(2,2)&
 &+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2))**2+(1.0E+0*F(2,1)*R(2&
 &,1)+1.0E+0*F(1,1)*R(1,1)-1)**2)
-END
-SUBROUTINE &
-&coro_elas_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&coro_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = 1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1,1)-1
 tt2 = F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2)
 tt3 = 5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))+5.0E-1*(2*F(2,1)*R&
@@ -249,31 +249,31 @@ jac(1,3) = 1.0E+0*lam(1,1)*R(1,2)*tt3+mu(1,1)*(2.0E+0*R(1,2)*tt4+&
 &1.0E+0*R(1,1)*tt2)
 jac(1,4) = 1.0E+0*lam(1,1)*R(2,2)*tt3+mu(1,1)*(2.0E+0*R(2,2)*tt4+&
 &1.0E+0*R(2,1)*tt2)
-END
-SUBROUTINE &
-&coro_elas_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
+END 
+SUBROUTINE & 
+&coro_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
 tt1 = R(1,1)**2
 tt2 = R(1,2)**2
 tt3 = mu(1,1)*(1.0E+0*R(1,2)*R(2,2)+2.0E+0*R(1,1)*R(2,1))+1.0E+0*&
@@ -302,63 +302,63 @@ hes(4,1) = tt5
 hes(4,2) = tt9
 hes(4,3) = tt10
 hes(4,4) = mu(1,1)*(2.0E+0*tt7+1.0E+0*tt6)+1.0E+0*lam(1,1)*tt7
-END
-SUBROUTINE &
-&mcadams_coro_elas_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = mu(1,1)*((R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,2)&
 &-F(1,2))**2+(R(1,1)-F(1,1))**2)+5.0E-1*lam(1,1)*((-R(2,2))+F(2,2)&
 &-R(1,1)+F(1,1))**2
-END
-SUBROUTINE &
-&mcadams_coro_elas_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*lam(1,1)*((-R(2,2))+F(2,2)-R(1,1)+F(1,1))
 jac(1,1) = tt1-2*(R(1,1)-F(1,1))*mu(1,1)
 jac(1,2) = -2*mu(1,1)*(R(2,1)-F(2,1))
 jac(1,3) = -2*mu(1,1)*(R(1,2)-F(1,2))
 jac(1,4) = tt1-2*mu(1,1)*(R(2,2)-F(2,2))
-END
-SUBROUTINE &
-&mcadams_coro_elas_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*lam(1,1)
 tt2 = 2*mu(1,1)
 tt3 = tt2+tt1
@@ -378,40 +378,40 @@ hes(4,1) = tt1
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = tt3
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = mu(1,1)*((R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,2)&
 &-F(1,2))**2+(R(1,1)-F(1,1))**2)+5.0E-1*lam(1,1)*(F(1,1)*F(2,2)-F(&
 &1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*lam(1,1)*F(2,2)*tt1-2*(R(1,1)-F(1,1))*mu(1,1)
 jac(1,2) = (-1.0E+0*lam(1,1)*F(1,2)*tt1)-2*mu(1,1)*(R(2,1)-F(2,1)&
@@ -419,29 +419,29 @@ jac(1,2) = (-1.0E+0*lam(1,1)*F(1,2)*tt1)-2*mu(1,1)*(R(2,1)-F(2,1)&
 jac(1,3) = (-1.0E+0*lam(1,1)*F(2,1)*tt1)-2*mu(1,1)*(R(1,2)-F(1,2)&
 &)
 jac(1,4) = 1.0E+0*F(1,1)*lam(1,1)*tt1-2*mu(1,1)*(R(2,2)-F(2,2))
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
 tt1 = 2*mu(1,1)
 tt2 = -1.0E+0*lam(1,1)*F(1,2)*F(2,2)
 tt3 = -1.0E+0*lam(1,1)*F(2,1)*F(2,2)
@@ -466,39 +466,39 @@ hes(4,1) = tt5
 hes(4,2) = tt7
 hes(4,3) = tt8
 hes(4,4) = tt1+1.0E+0*F(1,1)**2*lam(1,1)
-END
-SUBROUTINE &
-&bonet08_neohookean_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&bonet08_neohookean_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
 tt1 = log(F(1,1)*F(2,2)-F(1,2)*F(2,1))
 val(1,1) = 5.0E-1*lam(1,1)*tt1**2-mu(1,1)*tt1+5.0E-1*mu(1,1)*(F(2&
 &,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2-3)
-END
-SUBROUTINE &
-&bonet08_neohookean_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&bonet08_neohookean_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt2 = 1/tt1
 tt3 = log(tt1)
@@ -510,34 +510,34 @@ jac(1,3) = (-1.0E+0*lam(1,1)*F(2,1)*tt2*tt3)+mu(1,1)*F(2,1)*tt2+1&
 &.0E+0*mu(1,1)*F(1,2)
 jac(1,4) = 1.0E+0*F(1,1)*lam(1,1)*tt2*tt3-F(1,1)*mu(1,1)*tt2+1.0E&
 &+0*mu(1,1)*F(2,2)
-END
-SUBROUTINE &
-&bonet08_neohookean_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
+END 
+SUBROUTINE & 
+&bonet08_neohookean_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = F(2,2)**2
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
@@ -581,42 +581,42 @@ hes(4,2) = tt12
 hes(4,3) = tt14
 hes(4,4) = (-1.0E+0*tt15*lam(1,1)*tt4*tt5)+tt15*mu(1,1)*tt4+1.0E+&
 &0*tt15*lam(1,1)*tt4+tt1
-END
-SUBROUTINE &
-&ogden97_neohookean_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&ogden97_neohookean_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 tt1 = -F(1,2)*F(2,1)
 tt2 = F(1,1)*F(2,2)
 val(1,1) = (-mu(1,1)*log(tt2+tt1))+5.0E-1*lam(1,1)*(tt2+tt1-1)**2&
 &+5.0E-1*mu(1,1)*(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2-3)
-END
-SUBROUTINE &
-&ogden97_neohookean_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&ogden97_neohookean_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = -F(1,2)*F(2,1)
 tt2 = F(1,1)*F(2,2)
 tt3 = tt2+tt1-1
@@ -629,36 +629,36 @@ jac(1,3) = mu(1,1)*F(2,1)*tt4-1.0E+0*lam(1,1)*F(2,1)*tt3+1.0E+0*m&
 &u(1,1)*F(1,2)
 jac(1,4) = (-F(1,1)*mu(1,1)*tt4)+1.0E+0*F(1,1)*lam(1,1)*tt3+1.0E+&
 &0*mu(1,1)*F(2,2)
-END
-SUBROUTINE &
-&ogden97_neohookean_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
+END 
+SUBROUTINE & 
+&ogden97_neohookean_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = F(2,2)**2
 tt3 = -F(1,2)*F(2,1)
@@ -696,45 +696,45 @@ hes(4,1) = tt11
 hes(4,2) = tt14
 hes(4,3) = tt16
 hes(4,4) = tt17*mu(1,1)*tt6+tt1+1.0E+0*tt17*lam(1,1)
-END
-SUBROUTINE &
-&bower09_neohookean_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&bower09_neohookean_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 tt1 = -F(1,2)*F(2,1)
 tt2 = F(1,1)*F(2,2)
 val(1,1) = 5.0E-1*lam(1,1)*(tt2+tt1-1)**2+5.0E-1*mu(1,1)*((F(2,2)&
 &**2+F(2,1)**2+F(1,2)**2+F(1,1)**2)/(tt2+tt1)**(2.0E+0/3.0E+0)-3)
-END
-SUBROUTINE &
-&bower09_neohookean_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&bower09_neohookean_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -F(1,2)*F(2,1)
 tt2 = F(1,1)*F(2,2)
 tt3 = tt2+tt1-1
@@ -750,39 +750,39 @@ jac(1,3) = 5.0E-1*mu(1,1)*(2*F(1,2)*tt7+(2.0E+0*F(2,1)*tt5*tt6)/3&
 &.0E+0)-1.0E+0*lam(1,1)*F(2,1)*tt3
 jac(1,4) = 5.0E-1*mu(1,1)*(2*F(2,2)*tt7+((-2.0E+0)*F(1,1)*tt5*tt6&
 &)/3.0E+0)+1.0E+0*F(1,1)*lam(1,1)*tt3
-END
-SUBROUTINE &
-&bower09_neohookean_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
+END 
+SUBROUTINE & 
+&bower09_neohookean_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
 tt1 = F(2,2)**2
 tt2 = -F(1,2)*F(2,1)
 tt3 = F(1,1)*F(2,2)
@@ -836,37 +836,37 @@ hes(4,2) = tt19
 hes(4,3) = tt20
 hes(4,4) = 5.0E-1*mu(1,1)*(tt12+tt11+(1.0E+1*tt6*tt5*tt9)/9.0E+0)&
 &+1.0E+0*tt6*lam(1,1)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 val(1,1) = 5.0E-1*lam(1,1)*tt1**2+5.0E-1*mu(1,1)*(F(2,2)**2+F(2,1&
 &)**2+F(1,2)**2+F(1,1)**2-3)-mu(1,1)*tt1
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*lam(1,1)*F(2,2)*tt1-mu(1,1)*F(2,2)+1.0E+0*F(1,1&
 &)*mu(1,1)
@@ -876,27 +876,27 @@ jac(1,3) = (-1.0E+0*lam(1,1)*F(2,1)*tt1)+mu(1,1)*F(2,1)+1.0E+0*mu&
 &(1,1)*F(1,2)
 jac(1,4) = 1.0E+0*F(1,1)*lam(1,1)*tt1+1.0E+0*mu(1,1)*F(2,2)-F(1,1&
 &)*mu(1,1)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = -1.0E+0*lam(1,1)*F(1,2)*F(2,2)
 tt3 = -1.0E+0*lam(1,1)*F(2,1)*F(2,2)
@@ -922,24 +922,24 @@ hes(4,1) = tt5
 hes(4,2) = tt7
 hes(4,3) = tt8
 hes(4,4) = tt1+1.0E+0*F(1,1)**2*lam(1,1)
-END
-SUBROUTINE &
-&pixar18_neohookean_2d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&pixar18_neohookean_2d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(2,1)**2
@@ -948,22 +948,22 @@ tt5 = (5.0E+0*mu(1,1))/6.0E+0+lam(1,1)
 val(1,1) = (-6.666666666666666E-1*mu(1,1)*log(tt4+tt3+tt2+tt1+1))&
 &+5.0E-1*tt5*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-mu(1,1)/tt5-1)**2+6.6666&
 &66666666666E-1*mu(1,1)*(tt4+tt3+tt2+tt1-3)
-END
-SUBROUTINE &
-&pixar18_neohookean_2d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&pixar18_neohookean_2d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = (5.0E+0*mu(1,1))/6.0E+0+lam(1,1)
 tt2 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-mu(1,1)/tt1-1
 tt3 = 1/(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2+1)
@@ -975,35 +975,35 @@ jac(1,3) = (-1.3333333333333333E+0*mu(1,1)*F(1,2)*tt3)-1.0E+0*tt1&
 &*F(2,1)*tt2+1.3333333333333333E+0*mu(1,1)*F(1,2)
 jac(1,4) = (-1.3333333333333333E+0*mu(1,1)*F(2,2)*tt3)+1.0E+0*F(1&
 &,1)*tt1*tt2+1.3333333333333333E+0*mu(1,1)*F(2,2)
-END
-SUBROUTINE &
-&pixar18_neohookean_2d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
+END 
+SUBROUTINE & 
+&pixar18_neohookean_2d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
 tt1 = 1.3333333333333333E+0*mu(1,1)
 tt2 = (5.0E+0*mu(1,1))/6.0E+0+lam(1,1)
 tt3 = F(2,2)**2
@@ -1046,42 +1046,42 @@ hes(4,2) = tt15
 hes(4,3) = tt16
 hes(4,4) = tt9+2.6666666666666667E+0*mu(1,1)*tt3*tt8+tt1+1.0E+0*t&
 &t4*tt2
-END
-SUBROUTINE &
-&linear_elas_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&linear_elas_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(1.0E+0*F(2,2)+1.0E+0*F(1,1)-2)**2
-END
-SUBROUTINE &
-&linear_elas_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&linear_elas_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*(1.0E+0*F(2,2)+1.0E+0*F(1,1)-2)
 jac(1,1) = tt1
 jac(1,2) = 0
 jac(1,3) = 0
 jac(1,4) = tt1
-END
-SUBROUTINE &
-&linear_elas_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&linear_elas_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 hes(1,1) = 1.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -1098,42 +1098,42 @@ hes(4,1) = 1.0E+0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 1.0E+0
-END
-SUBROUTINE &
-&linear_elas_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&linear_elas_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = (1.0E+0*F(2,2)-1)**2+5.0E-1*(F(2,1)+F(1,2))**2+(1.0E+0&
 &*F(1,1)-1)**2
-END
-SUBROUTINE &
-&linear_elas_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&linear_elas_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*(F(2,1)+F(1,2))
 jac(1,1) = 2.0E+0*(1.0E+0*F(1,1)-1)
 jac(1,2) = tt1
 jac(1,3) = tt1
 jac(1,4) = 2.0E+0*(1.0E+0*F(2,2)-1)
-END
-SUBROUTINE &
-&linear_elas_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&linear_elas_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 hes(1,1) = 2.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -1150,53 +1150,53 @@ hes(4,1) = 0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 2.0E+0
-END
-SUBROUTINE &
-&stvk_elas_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&stvk_elas_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(5.0E-1*(F(2,2)**2+F(1,2)**2-1)+5.0E-1*(F(2,1)*&
 &*2+F(1,1)**2-1))**2
-END
-SUBROUTINE &
-&stvk_elas_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&stvk_elas_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 5.0E-1*(F(2,2)**2+F(1,2)**2-1)+5.0E-1*(F(2,1)**2+F(1,1)**2-&
 &1)
 jac(1,1) = 1.0E+0*F(1,1)*tt1
 jac(1,2) = 1.0E+0*F(2,1)*tt1
 jac(1,3) = 1.0E+0*F(1,2)*tt1
 jac(1,4) = 1.0E+0*F(2,2)*tt1
-END
-SUBROUTINE &
-&stvk_elas_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
+END 
+SUBROUTINE & 
+&stvk_elas_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
 tt1 = F(1,1)**2
 tt2 = F(2,1)**2
 tt3 = F(1,2)**2
@@ -1224,29 +1224,29 @@ hes(4,1) = tt8
 hes(4,2) = tt10
 hes(4,3) = tt11
 hes(4,4) = tt5+1.0E+0*tt4
-END
-SUBROUTINE &
-&stvk_elas_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&stvk_elas_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 2.5E-1*(F(2,2)**2+F(1,2)**2-1)**2+5.0E-1*(F(2,1)*F(2,2&
 &)+F(1,1)*F(1,2))**2+2.5E-1*(F(2,1)**2+F(1,1)**2-1)**2
-END
-SUBROUTINE &
-&stvk_elas_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&stvk_elas_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,1)**2+F(1,1)**2-1
 tt2 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(2,2)**2+F(1,2)**2-1
@@ -1254,28 +1254,28 @@ jac(1,1) = 1.0E+0*F(1,2)*tt2+1.0E+0*F(1,1)*tt1
 jac(1,2) = 1.0E+0*F(2,2)*tt2+1.0E+0*F(2,1)*tt1
 jac(1,3) = 1.0E+0*F(1,2)*tt3+1.0E+0*F(1,1)*tt2
 jac(1,4) = 1.0E+0*F(2,2)*tt3+1.0E+0*F(2,1)*tt2
-END
-SUBROUTINE &
-&stvk_elas_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
+END 
+SUBROUTINE & 
+&stvk_elas_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(2,1)**2
@@ -1305,54 +1305,54 @@ hes(4,1) = tt8
 hes(4,2) = tt11
 hes(4,3) = tt13
 hes(4,4) = tt12+2.0E+0*tt9+1.0E+0*tt3
-END
-SUBROUTINE &
-&coro_elas_lam_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&coro_elas_lam_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = 5.0E-1*(5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))+5.0E-&
 &1*(2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-2)**2
-END
-SUBROUTINE &
-&coro_elas_lam_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&coro_elas_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))+5.0E-1*(2*F(2,1)*R&
 &(2,1)+2*F(1,1)*R(1,1))-2
 jac(1,1) = 1.0E+0*R(1,1)*tt1
 jac(1,2) = 1.0E+0*R(2,1)*tt1
 jac(1,3) = 1.0E+0*R(1,2)*tt1
 jac(1,4) = 1.0E+0*R(2,2)*tt1
-END
-SUBROUTINE &
-&coro_elas_lam_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&coro_elas_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 1.0E+0*R(1,1)*R(2,1)
 tt2 = 1.0E+0*R(1,1)*R(1,2)
 tt3 = 1.0E+0*R(1,1)*R(2,2)
@@ -1375,34 +1375,34 @@ hes(4,1) = tt3
 hes(4,2) = tt5
 hes(4,3) = tt6
 hes(4,4) = 1.0E+0*R(2,2)**2
-END
-SUBROUTINE &
-&coro_elas_mu_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&coro_elas_mu_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = (1.0E+0*F(2,2)*R(2,2)+1.0E+0*F(1,2)*R(1,2)-1)**2+5.0E-&
 &1*(F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2))**2+(1&
 &.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1,1)-1)**2
-END
-SUBROUTINE &
-&coro_elas_mu_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&coro_elas_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1,1)-1
 tt2 = F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2)
 tt3 = 1.0E+0*F(2,2)*R(2,2)+1.0E+0*F(1,2)*R(1,2)-1
@@ -1410,27 +1410,27 @@ jac(1,1) = 1.0E+0*R(1,2)*tt2+2.0E+0*R(1,1)*tt1
 jac(1,2) = 1.0E+0*R(2,2)*tt2+2.0E+0*R(2,1)*tt1
 jac(1,3) = 2.0E+0*R(1,2)*tt3+1.0E+0*R(1,1)*tt2
 jac(1,4) = 2.0E+0*R(2,2)*tt3+1.0E+0*R(2,1)*tt2
-END
-SUBROUTINE &
-&coro_elas_mu_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
+END 
+SUBROUTINE & 
+&coro_elas_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
 tt1 = R(1,1)**2
 tt2 = R(1,2)**2
 tt3 = 1.0E+0*R(1,2)*R(2,2)+2.0E+0*R(1,1)*R(2,1)
@@ -1457,48 +1457,48 @@ hes(4,1) = tt5
 hes(4,2) = tt9
 hes(4,3) = tt10
 hes(4,4) = 2.0E+0*tt7+1.0E+0*tt6
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = 5.0E-1*((-R(2,2))+F(2,2)-R(1,1)+F(1,1))**2
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*((-R(2,2))+F(2,2)-R(1,1)+F(1,1))
 jac(1,1) = tt1
 jac(1,2) = 0
 jac(1,3) = 0
 jac(1,4) = tt1
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 hes(1,1) = 1.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -1515,45 +1515,45 @@ hes(4,1) = 1.0E+0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 1.0E+0
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = (R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,2)-F(1,2))*&
 &*2+(R(1,1)-F(1,1))**2
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 jac(1,1) = -2*(R(1,1)-F(1,1))
 jac(1,2) = -2*(R(2,1)-F(2,1))
 jac(1,3) = -2*(R(1,2)-F(1,2))
 jac(1,4) = -2*(R(2,2)-F(2,2))
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -1570,53 +1570,53 @@ hes(4,1) = 0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = 5.0E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*F(2,2)*tt1
 jac(1,2) = -1.0E+0*F(1,2)*tt1
 jac(1,3) = -1.0E+0*F(2,1)*tt1
 jac(1,4) = 1.0E+0*F(1,1)*tt1
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -1.0E+0*F(1,2)*F(2,2)
 tt2 = -1.0E+0*F(2,1)*F(2,2)
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
@@ -1640,45 +1640,45 @@ hes(4,1) = tt4
 hes(4,2) = tt6
 hes(4,3) = tt7
 hes(4,4) = 1.0E+0*F(1,1)**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_2d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_2d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 val(1,1) = (R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,2)-F(1,2))*&
 &*2+(R(1,1)-F(1,1))**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_2d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 jac(1,1) = -2*(R(1,1)-F(1,1))
 jac(1,2) = -2*(R(2,1)-F(2,1))
 jac(1,3) = -2*(R(1,2)-F(1,2))
 jac(1,4) = -2*(R(2,2)-F(2,2))
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_2d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) R(2, 2)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) R(2, 2) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -1695,28 +1695,28 @@ hes(4,1) = 0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 2
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*log(F(1,1)*F(2,2)-F(1,2)*F(2,1))**2
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt2 = 1/tt1
 tt3 = log(tt1)
@@ -1724,29 +1724,29 @@ jac(1,1) = 1.0E+0*F(2,2)*tt2*tt3
 jac(1,2) = -1.0E+0*F(1,2)*tt2*tt3
 jac(1,3) = -1.0E+0*F(2,1)*tt2*tt3
 jac(1,4) = 1.0E+0*F(1,1)*tt2*tt3
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
 tt1 = F(2,2)**2
 tt2 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt3 = 1/tt2**2
@@ -1779,50 +1779,50 @@ hes(4,1) = tt8
 hes(4,2) = tt11
 hes(4,3) = tt13
 hes(4,4) = 1.0E+0*tt14*tt3-1.0E+0*tt14*tt3*tt4
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2-3)-log&
 &(F(1,1)*F(2,2)-F(1,2)*F(2,1))
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1/(F(1,1)*F(2,2)-F(1,2)*F(2,1))
 jac(1,1) = 1.0E+0*F(1,1)-F(2,2)*tt1
 jac(1,2) = F(1,2)*tt1+1.0E+0*F(2,1)
 jac(1,3) = F(2,1)*tt1+1.0E+0*F(1,2)
 jac(1,4) = 1.0E+0*F(2,2)-F(1,1)*tt1
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt2 = 1/tt1**2
 tt3 = -F(1,2)*F(2,2)*tt2
@@ -1848,47 +1848,47 @@ hes(4,1) = tt6
 hes(4,2) = tt8
 hes(4,3) = tt9
 hes(4,4) = F(1,1)**2*tt2+1.0E+0
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*F(2,2)*tt1
 jac(1,2) = -1.0E+0*F(1,2)*tt1
 jac(1,3) = -1.0E+0*F(2,1)*tt1
 jac(1,4) = 1.0E+0*F(1,1)*tt1
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -1.0E+0*F(1,2)*F(2,2)
 tt2 = -1.0E+0*F(2,1)*F(2,2)
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
@@ -1912,50 +1912,50 @@ hes(4,1) = tt4
 hes(4,2) = tt6
 hes(4,3) = tt7
 hes(4,4) = 1.0E+0*F(1,1)**2
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2-3)-log&
 &(F(1,1)*F(2,2)-F(1,2)*F(2,1))
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = 1/(F(1,1)*F(2,2)-F(1,2)*F(2,1))
 jac(1,1) = 1.0E+0*F(1,1)-F(2,2)*tt1
 jac(1,2) = F(1,2)*tt1+1.0E+0*F(2,1)
 jac(1,3) = F(2,1)*tt1+1.0E+0*F(1,2)
 jac(1,4) = 1.0E+0*F(2,2)-F(1,1)*tt1
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt2 = 1/tt1**2
 tt3 = -F(1,2)*F(2,2)*tt2
@@ -1981,47 +1981,47 @@ hes(4,1) = tt6
 hes(4,2) = tt8
 hes(4,3) = tt9
 hes(4,4) = F(1,1)**2*tt2+1.0E+0
-END
-SUBROUTINE &
-&bower09_neohookean_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&bower09_neohookean_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*F(2,2)*tt1
 jac(1,2) = -1.0E+0*F(1,2)*tt1
 jac(1,3) = -1.0E+0*F(2,1)*tt1
 jac(1,4) = 1.0E+0*F(1,1)*tt1
-END
-SUBROUTINE &
-&bower09_neohookean_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -1.0E+0*F(1,2)*F(2,2)
 tt2 = -1.0E+0*F(2,1)*F(2,2)
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
@@ -2045,30 +2045,30 @@ hes(4,1) = tt4
 hes(4,2) = tt6
 hes(4,3) = tt7
 hes(4,4) = 1.0E+0*F(1,1)**2
-END
-SUBROUTINE &
-&bower09_neohookean_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*((F(1,1)*F(2,2)-F(1,2)*F(2,1))**((-2.0E+0)/3.0E&
 &+0)*(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2)-3)
-END
-SUBROUTINE &
-&bower09_neohookean_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt2 = tt1**((-5.0E+0)/3.0E+0)
 tt3 = F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2
@@ -2079,32 +2079,32 @@ jac(1,2) = 5.0E-1*(2*F(2,1)*tt4+(2.0E+0*F(1,2)*tt2*tt3)/3.0E+0)
 jac(1,3) = 5.0E-1*(2*F(1,2)*tt4+(2.0E+0*F(2,1)*tt2*tt3)/3.0E+0)
 jac(1,4) = 5.0E-1*(2*F(2,2)*tt4+((-2.0E+0)*F(1,1)*tt2*tt3)/3.0E+0&
 &)
-END
-SUBROUTINE &
-&bower09_neohookean_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
 tt1 = F(2,2)**2
 tt2 = F(1,1)*F(2,2)-F(1,2)*F(2,1)
 tt3 = tt2**((-8.0E+0)/3.0E+0)
@@ -2145,47 +2145,47 @@ hes(4,1) = tt13
 hes(4,2) = tt16
 hes(4,3) = tt17
 hes(4,4) = 5.0E-1*(tt10+tt9+(1.0E+1*tt4*tt3*tt7)/9.0E+0)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*F(2,2)*tt1
 jac(1,2) = -1.0E+0*F(1,2)*tt1
 jac(1,3) = -1.0E+0*F(2,1)*tt1
 jac(1,4) = 1.0E+0*F(1,1)*tt1
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -1.0E+0*F(1,2)*F(2,2)
 tt2 = -1.0E+0*F(2,1)*F(2,2)
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
@@ -2209,39 +2209,39 @@ hes(4,1) = tt4
 hes(4,2) = tt6
 hes(4,3) = tt7
 hes(4,4) = 1.0E+0*F(1,1)**2
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2-3)-F(1&
 &,1)*F(2,2)+F(1,2)*F(2,1)+1
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
 jac(1,1) = 1.0E+0*F(1,1)-F(2,2)
 jac(1,2) = 1.0E+0*F(2,1)+F(1,2)
 jac(1,3) = F(2,1)+1.0E+0*F(1,2)
 jac(1,4) = 1.0E+0*F(2,2)-F(1,1)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
 hes(1,1) = 1.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -2258,47 +2258,47 @@ hes(4,1) = -1
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 1.0E+0
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = 5.0E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 jac(1,1) = 1.0E+0*F(2,2)*tt1
 jac(1,2) = -1.0E+0*F(1,2)*tt1
 jac(1,3) = -1.0E+0*F(2,1)*tt1
 jac(1,4) = 1.0E+0*F(1,1)*tt1
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = -1.0E+0*F(1,2)*F(2,2)
 tt2 = -1.0E+0*F(2,1)*F(2,2)
 tt3 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
@@ -2322,19 +2322,19 @@ hes(4,1) = tt4
 hes(4,2) = tt6
 hes(4,3) = tt7
 hes(4,4) = 1.0E+0*F(1,1)**2
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(2,1)**2
@@ -2342,17 +2342,17 @@ tt4 = F(2,2)**2
 val(1,1) = (2.0E+0*((-log(tt4+tt3+tt2+tt1+1))+tt4+tt3+tt2+tt1))/3&
 &.0E+0+4.166666666666667E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1)-1)**2-F(1&
 &,1)*F(2,2)+F(1,2)*F(2,1)
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 tt1 = F(1,1)*F(2,2)-F(1,2)*F(2,1)-1
 tt2 = 1/(F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2+1)
 jac(1,1) = (2.0E+0*(2*F(1,1)-2*F(1,1)*tt2))/3.0E+0+8.333333333333&
@@ -2363,29 +2363,29 @@ jac(1,3) = (2.0E+0*(2*F(1,2)-2*F(1,2)*tt2))/3.0E+0-8.333333333333&
 &334E-1*F(2,1)*tt1+F(2,1)
 jac(1,4) = (2.0E+0*(2*F(2,2)-2*F(2,2)*tt2))/3.0E+0+8.333333333333&
 &334E-1*F(1,1)*tt1-F(1,1)
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
 tt1 = F(2,2)**2
 tt2 = F(1,1)**2
 tt3 = F(1,2)**2
@@ -2426,42 +2426,42 @@ hes(4,2) = tt13
 hes(4,3) = tt14
 hes(4,4) = (2.0E+0*(tt7+4*tt1*tt6+2))/3.0E+0+8.333333333333334E-1&
 &*tt2
-END
-SUBROUTINE &
-&small_general_linear_elas_2d_val(&
-&  val &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&small_general_linear_elas_2d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*F(1,1)-1
 tt2 = F(2,1)+F(1,2)
 tt3 = 1.0E+0*F(2,2)-1
 val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(3,3)+tt3*C(3,2)+tt1*C&
 &(3,1))+tt3*(1.0E+0*tt2*C(2,3)+C(2,2)*tt3+tt1*C(2,1))+tt1*(C(1,2)*&
 &tt3+1.0E+0*C(1,3)*tt2+C(1,1)*tt1))
-END
-SUBROUTINE &
-&small_general_linear_elas_2d_jac(&
-&  jac &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&small_general_linear_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = 1.0E+0*F(1,1)-1
 tt2 = 1.0E+0*F(2,2)-1
 tt3 = F(2,1)+F(1,2)
@@ -2474,22 +2474,22 @@ jac(1,2) = tt5
 jac(1,3) = tt5
 jac(1,4) = 5.0E-1*(1.0E+0*tt3*C(3,2)+1.0E+0*(1.0E+0*tt3*C(2,3)+C(&
 &2,2)*tt2+tt1*C(2,1))+1.0E+0*C(2,2)*tt2+1.0E+0*tt1*C(1,2))
-END
-SUBROUTINE &
-&small_general_linear_elas_2d_hes(&
-&  hes &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&small_general_linear_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = 5.0E-1*(1.0E+0*C(3,1)+1.0E+0*C(1,3))
 tt2 = 5.0E-1*(1.0E+0*C(2,1)+1.0E+0*C(1,2))
 tt3 = 1.0E+0*C(3,3)
@@ -2510,20 +2510,20 @@ hes(4,1) = tt2
 hes(4,2) = tt4
 hes(4,3) = tt4
 hes(4,4) = 1.0E+0*C(2,2)
-END
-SUBROUTINE &
-&green_general_linear_elas_2d_val(&
-&  val &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&green_general_linear_elas_2d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,1)**2+F(1,1)**2-1
 tt2 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(2,2)**2+F(1,2)**2-1
@@ -2531,23 +2531,23 @@ val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(3,3)+5.0E-1*tt3*C(3,2&
 &)+5.0E-1*tt1*C(3,1))+5.0E-1*tt3*(1.0E+0*tt2*C(2,3)+5.0E-1*C(2,2)*&
 &tt3+5.0E-1*C(2,1)*tt1)+5.0E-1*tt1*(5.0E-1*C(1,2)*tt3+1.0E+0*C(1,3&
 &)*tt2+5.0E-1*C(1,1)*tt1))
-END
-SUBROUTINE &
-&green_general_linear_elas_2d_jac(&
-&  jac &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&green_general_linear_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(2,1)**2+F(1,1)**2-1
 tt2 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(2,2)**2+F(1,2)**2-1
@@ -2570,50 +2570,50 @@ jac(1,4) = 5.0E-1*(1.0E+0*F(2,1)*tt5+1.0E+0*tt2*(1.0E+0*F(2,1)*C(&
 &3,3)+1.0E+0*F(2,2)*C(3,2))+1.0E+0*F(2,2)*tt6+5.0E-1*tt3*(1.0E+0*F&
 &(2,1)*C(2,3)+1.0E+0*C(2,2)*F(2,2))+5.0E-1*tt1*(1.0E+0*C(1,2)*F(2,&
 &2)+1.0E+0*C(1,3)*F(2,1)))
-END
-SUBROUTINE &
-&green_general_linear_elas_2d_hes(&
-&  hes &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
+END 
+SUBROUTINE & 
+&green_general_linear_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
 tt1 = 1.0E+0*F(1,2)*C(1,3)+1.0E+0*C(1,1)*F(1,1)
 tt2 = F(2,1)**2+F(1,1)**2-1
 tt3 = 5.0E-1*C(1,1)*tt2
@@ -2673,47 +2673,47 @@ hes(4,2) = tt26
 hes(4,3) = tt33
 hes(4,4) = 5.0E-1*(2.0E+0*F(2,1)*tt22+tt31+tt30+2.0E+0*F(2,2)*tt3&
 &2+tt28+tt27)
-END
-SUBROUTINE &
-&coro_general_linear_elas_2d_val(&
-&  val &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_2d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 5.0E-1*(2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-1
 tt2 = F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2)
 tt3 = 5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))-1
 val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(3,3)+tt3*C(3,2)+tt1*C&
 &(3,1))+tt3*(1.0E+0*tt2*C(2,3)+C(2,2)*tt3+C(2,1)*tt1)+tt1*(C(1,2)*&
 &tt3+1.0E+0*C(1,3)*tt2+C(1,1)*tt1))
-END
-SUBROUTINE &
-&coro_general_linear_elas_2d_jac(&
-&  jac &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_2d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 5.0E-1*(2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-1
 tt2 = F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2)
 tt3 = 5.0E-1*(2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))-1
@@ -2736,37 +2736,37 @@ jac(1,4) = 5.0E-1*(1.0E+0*R(2,1)*tt5+1.0E+0*tt2*(1.0E+0*R(2,1)*C(&
 &3,3)+1.0E+0*R(2,2)*C(3,2))+1.0E+0*R(2,2)*tt6+tt3*(1.0E+0*R(2,1)*C&
 &(2,3)+1.0E+0*C(2,2)*R(2,2))+tt1*(1.0E+0*C(1,2)*R(2,2)+1.0E+0*C(1,&
 &3)*R(2,1)))
-END
-SUBROUTINE &
-&coro_general_linear_elas_2d_hes(&
-&  hes &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8) C(3, 3)
-REAL(KIND=8) R(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_2d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8) C(3, 3) 
+REAL(KIND=8) R(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
 tt1 = 1.0E+0*R(1,2)*C(1,3)+1.0E+0*C(1,1)*R(1,1)
 tt2 = 1.0E+0*R(1,2)*C(3,3)+1.0E+0*R(1,1)*C(3,1)
 tt3 = 1.0E+0*C(1,3)*R(2,2)+1.0E+0*C(1,1)*R(2,1)
@@ -2807,38 +2807,38 @@ hes(4,1) = tt12
 hes(4,2) = tt15
 hes(4,3) = tt18
 hes(4,4) = 5.0E-1*(2.0E+0*R(2,1)*tt11+2.0E+0*R(2,2)*tt17)
-END
-SUBROUTINE &
-&I_C_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&I_C_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = F(2,2)**2+F(2,1)**2+F(1,2)**2+F(1,1)**2
-END
-SUBROUTINE &
-&I_C_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&I_C_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
 jac(1,1) = 2*F(1,1)
 jac(1,2) = 2*F(2,1)
 jac(1,3) = 2*F(1,2)
 jac(1,4) = 2*F(2,2)
-END
-SUBROUTINE &
-&I_C_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&I_C_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -2855,29 +2855,29 @@ hes(4,1) = 0
 hes(4,2) = 0
 hes(4,3) = 0
 hes(4,4) = 2
-END
-SUBROUTINE &
-&II_C_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&II_C_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = (F(2,2)**2+F(1,2)**2)**2+2*(F(2,1)*F(2,2)+F(1,1)*F(1,2&
 &))**2+(F(2,1)**2+F(1,1)**2)**2
-END
-SUBROUTINE &
-&II_C_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&II_C_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,1)**2+F(1,1)**2
 tt2 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(2,2)**2+F(1,2)**2
@@ -2885,28 +2885,28 @@ jac(1,1) = 4*F(1,2)*tt2+4*F(1,1)*tt1
 jac(1,2) = 4*F(2,2)*tt2+4*F(2,1)*tt1
 jac(1,3) = 4*F(1,2)*tt3+4*F(1,1)*tt2
 jac(1,4) = 4*F(2,2)*tt3+4*F(2,1)*tt2
-END
-SUBROUTINE &
-&II_C_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
+END 
+SUBROUTINE & 
+&II_C_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(2,1)**2
@@ -2936,29 +2936,29 @@ hes(4,1) = tt8
 hes(4,2) = tt11
 hes(4,3) = tt13
 hes(4,4) = tt12+8*tt9+4*tt3
-END
-SUBROUTINE &
-&III_C_2d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(2, 2)
+END 
+SUBROUTINE & 
+&III_C_2d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(2, 2) 
 val(1,1) = (F(2,1)**2+F(1,1)**2)*(F(2,2)**2+F(1,2)**2)-(F(2,1)*F(&
 &2,2)+F(1,1)*F(1,2))**2
-END
-SUBROUTINE &
-&III_C_2d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&III_C_2d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt2 = F(2,2)**2+F(1,2)**2
 tt3 = F(2,1)**2+F(1,1)**2
@@ -2966,28 +2966,28 @@ jac(1,1) = 2*F(1,1)*tt2-2*F(1,2)*tt1
 jac(1,2) = 2*F(2,1)*tt2-2*F(2,2)*tt1
 jac(1,3) = 2*F(1,2)*tt3-2*F(1,1)*tt1
 jac(1,4) = 2*tt3*F(2,2)-2*F(2,1)*tt1
-END
-SUBROUTINE &
-&III_C_2d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(4, 4)
-REAL(KIND=8) F(2, 2)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
+END 
+SUBROUTINE & 
+&III_C_2d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(4, 4) 
+REAL(KIND=8) F(2, 2) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
 tt1 = F(1,2)**2
 tt2 = F(2,2)**2
 tt3 = 2*(tt2+tt1)
@@ -3017,48 +3017,48 @@ hes(4,1) = tt7
 hes(4,2) = tt9
 hes(4,3) = tt13
 hes(4,4) = tt12-2*tt11
-END
-SUBROUTINE &
-&linear_elas_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&linear_elas_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*F(1,1)
 tt2 = 1.0E+0*F(2,2)
 tt3 = 1.0E+0*F(3,3)
 val(1,1) = 5.0E-1*lam(1,1)*(tt3+tt2+tt1-3)**2+mu(1,1)*((tt3-1)**2&
 &+5.0E-1*(F(3,2)+F(2,3))**2+5.0E-1*(F(3,1)+F(1,3))**2+(tt2-1)**2+5&
 &.0E-1*(F(2,1)+F(1,2))**2+(tt1-1)**2)
-END
-SUBROUTINE &
-&linear_elas_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&linear_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = 1.0E+0*F(1,1)
 tt2 = 1.0E+0*F(2,2)
 tt3 = 1.0E+0*F(3,3)
@@ -3075,25 +3075,25 @@ jac(1,6) = tt7
 jac(1,7) = tt6
 jac(1,8) = tt7
 jac(1,9) = tt4+2.0E+0*mu(1,1)*(tt3-1)
-END
-SUBROUTINE &
-&linear_elas_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&linear_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 1.0E+0*lam(1,1)
 tt2 = 2.0E+0*mu(1,1)+tt1
 tt3 = 1.0E+0*mu(1,1)
@@ -3178,22 +3178,22 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = tt2
-END
-SUBROUTINE &
-&stvk_elas_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&stvk_elas_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
 tt2 = F(3,2)**2+F(2,2)**2+F(1,2)**2-1
 tt3 = F(3,3)**2+F(2,3)**2+F(1,3)**2-1
@@ -3202,26 +3202,26 @@ val(1,1) = 5.0E-1*lam(1,1)*(5.0E-1*tt3+5.0E-1*tt2+5.0E-1*tt1)**2+&
 &*F(1,3))**2+5.0E-1*(F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3))**2&
 &+2.5E-1*tt2**2+5.0E-1*(F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2))&
 &**2+2.5E-1*tt1**2)
-END
-SUBROUTINE &
-&stvk_elas_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&stvk_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
 tt2 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3)
@@ -3247,92 +3247,92 @@ jac(1,8) = mu(1,1)*(1.0E+0*F(2,3)*tt5+1.0E+0*F(2,2)*tt7+1.0E+0*F(&
 &2,1)*tt3)+1.0E+0*lam(1,1)*F(2,3)*tt6
 jac(1,9) = mu(1,1)*(1.0E+0*F(3,3)*tt5+1.0E+0*F(3,2)*tt7+1.0E+0*F(&
 &3,1)*tt3)+1.0E+0*lam(1,1)*F(3,3)*tt6
-END
-SUBROUTINE &
-&stvk_elas_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
-REAL(KIND=8)  tt70
-REAL(KIND=8)  tt71
-REAL(KIND=8)  tt72
-REAL(KIND=8)  tt73
+END 
+SUBROUTINE & 
+&stvk_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
+REAL(KIND=8)  tt70 
+REAL(KIND=8)  tt71 
+REAL(KIND=8)  tt72 
+REAL(KIND=8)  tt73 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = 1.0E+0*tt2
@@ -3532,21 +3532,21 @@ hes(9,7) = tt72
 hes(9,8) = tt73
 hes(9,9) = mu(1,1)*(tt70+2.0E+0*tt14+tt42+tt66)+tt16+1.0E+0*lam(1&
 &,1)*tt14
-END
-SUBROUTINE &
-&coro_elas_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&coro_elas_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = 5.0E-1*lam(1,1)*(5.0E-1*(2*F(3,3)*R(3,3)+2*F(2,3)*R(2,&
 &3)+2*F(1,3)*R(1,3))+5.0E-1*(2*F(3,2)*R(3,2)+2*F(2,2)*R(2,2)+2*F(1&
 &,2)*R(1,2))+5.0E-1*(2*F(3,1)*R(3,1)+2*F(2,1)*R(2,1)+2*F(1,1)*R(1,&
@@ -3558,28 +3558,28 @@ val(1,1) = 5.0E-1*lam(1,1)*(5.0E-1*(2*F(3,3)*R(3,3)+2*F(2,3)*R(2,&
 &.0E+0*F(1,2)*R(1,2)-1)**2+5.0E-1*(F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2&
 &,1)*R(2,2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2))**2+(1.0E+0*&
 &F(3,1)*R(3,1)+1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1,1)-1)**2)
-END
-SUBROUTINE &
-&coro_elas_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
+END 
+SUBROUTINE & 
+&coro_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
 tt1 = 1.0E+0*F(3,1)*R(3,1)+1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1&
 &,1)-1
 tt2 = F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1&
@@ -3613,84 +3613,84 @@ jac(1,8) = 1.0E+0*lam(1,1)*R(2,3)*tt4+mu(1,1)*(2.0E+0*R(2,3)*tt7+&
 &1.0E+0*R(2,2)*tt6+1.0E+0*R(2,1)*tt3)
 jac(1,9) = 1.0E+0*lam(1,1)*R(3,3)*tt4+mu(1,1)*(2.0E+0*R(3,3)*tt7+&
 &1.0E+0*R(3,2)*tt6+1.0E+0*R(3,1)*tt3)
-END
-SUBROUTINE &
-&coro_elas_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
+END 
+SUBROUTINE & 
+&coro_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
 tt1 = R(1,1)**2
 tt2 = R(1,2)**2
 tt3 = 1.0E+0*tt2
@@ -3871,41 +3871,41 @@ hes(9,6) = tt60
 hes(9,7) = tt62
 hes(9,8) = tt63
 hes(9,9) = mu(1,1)*(2.0E+0*tt35+tt34+tt57)+1.0E+0*lam(1,1)*tt35
-END
-SUBROUTINE &
-&mcadams_coro_elas_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = mu(1,1)*((R(3,3)-F(3,3))**2+(R(3,2)-F(3,2))**2+(R(3,1)&
 &-F(3,1))**2+(R(2,3)-F(2,3))**2+(R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))&
 &**2+(R(1,3)-F(1,3))**2+(R(1,2)-F(1,2))**2+(R(1,1)-F(1,1))**2)+5.0&
 &E-1*lam(1,1)*((-R(3,3))+F(3,3)-R(2,2)+F(2,2)-R(1,1)+F(1,1))**2
-END
-SUBROUTINE &
-&mcadams_coro_elas_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*lam(1,1)*((-R(3,3))+F(3,3)-R(2,2)+F(2,2)-R(1,1)+F(1,&
 &1))
 jac(1,1) = tt1-2*(R(1,1)-F(1,1))*mu(1,1)
@@ -3917,24 +3917,24 @@ jac(1,6) = -2*mu(1,1)*(R(3,2)-F(3,2))
 jac(1,7) = -2*mu(1,1)*(R(1,3)-F(1,3))
 jac(1,8) = -2*mu(1,1)*(R(2,3)-F(2,3))
 jac(1,9) = tt1-2*mu(1,1)*(R(3,3)-F(3,3))
-END
-SUBROUTINE &
-&mcadams_coro_elas_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*lam(1,1)
 tt2 = 2*mu(1,1)
 tt3 = tt2+tt1
@@ -4019,44 +4019,44 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = tt3
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = mu(1,1)*((R(3,3)-F(3,3))**2+(R(3,2)-F(3,2))**2+(R(3,1)&
 &-F(3,1))**2+(R(2,3)-F(2,3))**2+(R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))&
 &**2+(R(1,3)-F(1,3))**2+(R(1,2)-F(1,2))**2+(R(1,1)-F(1,1))**2)+5.0&
 &E-1*lam(1,1)*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F(2,1)&
 &*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-1)**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -4077,68 +4077,68 @@ jac(1,8) = 1.0E+0*lam(1,1)*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3-2*mu&
 &(1,1)*(R(2,3)-F(2,3))
 jac(1,9) = 1.0E+0*lam(1,1)*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3-2*mu&
 &(1,1)*(R(3,3)-F(3,3))
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
 tt1 = 2*mu(1,1)
 tt2 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt3 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
@@ -4268,50 +4268,50 @@ hes(9,6) = tt44
 hes(9,7) = tt46
 hes(9,8) = tt47
 hes(9,9) = 1.0E+0*lam(1,1)*tt18**2+tt1
-END
-SUBROUTINE &
-&bonet08_neohookean_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&bonet08_neohookean_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
 tt1 = log(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F(2,1)*F(3&
 &,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1)))
 val(1,1) = 5.0E-1*lam(1,1)*tt1**2-mu(1,1)*tt1+5.0E-1*mu(1,1)*(F(3&
 &,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)**2+F(2,1)**2+F(1,3)**&
 &2+F(1,2)**2+F(1,1)**2-3)
-END
-SUBROUTINE &
-&bonet08_neohookean_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
+END 
+SUBROUTINE & 
+&bonet08_neohookean_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -4342,78 +4342,78 @@ jac(1,8) = 1.0E+0*lam(1,1)*tt11*tt4*tt5-mu(1,1)*tt11*tt4+1.0E+0*m&
 &u(1,1)*F(2,3)
 jac(1,9) = 1.0E+0*lam(1,1)*tt12*tt4*tt5-mu(1,1)*tt12*tt4+1.0E+0*m&
 &u(1,1)*F(3,3)
-END
-SUBROUTINE &
-&bonet08_neohookean_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
+END 
+SUBROUTINE & 
+&bonet08_neohookean_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt3 = tt2**2
@@ -4617,55 +4617,55 @@ hes(9,7) = tt56
 hes(9,8) = tt58
 hes(9,9) = (-1.0E+0*lam(1,1)*tt59*tt6*tt7)+mu(1,1)*tt59*tt6+1.0E+&
 &0*lam(1,1)*tt59*tt6+tt1
-END
-SUBROUTINE &
-&ogden97_neohookean_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&ogden97_neohookean_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))
 tt2 = -F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))
 tt3 = F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))
 val(1,1) = (-mu(1,1)*log(tt3+tt2+tt1))+5.0E-1*lam(1,1)*(tt3+tt2+t&
 &t1-1)**2+5.0E-1*mu(1,1)*(F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+&
 &F(2,2)**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2-3)
-END
-SUBROUTINE &
-&ogden97_neohookean_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
+END 
+SUBROUTINE & 
+&ogden97_neohookean_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,3)*tt2
@@ -4698,81 +4698,81 @@ jac(1,8) = (-mu(1,1)*tt13*tt7)+1.0E+0*lam(1,1)*tt13*tt6+1.0E+0*mu&
 &(1,1)*F(2,3)
 jac(1,9) = (-mu(1,1)*tt14*tt7)+1.0E+0*lam(1,1)*tt14*tt6+1.0E+0*mu&
 &(1,1)*F(3,3)
-END
-SUBROUTINE &
-&ogden97_neohookean_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
+END 
+SUBROUTINE & 
+&ogden97_neohookean_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt3 = tt2**2
@@ -4934,58 +4934,58 @@ hes(9,6) = tt56
 hes(9,7) = tt59
 hes(9,8) = tt61
 hes(9,9) = mu(1,1)*tt62*tt9+1.0E+0*lam(1,1)*tt62+tt1
-END
-SUBROUTINE &
-&bower09_neohookean_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&bower09_neohookean_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))
 tt2 = -F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))
 tt3 = F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))
 val(1,1) = 5.0E-1*lam(1,1)*(tt3+tt2+tt1-1)**2+5.0E-1*mu(1,1)*((F(&
 &3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)**2+F(2,1)**2+F(1,3)*&
 &*2+F(1,2)**2+F(1,1)**2)/(tt3+tt2+tt1)**(2.0E+0/3.0E+0)-3)
-END
-SUBROUTINE &
-&bower09_neohookean_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
+END 
+SUBROUTINE & 
+&bower09_neohookean_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,3)*tt2
@@ -5022,82 +5022,82 @@ jac(1,8) = 5.0E-1*mu(1,1)*(2*F(2,3)*tt10+((-2.0E+0)*tt16*tt8*tt9)&
 &/3.0E+0)+1.0E+0*lam(1,1)*tt16*tt6
 jac(1,9) = 5.0E-1*mu(1,1)*(2*F(3,3)*tt10+((-2.0E+0)*tt17*tt8*tt9)&
 &/3.0E+0)+1.0E+0*lam(1,1)*tt17*tt6
-END
-SUBROUTINE &
-&bower09_neohookean_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
+END 
+SUBROUTINE & 
+&bower09_neohookean_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = tt1**2
 tt3 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
@@ -5342,48 +5342,48 @@ hes(9,7) = tt60
 hes(9,8) = tt62
 hes(9,9) = 5.0E-1*mu(1,1)*(tt11+((-8.0E+0)*tt26*F(3,3)*tt10)/3.0E&
 &+0+(1.0E+1*tt63*tt8*tt9)/9.0E+0)+1.0E+0*lam(1,1)*tt63
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
 tt1 = F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F(2,1)*F(3,3)-&
 &F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-1
 val(1,1) = 5.0E-1*lam(1,1)*tt1**2+5.0E-1*mu(1,1)*(F(3,3)**2+F(3,2&
 &)**2+F(3,1)**2+F(2,3)**2+F(2,2)**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+&
 &F(1,1)**2-3)-mu(1,1)*tt1
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -5413,66 +5413,66 @@ jac(1,8) = 1.0E+0*lam(1,1)*tt9*tt3-mu(1,1)*tt9+1.0E+0*mu(1,1)*F(2&
 &,3)
 jac(1,9) = 1.0E+0*lam(1,1)*tt10*tt3+1.0E+0*mu(1,1)*F(3,3)-mu(1,1)&
 &*tt10
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
 tt1 = 1.0E+0*mu(1,1)
 tt2 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt3 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
@@ -5620,29 +5620,29 @@ hes(9,6) = tt44
 hes(9,7) = tt46
 hes(9,8) = tt47
 hes(9,9) = 1.0E+0*lam(1,1)*tt18**2+tt1
-END
-SUBROUTINE &
-&pixar18_neohookean_3d_val(&
-&  val &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
+END 
+SUBROUTINE & 
+&pixar18_neohookean_3d_val(& 
+&  val & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = F(1,3)**2
@@ -5658,24 +5658,24 @@ val(1,1) = (-6.666666666666666E-1*mu(1,1)*log(tt9+tt8+tt7+tt6+tt5&
 &3,2))-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-&
 &F(2,2)*F(3,1))-mu(1,1)/tt10-1)**2+6.666666666666666E-1*mu(1,1)*(t&
 &t9+tt8+tt7+tt6+tt5+tt4+tt3+tt2+tt1-3)
-END
-SUBROUTINE &
-&pixar18_neohookean_3d_jac(&
-&  jac &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&pixar18_neohookean_3d_jac(& 
+&  jac & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = (5.0E+0*mu(1,1))/6.0E+0+lam(1,1)
 tt2 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt3 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
@@ -5708,79 +5708,79 @@ jac(1,8) = (-1.3333333333333333E+0*mu(1,1)*F(2,3)*tt5)+1.0E+0*tt1&
 jac(1,9) = (-1.3333333333333333E+0*mu(1,1)*F(3,3)*tt5)+1.0E+0*tt1&
 &*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt4+1.3333333333333333E+0*mu(1,1)*&
 &F(3,3)
-END
-SUBROUTINE &
-&pixar18_neohookean_3d_hes(&
-&  hes &
-&, F &
-&, lam &
-&, mu &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) lam(1, 1)
-REAL(KIND=8) mu(1, 1)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
+END 
+SUBROUTINE & 
+&pixar18_neohookean_3d_hes(& 
+&  hes & 
+&, F & 
+&, lam & 
+&, mu & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) lam(1, 1) 
+REAL(KIND=8) mu(1, 1) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
 tt1 = 1.3333333333333333E+0*mu(1,1)
 tt2 = (5.0E+0*mu(1,1))/6.0E+0+lam(1,1)
 tt3 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
@@ -5968,27 +5968,27 @@ hes(9,7) = tt59
 hes(9,8) = tt60
 hes(9,9) = tt15+2.6666666666666667E+0*mu(1,1)*tt12*tt14+1.0E+0*tt&
 &2*tt31**2+tt1
-END
-SUBROUTINE &
-&linear_elas_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&linear_elas_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(1.0E+0*F(3,3)+1.0E+0*F(2,2)+1.0E+0*F(1,1)-3)**&
 &2
-END
-SUBROUTINE &
-&linear_elas_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&linear_elas_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*(1.0E+0*F(3,3)+1.0E+0*F(2,2)+1.0E+0*F(1,1)-3)
 jac(1,1) = tt1
 jac(1,2) = 0
@@ -5999,17 +5999,17 @@ jac(1,6) = 0
 jac(1,7) = 0
 jac(1,8) = 0
 jac(1,9) = tt1
-END
-SUBROUTINE &
-&linear_elas_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&linear_elas_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 hes(1,1) = 1.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -6091,30 +6091,30 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 1.0E+0
-END
-SUBROUTINE &
-&linear_elas_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&linear_elas_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = (1.0E+0*F(3,3)-1)**2+5.0E-1*(F(3,2)+F(2,3))**2+5.0E-1*&
 &(F(3,1)+F(1,3))**2+(1.0E+0*F(2,2)-1)**2+5.0E-1*(F(2,1)+F(1,2))**2&
 &+(1.0E+0*F(1,1)-1)**2
-END
-SUBROUTINE &
-&linear_elas_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&linear_elas_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = 1.0E+0*(F(2,1)+F(1,2))
 tt2 = 1.0E+0*(F(3,1)+F(1,3))
 tt3 = 1.0E+0*(F(3,2)+F(2,3))
@@ -6127,18 +6127,18 @@ jac(1,6) = tt3
 jac(1,7) = tt2
 jac(1,8) = tt3
 jac(1,9) = 2.0E+0*(1.0E+0*F(3,3)-1)
-END
-SUBROUTINE &
-&linear_elas_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&linear_elas_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 hes(1,1) = 2.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -6220,28 +6220,28 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 2.0E+0
-END
-SUBROUTINE &
-&stvk_elas_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&stvk_elas_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(5.0E-1*(F(3,3)**2+F(2,3)**2+F(1,3)**2-1)+5.0E-&
 &1*(F(3,2)**2+F(2,2)**2+F(1,2)**2-1)+5.0E-1*(F(3,1)**2+F(2,1)**2+F&
 &(1,1)**2-1))**2
-END
-SUBROUTINE &
-&stvk_elas_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&stvk_elas_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
 tt1 = 5.0E-1*(F(3,3)**2+F(2,3)**2+F(1,3)**2-1)+5.0E-1*(F(3,2)**2+&
 &F(2,2)**2+F(1,2)**2-1)+5.0E-1*(F(3,1)**2+F(2,1)**2+F(1,1)**2-1)
 jac(1,1) = 1.0E+0*F(1,1)*tt1
@@ -6253,61 +6253,61 @@ jac(1,6) = 1.0E+0*F(3,2)*tt1
 jac(1,7) = 1.0E+0*F(1,3)*tt1
 jac(1,8) = 1.0E+0*F(2,3)*tt1
 jac(1,9) = 1.0E+0*F(3,3)*tt1
-END
-SUBROUTINE &
-&stvk_elas_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&stvk_elas_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(1,1)**2
 tt2 = F(2,1)**2
 tt3 = F(3,1)**2
@@ -6436,35 +6436,35 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = tt10+1.0E+0*tt9
-END
-SUBROUTINE &
-&stvk_elas_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&stvk_elas_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 2.5E-1*(F(3,3)**2+F(2,3)**2+F(1,3)**2-1)**2+5.0E-1*(F(&
 &3,2)*F(3,3)+F(2,2)*F(2,3)+F(1,2)*F(1,3))**2+5.0E-1*(F(3,1)*F(3,3)&
 &+F(2,1)*F(2,3)+F(1,1)*F(1,3))**2+2.5E-1*(F(3,2)**2+F(2,2)**2+F(1,&
 &2)**2-1)**2+5.0E-1*(F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2))**2&
 &+2.5E-1*(F(3,1)**2+F(2,1)**2+F(1,1)**2-1)**2
-END
-SUBROUTINE &
-&stvk_elas_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&stvk_elas_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
 tt2 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3)
@@ -6480,84 +6480,84 @@ jac(1,6) = 1.0E+0*F(3,3)*tt5+1.0E+0*F(3,2)*tt4+1.0E+0*F(3,1)*tt2
 jac(1,7) = 1.0E+0*F(1,3)*tt6+1.0E+0*F(1,2)*tt5+1.0E+0*F(1,1)*tt3
 jac(1,8) = 1.0E+0*F(2,3)*tt6+1.0E+0*F(2,2)*tt5+1.0E+0*F(2,1)*tt3
 jac(1,9) = 1.0E+0*F(3,3)*tt6+1.0E+0*F(3,2)*tt5+1.0E+0*F(3,1)*tt3
-END
-SUBROUTINE &
-&stvk_elas_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
+END 
+SUBROUTINE & 
+&stvk_elas_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = 1.0E+0*tt2
@@ -6708,32 +6708,32 @@ hes(9,6) = tt65
 hes(9,7) = tt68
 hes(9,8) = tt69
 hes(9,9) = tt66+2.0E+0*tt38+tt37+tt62
-END
-SUBROUTINE &
-&coro_elas_lam_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&coro_elas_lam_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = 5.0E-1*(5.0E-1*(2*F(3,3)*R(3,3)+2*F(2,3)*R(2,3)+2*F(1,&
 &3)*R(1,3))+5.0E-1*(2*F(3,2)*R(3,2)+2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2&
 &))+5.0E-1*(2*F(3,1)*R(3,1)+2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-3)**2
-END
-SUBROUTINE &
-&coro_elas_lam_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&coro_elas_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
 tt1 = 5.0E-1*(2*F(3,3)*R(3,3)+2*F(2,3)*R(2,3)+2*F(1,3)*R(1,3))+5.&
 &0E-1*(2*F(3,2)*R(3,2)+2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))+5.0E-1*(2*&
 &F(3,1)*R(3,1)+2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-3
@@ -6746,53 +6746,53 @@ jac(1,6) = 1.0E+0*R(3,2)*tt1
 jac(1,7) = 1.0E+0*R(1,3)*tt1
 jac(1,8) = 1.0E+0*R(2,3)*tt1
 jac(1,9) = 1.0E+0*R(3,3)*tt1
-END
-SUBROUTINE &
-&coro_elas_lam_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
+END 
+SUBROUTINE & 
+&coro_elas_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
 tt1 = 1.0E+0*R(1,1)*R(2,1)
 tt2 = 1.0E+0*R(1,1)*R(3,1)
 tt3 = 1.0E+0*R(1,1)*R(1,2)
@@ -6910,17 +6910,17 @@ hes(9,6) = tt33
 hes(9,7) = tt35
 hes(9,8) = tt36
 hes(9,9) = 1.0E+0*R(3,3)**2
-END
-SUBROUTINE &
-&coro_elas_mu_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&coro_elas_mu_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = (1.0E+0*F(3,3)*R(3,3)+1.0E+0*F(2,3)*R(2,3)+1.0E+0*F(1,&
 &3)*R(1,3)-1)**2+5.0E-1*(F(3,2)*R(3,3)+R(3,2)*F(3,3)+F(2,2)*R(2,3)&
 &+R(2,2)*F(2,3)+F(1,2)*R(1,3)+R(1,2)*F(1,3))**2+5.0E-1*(F(3,1)*R(3&
@@ -6929,23 +6929,23 @@ val(1,1) = (1.0E+0*F(3,3)*R(3,3)+1.0E+0*F(2,3)*R(2,3)+1.0E+0*F(1,&
 &1,2)*R(1,2)-1)**2+5.0E-1*(F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2,1)*R(2,&
 &2)+R(2,1)*F(2,2)+F(1,1)*R(1,2)+R(1,1)*F(1,2))**2+(1.0E+0*F(3,1)*R&
 &(3,1)+1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1,1)-1)**2
-END
-SUBROUTINE &
-&coro_elas_mu_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&coro_elas_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 1.0E+0*F(3,1)*R(3,1)+1.0E+0*F(2,1)*R(2,1)+1.0E+0*F(1,1)*R(1&
 &,1)-1
 tt2 = F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1&
@@ -6967,80 +6967,80 @@ jac(1,6) = 1.0E+0*R(3,3)*tt5+2.0E+0*R(3,2)*tt4+1.0E+0*R(3,1)*tt2
 jac(1,7) = 2.0E+0*R(1,3)*tt6+1.0E+0*R(1,2)*tt5+1.0E+0*R(1,1)*tt3
 jac(1,8) = 2.0E+0*R(2,3)*tt6+1.0E+0*R(2,2)*tt5+1.0E+0*R(2,1)*tt3
 jac(1,9) = 2.0E+0*R(3,3)*tt6+1.0E+0*R(3,2)*tt5+1.0E+0*R(3,1)*tt3
-END
-SUBROUTINE &
-&coro_elas_mu_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
+END 
+SUBROUTINE & 
+&coro_elas_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
 tt1 = R(1,1)**2
 tt2 = R(1,2)**2
 tt3 = 1.0E+0*tt2
@@ -7185,31 +7185,31 @@ hes(9,6) = tt60
 hes(9,7) = tt62
 hes(9,8) = tt63
 hes(9,9) = 2.0E+0*tt35+tt34+tt57
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = 5.0E-1*((-R(3,3))+F(3,3)-R(2,2)+F(2,2)-R(1,1)+F(1,1))*&
 &*2
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
 tt1 = 1.0E+0*((-R(3,3))+F(3,3)-R(2,2)+F(2,2)-R(1,1)+F(1,1))
 jac(1,1) = tt1
 jac(1,2) = 0
@@ -7220,19 +7220,19 @@ jac(1,6) = 0
 jac(1,7) = 0
 jac(1,8) = 0
 jac(1,9) = tt1
-END
-SUBROUTINE &
-&mcadams_coro_elas_lam_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
 hes(1,1) = 1.0E+0
 hes(1,2) = 0
 hes(1,3) = 0
@@ -7314,31 +7314,31 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 1.0E+0
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = (R(3,3)-F(3,3))**2+(R(3,2)-F(3,2))**2+(R(3,1)-F(3,1))*&
 &*2+(R(2,3)-F(2,3))**2+(R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,&
 &3)-F(1,3))**2+(R(1,2)-F(1,2))**2+(R(1,1)-F(1,1))**2
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 jac(1,1) = -2*(R(1,1)-F(1,1))
 jac(1,2) = -2*(R(2,1)-F(2,1))
 jac(1,3) = -2*(R(3,1)-F(3,1))
@@ -7348,17 +7348,17 @@ jac(1,6) = -2*(R(3,2)-F(3,2))
 jac(1,7) = -2*(R(1,3)-F(1,3))
 jac(1,8) = -2*(R(2,3)-F(2,3))
 jac(1,9) = -2*(R(3,3)-F(3,3))
-END
-SUBROUTINE &
-&mcadams_coro_elas_mu_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&mcadams_coro_elas_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -7440,34 +7440,34 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = 5.0E-1*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F&
 &(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-&
 &1)**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -7481,63 +7481,63 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*tt2*tt3
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_lam_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
 tt3 = 1.0E+0*tt2*tt1
@@ -7666,31 +7666,31 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = 1.0E+0*tt17**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_3d_val(&
-&  val &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_3d_val(& 
+&  val & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 val(1,1) = (R(3,3)-F(3,3))**2+(R(3,2)-F(3,2))**2+(R(3,1)-F(3,1))*&
 &*2+(R(2,3)-F(2,3))**2+(R(2,2)-F(2,2))**2+(R(2,1)-F(2,1))**2+(R(1,&
 &3)-F(1,3))**2+(R(1,2)-F(1,2))**2+(R(1,1)-F(1,1))**2
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_3d_jac(&
-&  jac &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 jac(1,1) = -2*(R(1,1)-F(1,1))
 jac(1,2) = -2*(R(2,1)-F(2,1))
 jac(1,3) = -2*(R(3,1)-F(3,1))
@@ -7700,17 +7700,17 @@ jac(1,6) = -2*(R(3,2)-F(3,2))
 jac(1,7) = -2*(R(1,3)-F(1,3))
 jac(1,8) = -2*(R(2,3)-F(2,3))
 jac(1,9) = -2*(R(3,3)-F(3,3))
-END
-SUBROUTINE &
-&stomakhin_fixedcoro_elas_mu_3d_hes(&
-&  hes &
-&, F &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) R(3, 3)
+END 
+SUBROUTINE & 
+&stomakhin_fixedcoro_elas_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) R(3, 3) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -7792,32 +7792,32 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 2
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*log(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)&
 &*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1&
 &)))**2
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -7832,73 +7832,73 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt4*tt5
 jac(1,7) = 1.0E+0*tt2*tt4*tt5
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt4*tt5
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt4*tt5
-END
-SUBROUTINE &
-&bonet08_neohookean_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
+END 
+SUBROUTINE & 
+&bonet08_neohookean_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = tt1**2
 tt3 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
@@ -8056,31 +8056,31 @@ hes(9,6) = tt52
 hes(9,7) = tt55
 hes(9,8) = tt57
 hes(9,9) = 1.0E+0*tt58*tt5-1.0E+0*tt58*tt5*tt6
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)&
 &**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2-3)-log(F(1,1)*(F(2,2)&
 &*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3&
 &)*(F(2,1)*F(3,2)-F(2,2)*F(3,1)))
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = 1/(F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*t&
@@ -8094,63 +8094,63 @@ jac(1,6) = 1.0E+0*F(3,2)-(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*F(1,3)-tt2*tt3
 jac(1,8) = 1.0E+0*F(2,3)-(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*F(3,3)-(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&bonet08_neohookean_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
+END 
+SUBROUTINE & 
+&bonet08_neohookean_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -8280,30 +8280,30 @@ hes(9,6) = tt45
 hes(9,7) = tt47
 hes(9,8) = tt48
 hes(9,9) = tt19**2*tt4+1.0E+0
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F&
 &(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-&
 &1)**2
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -8317,61 +8317,61 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*tt2*tt3
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&ogden97_neohookean_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&ogden97_neohookean_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
 tt3 = 1.0E+0*tt2*tt1
@@ -8500,31 +8500,31 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = 1.0E+0*tt17**2
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)&
 &**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2-3)-log(F(1,1)*(F(2,2)&
 &*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3&
 &)*(F(2,1)*F(3,2)-F(2,2)*F(3,1)))
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = 1/(F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*t&
@@ -8538,63 +8538,63 @@ jac(1,6) = 1.0E+0*F(3,2)-(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*F(1,3)-tt2*tt3
 jac(1,8) = 1.0E+0*F(2,3)-(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*F(3,3)-(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&ogden97_neohookean_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
+END 
+SUBROUTINE & 
+&ogden97_neohookean_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -8724,30 +8724,30 @@ hes(9,6) = tt45
 hes(9,7) = tt47
 hes(9,8) = tt48
 hes(9,9) = tt19**2*tt4+1.0E+0
-END
-SUBROUTINE &
-&bower09_neohookean_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F&
 &(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-&
 &1)**2
-END
-SUBROUTINE &
-&bower09_neohookean_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -8761,61 +8761,61 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*tt2*tt3
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&bower09_neohookean_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&bower09_neohookean_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
 tt3 = 1.0E+0*tt2*tt1
@@ -8944,34 +8944,34 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = 1.0E+0*tt17**2
-END
-SUBROUTINE &
-&bower09_neohookean_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*((F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(&
 &F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))&
 &)**((-2.0E+0)/3.0E+0)*(F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(&
 &2,2)**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2)-3)
-END
-SUBROUTINE &
-&bower09_neohookean_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -8995,65 +8995,65 @@ jac(1,8) = 5.0E-1*(2*F(2,3)*tt6+((-2.0E+0)*(F(1,2)*F(3,1)-F(1,1)*&
 &F(3,2))*tt4*tt5)/3.0E+0)
 jac(1,9) = 5.0E-1*(2*F(3,3)*tt6+((-2.0E+0)*(F(1,1)*F(2,2)-F(1,2)*&
 &F(2,1))*tt4*tt5)/3.0E+0)
-END
-SUBROUTINE &
-&bower09_neohookean_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
+END 
+SUBROUTINE & 
+&bower09_neohookean_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2
@@ -9249,30 +9249,30 @@ hes(9,7) = tt49
 hes(9,8) = tt50
 hes(9,9) = 5.0E-1*(tt7+((-8.0E+0)*tt21*F(3,3)*tt6)/3.0E+0+(1.0E+1&
 &*tt21**2*tt4*tt5)/9.0E+0)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F&
 &(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-&
 &1)**2
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -9286,61 +9286,61 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*tt2*tt3
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
 tt3 = 1.0E+0*tt2*tt1
@@ -9469,28 +9469,28 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = 1.0E+0*tt17**2
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)&
 &**2+F(2,1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2-3)-F(1,1)*(F(2,2)*F(3&
 &,3)-F(2,3)*F(3,2))+F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))-F(1,3)*(F&
 &(2,1)*F(3,2)-F(2,2)*F(3,1))+1
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
 jac(1,1) = (-F(2,2)*F(3,3))+F(2,3)*F(3,2)+1.0E+0*F(1,1)
 jac(1,2) = F(1,2)*F(3,3)-F(1,3)*F(3,2)+1.0E+0*F(2,1)
 jac(1,3) = 1.0E+0*F(3,1)-F(1,2)*F(2,3)+F(1,3)*F(2,2)
@@ -9500,24 +9500,24 @@ jac(1,6) = 1.0E+0*F(3,2)+F(1,1)*F(2,3)-F(1,3)*F(2,1)
 jac(1,7) = (-F(2,1)*F(3,2))+F(2,2)*F(3,1)+1.0E+0*F(1,3)
 jac(1,8) = F(1,1)*F(3,2)-F(1,2)*F(3,1)+1.0E+0*F(2,3)
 jac(1,9) = 1.0E+0*F(3,3)-F(1,1)*F(2,2)+F(1,2)*F(2,1)
-END
-SUBROUTINE &
-&pixar18_rest_stable_neohookean_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
+END 
+SUBROUTINE & 
+&pixar18_rest_stable_neohookean_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
 tt1 = -F(3,3)
 tt2 = -F(2,2)
 tt3 = -F(1,3)
@@ -9608,30 +9608,30 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 1.0E+0
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = 5.0E-1*(F(1,1)*(F(2,2)*F(3,3)-F(2,3)*F(3,2))-F(1,2)*(F&
 &(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*(F(2,1)*F(3,2)-F(2,2)*F(3,1))-&
 &1)**2
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = F(1,1)*tt1-F(1,2)*(F(2,1)*F(3,3)-F(2,3)*F(3,1))+F(1,3)*tt2-&
@@ -9645,61 +9645,61 @@ jac(1,6) = 1.0E+0*(F(1,3)*F(2,1)-F(1,1)*F(2,3))*tt3
 jac(1,7) = 1.0E+0*tt2*tt3
 jac(1,8) = 1.0E+0*(F(1,2)*F(3,1)-F(1,1)*F(3,2))*tt3
 jac(1,9) = 1.0E+0*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt3
-END
-SUBROUTINE &
-&pixar18_neohookean_lam_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
+END 
+SUBROUTINE & 
+&pixar18_neohookean_lam_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,3)*F(3,2)-F(1,2)*F(3,3)
 tt3 = 1.0E+0*tt2*tt1
@@ -9828,27 +9828,27 @@ hes(9,6) = tt43
 hes(9,7) = tt45
 hes(9,8) = tt46
 hes(9,9) = 1.0E+0*tt17**2
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
 tt1 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt2 = F(2,1)*F(3,3)-F(2,3)*F(3,1)
 tt3 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
@@ -9865,21 +9865,21 @@ val(1,1) = (2.0E+0*((-log(tt12+tt11+tt10+tt9+tt8+tt7+tt6+tt5+tt4+&
 &1))+tt12+tt11+tt10+tt9+tt8+tt7+tt6+tt5+tt4))/3.0E+0+4.16666666666&
 &6667E-1*(F(1,1)*tt3-F(1,2)*tt2+F(1,3)*tt1-1)**2-F(1,1)*tt3+F(1,2)&
 &*tt2-F(1,3)*tt1
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(2,1)*F(3,2)-F(2,2)*F(3,1)
 tt3 = -F(2,3)*F(3,1)
@@ -9911,73 +9911,73 @@ jac(1,8) = (2.0E+0*(2*F(2,3)-2*F(2,3)*tt6))/3.0E+0+8.333333333333&
 jac(1,9) = (2.0E+0*(2*F(3,3)-2*F(3,3)*tt6))/3.0E+0+8.333333333333&
 &334E-1*(F(1,1)*F(2,2)-F(1,2)*F(2,1))*tt5-F(1,1)*F(2,2)+F(1,2)*F(2&
 &,1)
-END
-SUBROUTINE &
-&pixar18_neohookean_mu_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
+END 
+SUBROUTINE & 
+&pixar18_neohookean_mu_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
 tt1 = F(2,2)*F(3,3)-F(2,3)*F(3,2)
 tt2 = F(1,1)**2
 tt3 = F(1,2)**2
@@ -10163,23 +10163,23 @@ hes(9,7) = tt57
 hes(9,8) = tt58
 hes(9,9) = (2.0E+0*(tt13+4*tt10*tt12+2))/3.0E+0+8.333333333333334&
 &E-1*tt29**2
-END
-SUBROUTINE &
-&small_general_linear_elas_3d_val(&
-&  val &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&small_general_linear_elas_3d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 1.0E+0*F(1,1)-1
 tt2 = F(2,1)+F(1,2)
 tt3 = 1.0E+0*F(2,2)-1
@@ -10196,29 +10196,29 @@ val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(6,6)+1.0E+0*tt4*C(6,5&
 &2,5)*tt4+1.0E+0*tt2*C(2,6)+C(2,2)*tt3+tt1*C(2,1))+tt1*(C(1,3)*tt6&
 &+1.0E+0*C(1,4)*tt5+1.0E+0*C(1,5)*tt4+C(1,2)*tt3+1.0E+0*C(1,6)*tt2&
 &+C(1,1)*tt1))
-END
-SUBROUTINE &
-&small_general_linear_elas_3d_jac(&
-&  jac &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
+END 
+SUBROUTINE & 
+&small_general_linear_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
 tt1 = 1.0E+0*F(1,1)-1
 tt2 = 1.0E+0*F(2,2)-1
 tt3 = 1.0E+0*F(3,3)-1
@@ -10255,38 +10255,38 @@ jac(1,9) = 5.0E-1*(1.0E+0*tt4*C(6,3)+1.0E+0*tt5*C(5,3)+1.0E+0*tt6&
 &*C(4,3)+1.0E+0*(1.0E+0*tt4*C(3,6)+1.0E+0*tt5*C(3,5)+1.0E+0*tt6*C(&
 &3,4)+C(3,3)*tt3+tt2*C(3,2)+tt1*C(3,1))+1.0E+0*C(3,3)*tt3+1.0E+0*t&
 &t2*C(2,3)+1.0E+0*tt1*C(1,3))
-END
-SUBROUTINE &
-&small_general_linear_elas_3d_hes(&
-&  hes &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
+END 
+SUBROUTINE & 
+&small_general_linear_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
 tt1 = 5.0E-1*(1.0E+0*C(6,1)+1.0E+0*C(1,6))
 tt2 = 5.0E-1*(1.0E+0*C(5,1)+1.0E+0*C(1,5))
 tt3 = 5.0E-1*(1.0E+0*C(2,1)+1.0E+0*C(1,2))
@@ -10386,23 +10386,23 @@ hes(9,6) = tt20
 hes(9,7) = tt15
 hes(9,8) = tt20
 hes(9,9) = 1.0E+0*C(3,3)
-END
-SUBROUTINE &
-&green_general_linear_elas_3d_val(&
-&  val &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&green_general_linear_elas_3d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
 tt2 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(3,2)**2+F(2,2)**2+F(1,2)**2-1
@@ -10421,29 +10421,29 @@ val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(6,6)+1.0E+0*tt4*C(6,5&
 &3+1.0E+0*C(2,6)*tt2+5.0E-1*C(2,1)*tt1)+5.0E-1*tt1*(5.0E-1*C(1,3)*&
 &tt6+1.0E+0*C(1,4)*tt5+1.0E+0*C(1,5)*tt4+5.0E-1*C(1,2)*tt3+1.0E+0*&
 &C(1,6)*tt2+5.0E-1*C(1,1)*tt1))
-END
-SUBROUTINE &
-&green_general_linear_elas_3d_jac(&
-&  jac &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
+END 
+SUBROUTINE & 
+&green_general_linear_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
 tt2 = F(3,2)**2+F(2,2)**2+F(1,2)**2-1
 tt3 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
@@ -10543,155 +10543,155 @@ jac(1,9) = 5.0E-1*(1.0E+0*tt3*(1.0E+0*F(3,1)*C(6,5)+1.0E+0*F(3,2)&
 &(1.0E+0*C(2,3)*F(3,3)+1.0E+0*C(2,4)*F(3,2)+1.0E+0*C(2,5)*F(3,1))+&
 &5.0E-1*tt1*(1.0E+0*C(1,3)*F(3,3)+1.0E+0*C(1,4)*F(3,2)+1.0E+0*C(1,&
 &5)*F(3,1)))
-END
-SUBROUTINE &
-&green_general_linear_elas_3d_hes(&
-&  hes &
-&, F &
-&, C &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
-REAL(KIND=8)  tt70
-REAL(KIND=8)  tt71
-REAL(KIND=8)  tt72
-REAL(KIND=8)  tt73
-REAL(KIND=8)  tt74
-REAL(KIND=8)  tt75
-REAL(KIND=8)  tt76
-REAL(KIND=8)  tt77
-REAL(KIND=8)  tt78
-REAL(KIND=8)  tt79
-REAL(KIND=8)  tt80
-REAL(KIND=8)  tt81
-REAL(KIND=8)  tt82
-REAL(KIND=8)  tt83
-REAL(KIND=8)  tt84
-REAL(KIND=8)  tt85
-REAL(KIND=8)  tt86
-REAL(KIND=8)  tt87
-REAL(KIND=8)  tt88
-REAL(KIND=8)  tt89
-REAL(KIND=8)  tt90
-REAL(KIND=8)  tt91
-REAL(KIND=8)  tt92
-REAL(KIND=8)  tt93
-REAL(KIND=8)  tt94
-REAL(KIND=8)  tt95
-REAL(KIND=8)  tt96
-REAL(KIND=8)  tt97
-REAL(KIND=8)  tt98
-REAL(KIND=8)  tt99
-REAL(KIND=8)  tt100
-REAL(KIND=8)  tt101
-REAL(KIND=8)  tt102
-REAL(KIND=8)  tt103
-REAL(KIND=8)  tt104
-REAL(KIND=8)  tt105
-REAL(KIND=8)  tt106
-REAL(KIND=8)  tt107
-REAL(KIND=8)  tt108
-REAL(KIND=8)  tt109
-REAL(KIND=8)  tt110
-REAL(KIND=8)  tt111
-REAL(KIND=8)  tt112
-REAL(KIND=8)  tt113
-REAL(KIND=8)  tt114
-REAL(KIND=8)  tt115
-REAL(KIND=8)  tt116
-REAL(KIND=8)  tt117
-REAL(KIND=8)  tt118
-REAL(KIND=8)  tt119
-REAL(KIND=8)  tt120
-REAL(KIND=8)  tt121
-REAL(KIND=8)  tt122
-REAL(KIND=8)  tt123
-REAL(KIND=8)  tt124
-REAL(KIND=8)  tt125
-REAL(KIND=8)  tt126
-REAL(KIND=8)  tt127
-REAL(KIND=8)  tt128
-REAL(KIND=8)  tt129
-REAL(KIND=8)  tt130
-REAL(KIND=8)  tt131
-REAL(KIND=8)  tt132
-REAL(KIND=8)  tt133
-REAL(KIND=8)  tt134
-REAL(KIND=8)  tt135
-REAL(KIND=8)  tt136
-REAL(KIND=8)  tt137
-REAL(KIND=8)  tt138
+END 
+SUBROUTINE & 
+&green_general_linear_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
+REAL(KIND=8)  tt70 
+REAL(KIND=8)  tt71 
+REAL(KIND=8)  tt72 
+REAL(KIND=8)  tt73 
+REAL(KIND=8)  tt74 
+REAL(KIND=8)  tt75 
+REAL(KIND=8)  tt76 
+REAL(KIND=8)  tt77 
+REAL(KIND=8)  tt78 
+REAL(KIND=8)  tt79 
+REAL(KIND=8)  tt80 
+REAL(KIND=8)  tt81 
+REAL(KIND=8)  tt82 
+REAL(KIND=8)  tt83 
+REAL(KIND=8)  tt84 
+REAL(KIND=8)  tt85 
+REAL(KIND=8)  tt86 
+REAL(KIND=8)  tt87 
+REAL(KIND=8)  tt88 
+REAL(KIND=8)  tt89 
+REAL(KIND=8)  tt90 
+REAL(KIND=8)  tt91 
+REAL(KIND=8)  tt92 
+REAL(KIND=8)  tt93 
+REAL(KIND=8)  tt94 
+REAL(KIND=8)  tt95 
+REAL(KIND=8)  tt96 
+REAL(KIND=8)  tt97 
+REAL(KIND=8)  tt98 
+REAL(KIND=8)  tt99 
+REAL(KIND=8)  tt100 
+REAL(KIND=8)  tt101 
+REAL(KIND=8)  tt102 
+REAL(KIND=8)  tt103 
+REAL(KIND=8)  tt104 
+REAL(KIND=8)  tt105 
+REAL(KIND=8)  tt106 
+REAL(KIND=8)  tt107 
+REAL(KIND=8)  tt108 
+REAL(KIND=8)  tt109 
+REAL(KIND=8)  tt110 
+REAL(KIND=8)  tt111 
+REAL(KIND=8)  tt112 
+REAL(KIND=8)  tt113 
+REAL(KIND=8)  tt114 
+REAL(KIND=8)  tt115 
+REAL(KIND=8)  tt116 
+REAL(KIND=8)  tt117 
+REAL(KIND=8)  tt118 
+REAL(KIND=8)  tt119 
+REAL(KIND=8)  tt120 
+REAL(KIND=8)  tt121 
+REAL(KIND=8)  tt122 
+REAL(KIND=8)  tt123 
+REAL(KIND=8)  tt124 
+REAL(KIND=8)  tt125 
+REAL(KIND=8)  tt126 
+REAL(KIND=8)  tt127 
+REAL(KIND=8)  tt128 
+REAL(KIND=8)  tt129 
+REAL(KIND=8)  tt130 
+REAL(KIND=8)  tt131 
+REAL(KIND=8)  tt132 
+REAL(KIND=8)  tt133 
+REAL(KIND=8)  tt134 
+REAL(KIND=8)  tt135 
+REAL(KIND=8)  tt136 
+REAL(KIND=8)  tt137 
+REAL(KIND=8)  tt138 
 tt1 = 1.0E+0*F(1,2)*C(1,6)+1.0E+0*F(1,3)*C(1,5)+1.0E+0*C(1,1)*F(1&
 &,1)
 tt2 = F(3,1)**2+F(2,1)**2+F(1,1)**2-1
@@ -11034,25 +11034,25 @@ hes(9,7) = tt137
 hes(9,8) = tt138
 hes(9,9) = 5.0E-1*(tt133+2.0E+0*F(3,1)*tt63+tt132+2.0E+0*F(3,2)*t&
 &t115+tt131+tt130+2.0E+0*F(3,3)*tt136+tt128+tt127+tt126)
-END
-SUBROUTINE &
-&coro_general_linear_elas_3d_val(&
-&  val &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_3d_val(& 
+&  val & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = 5.0E-1*(2*F(3,1)*R(3,1)+2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-1
 tt2 = F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1&
 &,1)*R(1,2)+R(1,1)*F(1,2)
@@ -11072,31 +11072,31 @@ val(1,1) = 5.0E-1*(1.0E+0*tt2*(1.0E+0*tt2*C(6,6)+1.0E+0*tt4*C(6,5&
 &2,5)*tt4+C(2,2)*tt3+1.0E+0*C(2,6)*tt2+C(2,1)*tt1)+tt1*(C(1,3)*tt6&
 &+1.0E+0*C(1,4)*tt5+1.0E+0*C(1,5)*tt4+C(1,2)*tt3+1.0E+0*C(1,6)*tt2&
 &+C(1,1)*tt1))
-END
-SUBROUTINE &
-&coro_general_linear_elas_3d_jac(&
-&  jac &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_3d_jac(& 
+&  jac & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
 tt1 = 5.0E-1*(2*F(3,1)*R(3,1)+2*F(2,1)*R(2,1)+2*F(1,1)*R(1,1))-1
 tt2 = 5.0E-1*(2*F(3,2)*R(3,2)+2*F(2,2)*R(2,2)+2*F(1,2)*R(1,2))-1
 tt3 = F(3,1)*R(3,2)+R(3,1)*F(3,2)+F(2,1)*R(2,2)+R(2,1)*F(2,2)+F(1&
@@ -11190,109 +11190,109 @@ jac(1,9) = 5.0E-1*(1.0E+0*tt3*(1.0E+0*R(3,1)*C(6,5)+1.0E+0*R(3,2)&
 &,5)+1.0E+0*R(3,2)*C(3,4)+1.0E+0*C(3,3)*R(3,3))+tt2*(1.0E+0*C(2,3)&
 &*R(3,3)+1.0E+0*C(2,4)*R(3,2)+1.0E+0*C(2,5)*R(3,1))+tt1*(1.0E+0*C(&
 &1,3)*R(3,3)+1.0E+0*C(1,4)*R(3,2)+1.0E+0*C(1,5)*R(3,1)))
-END
-SUBROUTINE &
-&coro_general_linear_elas_3d_hes(&
-&  hes &
-&, F &
-&, C &
-&, R &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8) C(6, 6)
-REAL(KIND=8) R(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
-REAL(KIND=8)  tt70
-REAL(KIND=8)  tt71
-REAL(KIND=8)  tt72
-REAL(KIND=8)  tt73
-REAL(KIND=8)  tt74
-REAL(KIND=8)  tt75
-REAL(KIND=8)  tt76
-REAL(KIND=8)  tt77
-REAL(KIND=8)  tt78
-REAL(KIND=8)  tt79
-REAL(KIND=8)  tt80
-REAL(KIND=8)  tt81
-REAL(KIND=8)  tt82
-REAL(KIND=8)  tt83
-REAL(KIND=8)  tt84
-REAL(KIND=8)  tt85
-REAL(KIND=8)  tt86
-REAL(KIND=8)  tt87
-REAL(KIND=8)  tt88
-REAL(KIND=8)  tt89
-REAL(KIND=8)  tt90
+END 
+SUBROUTINE & 
+&coro_general_linear_elas_3d_hes(& 
+&  hes & 
+&, F & 
+&, C & 
+&, R & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8) C(6, 6) 
+REAL(KIND=8) R(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
+REAL(KIND=8)  tt70 
+REAL(KIND=8)  tt71 
+REAL(KIND=8)  tt72 
+REAL(KIND=8)  tt73 
+REAL(KIND=8)  tt74 
+REAL(KIND=8)  tt75 
+REAL(KIND=8)  tt76 
+REAL(KIND=8)  tt77 
+REAL(KIND=8)  tt78 
+REAL(KIND=8)  tt79 
+REAL(KIND=8)  tt80 
+REAL(KIND=8)  tt81 
+REAL(KIND=8)  tt82 
+REAL(KIND=8)  tt83 
+REAL(KIND=8)  tt84 
+REAL(KIND=8)  tt85 
+REAL(KIND=8)  tt86 
+REAL(KIND=8)  tt87 
+REAL(KIND=8)  tt88 
+REAL(KIND=8)  tt89 
+REAL(KIND=8)  tt90 
 tt1 = 1.0E+0*R(1,2)*C(1,6)+1.0E+0*R(1,3)*C(1,5)+1.0E+0*C(1,1)*R(1&
 &,1)
 tt2 = 1.0E+0*R(1,2)*C(5,6)+1.0E+0*R(1,3)*C(5,5)+1.0E+0*R(1,1)*C(5&
@@ -11563,26 +11563,26 @@ hes(9,7) = tt89
 hes(9,8) = tt90
 hes(9,9) = 5.0E-1*(2.0E+0*R(3,1)*tt36+2.0E+0*R(3,2)*tt74+2.0E+0*R&
 &(3,3)*tt88)
-END
-SUBROUTINE &
-&I_C_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&I_C_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = F(3,3)**2+F(3,2)**2+F(3,1)**2+F(2,3)**2+F(2,2)**2+F(2,&
 &1)**2+F(1,3)**2+F(1,2)**2+F(1,1)**2
-END
-SUBROUTINE &
-&I_C_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&I_C_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
 jac(1,1) = 2*F(1,1)
 jac(1,2) = 2*F(2,1)
 jac(1,3) = 2*F(3,1)
@@ -11592,15 +11592,15 @@ jac(1,6) = 2*F(3,2)
 jac(1,7) = 2*F(1,3)
 jac(1,8) = 2*F(2,3)
 jac(1,9) = 2*F(3,3)
-END
-SUBROUTINE &
-&I_C_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&I_C_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
 hes(1,1) = 2
 hes(1,2) = 0
 hes(1,3) = 0
@@ -11682,35 +11682,35 @@ hes(9,6) = 0
 hes(9,7) = 0
 hes(9,8) = 0
 hes(9,9) = 2
-END
-SUBROUTINE &
-&II_C_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
+END 
+SUBROUTINE & 
+&II_C_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
 val(1,1) = (F(3,3)**2+F(2,3)**2+F(1,3)**2)**2+2*(F(3,2)*F(3,3)+F(&
 &2,2)*F(2,3)+F(1,2)*F(1,3))**2+2*(F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,&
 &1)*F(1,3))**2+(F(3,2)**2+F(2,2)**2+F(1,2)**2)**2+2*(F(3,1)*F(3,2)&
 &+F(2,1)*F(2,2)+F(1,1)*F(1,2))**2+(F(3,1)**2+F(2,1)**2+F(1,1)**2)*&
 &*2
-END
-SUBROUTINE &
-&II_C_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
+END 
+SUBROUTINE & 
+&II_C_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
 tt1 = F(3,1)**2+F(2,1)**2+F(1,1)**2
 tt2 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
 tt3 = F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3)
@@ -11726,84 +11726,84 @@ jac(1,6) = 4*F(3,3)*tt5+4*F(3,2)*tt4+4*F(3,1)*tt2
 jac(1,7) = 4*F(1,3)*tt6+4*F(1,2)*tt5+4*F(1,1)*tt3
 jac(1,8) = 4*F(2,3)*tt6+4*F(2,2)*tt5+4*F(2,1)*tt3
 jac(1,9) = 4*F(3,3)*tt6+4*F(3,2)*tt5+4*F(3,1)*tt3
-END
-SUBROUTINE &
-&II_C_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
+END 
+SUBROUTINE & 
+&II_C_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
 tt1 = F(1,1)**2
 tt2 = F(1,2)**2
 tt3 = 4*tt2
@@ -11954,20 +11954,20 @@ hes(9,6) = tt65
 hes(9,7) = tt68
 hes(9,8) = tt69
 hes(9,9) = tt66+8*tt38+tt37+tt62
-END
-SUBROUTINE &
-&III_C_3d_val(&
-&  val &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) val(1, 1)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
+END 
+SUBROUTINE & 
+&III_C_3d_val(& 
+&  val & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) val(1, 1) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
 tt1 = F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3)
 tt2 = F(3,2)**2+F(2,2)**2+F(1,2)**2
 tt3 = F(3,1)*F(3,2)+F(2,1)*F(2,2)+F(1,1)*F(1,2)
@@ -11975,24 +11975,24 @@ tt4 = F(3,2)*F(3,3)+F(2,2)*F(2,3)+F(1,2)*F(1,3)
 tt5 = F(3,3)**2+F(2,3)**2+F(1,3)**2
 val(1,1) = (F(3,1)**2+F(2,1)**2+F(1,1)**2)*(tt2*tt5-tt4**2)-tt3*(&
 &tt3*tt5-tt1*tt4)+tt1*(tt3*tt4-tt2*tt1)
-END
-SUBROUTINE &
-&III_C_3d_jac(&
-&  jac &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) jac(1, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
+END 
+SUBROUTINE & 
+&III_C_3d_jac(& 
+&  jac & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) jac(1, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
 tt1 = F(3,1)*F(3,3)+F(2,1)*F(2,3)+F(1,1)*F(1,3)
 tt2 = F(3,2)**2+F(2,2)**2+F(1,2)**2
 tt3 = F(3,2)*F(3,3)+F(2,2)*F(2,3)+F(1,2)*F(1,3)
@@ -12020,124 +12020,124 @@ jac(1,8) = F(2,1)*tt5+tt9*(2*F(2,3)*tt2-2*F(2,2)*tt3)-tt4*((-F(2,&
 &1)*tt3)-F(2,2)*tt1+2*F(2,3)*tt4)+(F(2,2)*tt4-F(2,1)*tt2)*tt1
 jac(1,9) = F(3,1)*tt5+tt9*(2*tt2*F(3,3)-2*F(3,2)*tt3)-tt4*((-F(3,&
 &1)*tt3)-F(3,2)*tt1+2*tt4*F(3,3))+(F(3,2)*tt4-F(3,1)*tt2)*tt1
-END
-SUBROUTINE &
-&III_C_3d_hes(&
-&  hes &
-&, F &
-&)
-IMPLICIT NONE
-REAL(KIND=8) hes(9, 9)
-REAL(KIND=8) F(3, 3)
-REAL(KIND=8)  tt1
-REAL(KIND=8)  tt2
-REAL(KIND=8)  tt3
-REAL(KIND=8)  tt4
-REAL(KIND=8)  tt5
-REAL(KIND=8)  tt6
-REAL(KIND=8)  tt7
-REAL(KIND=8)  tt8
-REAL(KIND=8)  tt9
-REAL(KIND=8)  tt10
-REAL(KIND=8)  tt11
-REAL(KIND=8)  tt12
-REAL(KIND=8)  tt13
-REAL(KIND=8)  tt14
-REAL(KIND=8)  tt15
-REAL(KIND=8)  tt16
-REAL(KIND=8)  tt17
-REAL(KIND=8)  tt18
-REAL(KIND=8)  tt19
-REAL(KIND=8)  tt20
-REAL(KIND=8)  tt21
-REAL(KIND=8)  tt22
-REAL(KIND=8)  tt23
-REAL(KIND=8)  tt24
-REAL(KIND=8)  tt25
-REAL(KIND=8)  tt26
-REAL(KIND=8)  tt27
-REAL(KIND=8)  tt28
-REAL(KIND=8)  tt29
-REAL(KIND=8)  tt30
-REAL(KIND=8)  tt31
-REAL(KIND=8)  tt32
-REAL(KIND=8)  tt33
-REAL(KIND=8)  tt34
-REAL(KIND=8)  tt35
-REAL(KIND=8)  tt36
-REAL(KIND=8)  tt37
-REAL(KIND=8)  tt38
-REAL(KIND=8)  tt39
-REAL(KIND=8)  tt40
-REAL(KIND=8)  tt41
-REAL(KIND=8)  tt42
-REAL(KIND=8)  tt43
-REAL(KIND=8)  tt44
-REAL(KIND=8)  tt45
-REAL(KIND=8)  tt46
-REAL(KIND=8)  tt47
-REAL(KIND=8)  tt48
-REAL(KIND=8)  tt49
-REAL(KIND=8)  tt50
-REAL(KIND=8)  tt51
-REAL(KIND=8)  tt52
-REAL(KIND=8)  tt53
-REAL(KIND=8)  tt54
-REAL(KIND=8)  tt55
-REAL(KIND=8)  tt56
-REAL(KIND=8)  tt57
-REAL(KIND=8)  tt58
-REAL(KIND=8)  tt59
-REAL(KIND=8)  tt60
-REAL(KIND=8)  tt61
-REAL(KIND=8)  tt62
-REAL(KIND=8)  tt63
-REAL(KIND=8)  tt64
-REAL(KIND=8)  tt65
-REAL(KIND=8)  tt66
-REAL(KIND=8)  tt67
-REAL(KIND=8)  tt68
-REAL(KIND=8)  tt69
-REAL(KIND=8)  tt70
-REAL(KIND=8)  tt71
-REAL(KIND=8)  tt72
-REAL(KIND=8)  tt73
-REAL(KIND=8)  tt74
-REAL(KIND=8)  tt75
-REAL(KIND=8)  tt76
-REAL(KIND=8)  tt77
-REAL(KIND=8)  tt78
-REAL(KIND=8)  tt79
-REAL(KIND=8)  tt80
-REAL(KIND=8)  tt81
-REAL(KIND=8)  tt82
-REAL(KIND=8)  tt83
-REAL(KIND=8)  tt84
-REAL(KIND=8)  tt85
-REAL(KIND=8)  tt86
-REAL(KIND=8)  tt87
-REAL(KIND=8)  tt88
-REAL(KIND=8)  tt89
-REAL(KIND=8)  tt90
-REAL(KIND=8)  tt91
-REAL(KIND=8)  tt92
-REAL(KIND=8)  tt93
-REAL(KIND=8)  tt94
-REAL(KIND=8)  tt95
-REAL(KIND=8)  tt96
-REAL(KIND=8)  tt97
-REAL(KIND=8)  tt98
-REAL(KIND=8)  tt99
-REAL(KIND=8)  tt100
-REAL(KIND=8)  tt101
-REAL(KIND=8)  tt102
-REAL(KIND=8)  tt103
-REAL(KIND=8)  tt104
-REAL(KIND=8)  tt105
-REAL(KIND=8)  tt106
-REAL(KIND=8)  tt107
-REAL(KIND=8)  tt108
-REAL(KIND=8)  tt109
+END 
+SUBROUTINE & 
+&III_C_3d_hes(& 
+&  hes & 
+&, F & 
+&) 
+IMPLICIT NONE 
+REAL(KIND=8) hes(9, 9) 
+REAL(KIND=8) F(3, 3) 
+REAL(KIND=8)  tt1 
+REAL(KIND=8)  tt2 
+REAL(KIND=8)  tt3 
+REAL(KIND=8)  tt4 
+REAL(KIND=8)  tt5 
+REAL(KIND=8)  tt6 
+REAL(KIND=8)  tt7 
+REAL(KIND=8)  tt8 
+REAL(KIND=8)  tt9 
+REAL(KIND=8)  tt10 
+REAL(KIND=8)  tt11 
+REAL(KIND=8)  tt12 
+REAL(KIND=8)  tt13 
+REAL(KIND=8)  tt14 
+REAL(KIND=8)  tt15 
+REAL(KIND=8)  tt16 
+REAL(KIND=8)  tt17 
+REAL(KIND=8)  tt18 
+REAL(KIND=8)  tt19 
+REAL(KIND=8)  tt20 
+REAL(KIND=8)  tt21 
+REAL(KIND=8)  tt22 
+REAL(KIND=8)  tt23 
+REAL(KIND=8)  tt24 
+REAL(KIND=8)  tt25 
+REAL(KIND=8)  tt26 
+REAL(KIND=8)  tt27 
+REAL(KIND=8)  tt28 
+REAL(KIND=8)  tt29 
+REAL(KIND=8)  tt30 
+REAL(KIND=8)  tt31 
+REAL(KIND=8)  tt32 
+REAL(KIND=8)  tt33 
+REAL(KIND=8)  tt34 
+REAL(KIND=8)  tt35 
+REAL(KIND=8)  tt36 
+REAL(KIND=8)  tt37 
+REAL(KIND=8)  tt38 
+REAL(KIND=8)  tt39 
+REAL(KIND=8)  tt40 
+REAL(KIND=8)  tt41 
+REAL(KIND=8)  tt42 
+REAL(KIND=8)  tt43 
+REAL(KIND=8)  tt44 
+REAL(KIND=8)  tt45 
+REAL(KIND=8)  tt46 
+REAL(KIND=8)  tt47 
+REAL(KIND=8)  tt48 
+REAL(KIND=8)  tt49 
+REAL(KIND=8)  tt50 
+REAL(KIND=8)  tt51 
+REAL(KIND=8)  tt52 
+REAL(KIND=8)  tt53 
+REAL(KIND=8)  tt54 
+REAL(KIND=8)  tt55 
+REAL(KIND=8)  tt56 
+REAL(KIND=8)  tt57 
+REAL(KIND=8)  tt58 
+REAL(KIND=8)  tt59 
+REAL(KIND=8)  tt60 
+REAL(KIND=8)  tt61 
+REAL(KIND=8)  tt62 
+REAL(KIND=8)  tt63 
+REAL(KIND=8)  tt64 
+REAL(KIND=8)  tt65 
+REAL(KIND=8)  tt66 
+REAL(KIND=8)  tt67 
+REAL(KIND=8)  tt68 
+REAL(KIND=8)  tt69 
+REAL(KIND=8)  tt70 
+REAL(KIND=8)  tt71 
+REAL(KIND=8)  tt72 
+REAL(KIND=8)  tt73 
+REAL(KIND=8)  tt74 
+REAL(KIND=8)  tt75 
+REAL(KIND=8)  tt76 
+REAL(KIND=8)  tt77 
+REAL(KIND=8)  tt78 
+REAL(KIND=8)  tt79 
+REAL(KIND=8)  tt80 
+REAL(KIND=8)  tt81 
+REAL(KIND=8)  tt82 
+REAL(KIND=8)  tt83 
+REAL(KIND=8)  tt84 
+REAL(KIND=8)  tt85 
+REAL(KIND=8)  tt86 
+REAL(KIND=8)  tt87 
+REAL(KIND=8)  tt88 
+REAL(KIND=8)  tt89 
+REAL(KIND=8)  tt90 
+REAL(KIND=8)  tt91 
+REAL(KIND=8)  tt92 
+REAL(KIND=8)  tt93 
+REAL(KIND=8)  tt94 
+REAL(KIND=8)  tt95 
+REAL(KIND=8)  tt96 
+REAL(KIND=8)  tt97 
+REAL(KIND=8)  tt98 
+REAL(KIND=8)  tt99 
+REAL(KIND=8)  tt100 
+REAL(KIND=8)  tt101 
+REAL(KIND=8)  tt102 
+REAL(KIND=8)  tt103 
+REAL(KIND=8)  tt104 
+REAL(KIND=8)  tt105 
+REAL(KIND=8)  tt106 
+REAL(KIND=8)  tt107 
+REAL(KIND=8)  tt108 
+REAL(KIND=8)  tt109 
 tt1 = F(1,2)**2
 tt2 = F(2,2)**2
 tt3 = F(3,2)**2
@@ -12373,4 +12373,4 @@ hes(9,7) = tt108
 hes(9,8) = tt109
 hes(9,9) = 2*F(3,1)*tt60+tt87*(tt106-2*tt3)-tt27*(tt105-2*F(3,1)*&
 &F(3,2))
-END
+END 
