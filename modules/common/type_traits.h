@@ -60,4 +60,8 @@ using detected_t =
         std::is_same_v<decltype(test<prefix##T>(0)), std::true_type>; \
   };
 
+#define EASY_VALUE(traits) \
+  template <typename T>    \
+  inline constexpr bool traits##_v = traits<T>::value;
+
 }  // namespace chaos

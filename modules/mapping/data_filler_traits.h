@@ -6,9 +6,6 @@
 #include "common/type_traits.h"
 
 namespace chaos::mapping::details::data_filler_traits {
-#define EASY_VALUE(traits) \
-  template <typename T>    \
-  inline constexpr bool traits##_v = traits<T>::value;
 
 #define const_interface_no_args(op)                            \
   template <typename T>                                        \
@@ -144,5 +141,4 @@ class has_data {
 };
 EASY_VALUE(has_data);
 
-#undef EASY_VALUE
 }  // namespace chaos::mapping::details::data_filler_traits
