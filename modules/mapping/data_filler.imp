@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/types/FILE.h>
 
 #include <set>
 #include <type_traits>
@@ -89,7 +88,7 @@ inline void two_dim_filler_base<Derived>::batch_fill(const DerivedH &H) {
   static_assert(std::is_base_of_v<two_dim_filler_base<T>, T>, \
                 "Filler should be two_dim_filler_base!");
 template <typename T>
-offset_1d_filler_t<T>::offset_1d_filler_t(T &&filler, index_t offset)
+offset_1d_filler_t<T>::offset_1d_filler_t(T &filler, index_t offset)
     : filler(filler), offset(offset) {
   ONE_DIM_WRAPPER_CHECK();
   CHAOS_DEBUG_ASSERT(offset < filler.size(), offset, filler.size());
@@ -106,7 +105,7 @@ inline void offset_1d_filler_t<T>::_fill_impl(index_t p, real_t val) {
 }
 
 template <typename T>
-offset_2d_filler_t<T>::offset_2d_filler_t(T &&filler, index_t off_r,
+offset_2d_filler_t<T>::offset_2d_filler_t(T &filler, index_t off_r,
                                           index_t off_c)
     : filler(filler), off_r(off_r), off_c(off_c) {
   TWO_DIM_WRAPPER_CHECK();
@@ -154,7 +153,7 @@ inline void offset_2d_filler_t<T>::_fill_impl(index_t p, index_t q,
 #endif
 
 template <typename T, typename IndexList>
-idmap_1d_filler_t<T, IndexList>::idmap_1d_filler_t(T &&filler,
+idmap_1d_filler_t<T, IndexList>::idmap_1d_filler_t(T &filler,
                                                    const IndexList &idmap)
     : filler(filler), idmap(idmap) {
   ONE_DIM_WRAPPER_CHECK();
@@ -175,7 +174,7 @@ inline void idmap_1d_filler_t<T, IndexList>::_fill_impl(index_t p, real_t val) {
 }
 
 template <typename T, typename IndexList>
-idmap_2d_filler_t<T, IndexList>::idmap_2d_filler_t(T &&filler,
+idmap_2d_filler_t<T, IndexList>::idmap_2d_filler_t(T &filler,
                                                    const IndexList &idmap)
     : filler(filler), idmap(idmap) {
   TWO_DIM_WRAPPER_CHECK();
@@ -202,7 +201,7 @@ inline void idmap_2d_filler_t<T, IndexList>::_fill_impl(index_t p, index_t q,
 }
 
 template <typename T>
-weight_1d_filler_t<T>::weight_1d_filler_t(T &&filler, real_t w)
+weight_1d_filler_t<T>::weight_1d_filler_t(T &filler, real_t w)
     : filler(filler), w(w) {
   ONE_DIM_WRAPPER_CHECK();
 }
@@ -218,7 +217,7 @@ inline void weight_1d_filler_t<T>::_fill_impl(index_t p, real_t val) {
 }
 
 template <typename T>
-weight_2d_filler_t<T>::weight_2d_filler_t(T &&filler, real_t w)
+weight_2d_filler_t<T>::weight_2d_filler_t(T &filler, real_t w)
     : filler(filler), w(w) {
   TWO_DIM_WRAPPER_CHECK();
 }

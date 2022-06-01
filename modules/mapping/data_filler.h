@@ -158,66 +158,66 @@ struct coo_filler_t : public two_dim_filler_base<coo_filler_t<T, Fillmode>> {
 
 template <typename T>
 struct offset_1d_filler_t : public one_dim_filler_base<offset_1d_filler_t<T>> {
-  offset_1d_filler_t(T &&filler, index_t offset);
+  offset_1d_filler_t(T &filler, index_t offset);
   ONE_DIM_INTERFACE(T::override_mode, T::can_parallel, false);
 
  private:
-  T &&filler;
+  T &filler;
   index_t offset;
 };
 
 template <typename T>
 struct offset_2d_filler_t : public two_dim_filler_base<offset_2d_filler_t<T>> {
-  offset_2d_filler_t(T &&filler, index_t off_r, index_t off_c);
-  offset_2d_filler_t(T &&filler, index_t off)
+  offset_2d_filler_t(T &filler, index_t off_r, index_t off_c);
+  offset_2d_filler_t(T &filler, index_t off)
       : offset_2d_filler_t(filler, off, off) {}
   TWO_DIM_INTERFACE(T::override_mode, T::can_parallel, T::fill_mode, false);
 
  private:
-  T &&filler;
+  T &filler;
   index_t off_r, off_c;
 };
 
 template <typename T, typename IndexList>
 struct idmap_1d_filler_t
     : public two_dim_filler_base<idmap_1d_filler_t<T, IndexList>> {
-  idmap_1d_filler_t(T &&filler, const IndexList &idmap);
+  idmap_1d_filler_t(T &filler, const IndexList &idmap);
   ONE_DIM_INTERFACE(T::override_mode, T::can_parallel, false);
 
  private:
-  T &&filler;
+  T &filler;
   const IndexList &idmap;
 };
 
 template <typename T, typename IndexList>
 struct idmap_2d_filler_t
     : public two_dim_filler_base<idmap_2d_filler_t<T, IndexList>> {
-  idmap_2d_filler_t(T &&filler, const IndexList &idmap);
+  idmap_2d_filler_t(T &filler, const IndexList &idmap);
   TWO_DIM_INTERFACE(T::override_mode, T::can_parallel, T::fill_mode, false);
 
  private:
-  T &&filler;
+  T &filler;
   const IndexList &idmap;
 };
 
 template <typename T>
 struct weight_1d_filler_t : public two_dim_filler_base<weight_1d_filler_t<T>> {
-  weight_1d_filler_t(T &&filler, real_t w);
+  weight_1d_filler_t(T &filler, real_t w);
   ONE_DIM_INTERFACE(T::override_mode, T::can_parallel, T::can_get_data);
 
  private:
-  T &&filler;
+  T &filler;
   real_t w;
 };
 
 template <typename T>
 struct weight_2d_filler_t : public two_dim_filler_base<weight_2d_filler_t<T>> {
-  weight_2d_filler_t(T &&filler, real_t w);
+  weight_2d_filler_t(T &filler, real_t w);
   TWO_DIM_INTERFACE(T::override_mode, T::can_parallel, T::fill_mode,
                     T::can_get_data);
 
  private:
-  T &&filler;
+  T &filler;
   real_t w;
 };
 

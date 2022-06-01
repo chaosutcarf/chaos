@@ -3,21 +3,21 @@
 namespace chaos::mapping {
 template <typename Derived>
 template <typename OutV, typename... Args>
-void function_base<Derived>::_check_val_params(const OutV &val,
-                                               const Args &...args) const {
+void function_base<Derived>::_check_val_params(
+    const OutV &val, [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(val.size() == Nx());
 }
 template <typename Derived>
 template <typename OutJ, typename... Args>
-void function_base<Derived>::_check_jac_params(const OutJ &jac,
-                                               const Args &...args) const {
+void function_base<Derived>::_check_jac_params(
+    const OutJ &jac, [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(jac.cols() == Nx());
   CHAOS_DEBUG_ASSERT(jac.rows() == Nf());
 }
 template <typename Derived>
 template <typename OutH, typename... Args>
-void function_base<Derived>::_check_hes_params(const OutH &hes,
-                                               const Args &...args) const {
+void function_base<Derived>::_check_hes_params(
+    const OutH &hes, [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(hes.rows() == Nf());
   CHAOS_DEBUG_ASSERT(hes.cols() == Nx());
 }

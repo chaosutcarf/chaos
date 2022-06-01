@@ -43,6 +43,15 @@ struct function_base {
   inline index_t Nf() const { return derived().Nf(); }
   inline index_t Np() const;  //-> check params number.
 
+  inline bool is_val_constant() const;
+  inline bool is_jac_constant() const;
+  inline bool is_hes_constant() const;
+  inline index_t get_xorder() const;
+  inline bool is_val_constant_to_p() const;
+  inline bool is_jac_constant_to_p() const;
+  inline bool is_hes_constant_to_p() const;
+  inline index_t get_porder() const;
+
   template <typename Out, typename... Args>
   inline void Val(Out &&val, const Args &...args) const;
 
