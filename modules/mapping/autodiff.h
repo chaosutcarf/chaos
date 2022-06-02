@@ -196,30 +196,15 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_x(
   }
 
   Eigen::Matrix<real_t, fdim, xdim> J;
-  if constexpr (fdim == -1) {
-    if constexpr (xdim == -1) {
-      Eigen::Matrix<real_t, -1, -1> H;
-      J.resize(this->Nf(), this->Nx());
-      H.resize(this->Nf() * this->Nx(), this->Nx());
-      RUN(J, H);
-    } else {
-      Eigen::Matrix<real_t, -1, xdim> H;
-      J.resize(this->Nf(), xdim);
-      H.resize(this->Nf() * xdim, xdim);
-      RUN(J, H);
-    }
+  if constexpr (fdim == -1 || xdim == -1) {
+    Eigen::Matrix<real_t, -1, xdim> H;
+    H.resize(this->Nf() * this->Nx(), this->Nx());
+    J.resize(this->Nf(), this->Nx());
+    RUN(J, H);
   } else {
-    if constexpr (xdim == -1) {
-      Eigen::Matrix<real_t, -1, -1> H;
-      J.resize(fdim, this->Nx());
-      H.resize(fdim * this->Nx(), this->Nx());
-      RUN(J, H);
-    } else {
-      Eigen::Matrix<real_t, fdim * xdim, xdim> H;
-      RUN(J, H);
-    }
+    Eigen::Matrix<real_t, fdim * xdim, xdim> H;
+    RUN(J, H);
   }
-
 #undef RUN
 }
 
