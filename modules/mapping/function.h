@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 #include "common/pattern.h"
 #include "common/type.h"
 #include "mapping/data_filler.h"
@@ -8,6 +10,31 @@
 #include "utils/logger/logger.h"
 
 namespace chaos::mapping {
+
+#define EASY_GET(m)                                                          \
+  inline index_t N##m() const {                                              \
+    if constexpr (details::function_traits::get_##m##dim<Derived>() != -1) { \
+      return details::function_traits::get_##m##dim<Derived>();              \
+    } else {                                                                 \
+      static_assert(details::function_traits::has_n##m##_impl_v<Derived>,    \
+                    "Must implement _n" #m "_impl!");                        \
+      return derived()._n##m##_impl();                                       \
+    }                                                                        \
+  }
+
+#define EASY_PATT(patt)                                                     \
+  inline patt_t *patt() const {                                             \
+    if constexpr (details::function_traits::has_##patt##_impl_v<Derived>) { \
+      return derived()._##patt##_impl();                                    \
+    } else {                                                                \
+      return nullptr;                                                       \
+    }                                                                       \
+  }
+
+#define FUNCTION_INTERFACE(Xdim, Fdim, Xorder) \
+  static constexpr index_t xdim = Xdim;        \
+  static constexpr index_t fdim = Fdim;        \
+  static constexpr index_t xorder = Xorder;
 
 template <typename Derived>
 struct function_base {
@@ -23,20 +50,26 @@ struct function_base {
   //-> Derived should provide Nx(), Nf(), _val_jac_hes_impl.
   //-> _Jpatt_impl, _Hpatt_impl [optional]
   CRTP_derived_interface(Derived, function_base);
-  inline index_t Nx() const;
-  inline index_t Nf() const;
-  inline index_t Np() const;  //-> check params number.
-  inline patt_t *Jpatt() const;
-  inline patt_t *Hpatt() const;
+  EASY_GET(x);  // Nx
+  EASY_GET(f);  // Nf
+  EASY_GET(p);  // Np
+#undef EASY_GET
+  EASY_PATT(Jpatt);  // Jpatt
+  EASY_PATT(Hpatt);  // Hpatt
+#undef EASY_PATT
 
-  inline bool is_val_constant() const;
-  inline bool is_jac_constant() const;
-  inline bool is_hes_constant() const;
-  inline index_t get_xorder() const;
-  inline bool is_val_constant_to_p() const;
-  inline bool is_jac_constant_to_p() const;
-  inline bool is_hes_constant_to_p() const;
-  inline index_t get_porder() const;
+  inline bool is_val_constant() const { return get_xorder() == 0; }
+  inline bool is_jac_constant() const { return get_xorder() <= 1; }
+  inline bool is_hes_constant() const { return get_xorder() <= 2; }
+  inline index_t get_xorder() const {
+    return details::function_traits::get_xorder<Derived>();
+  }
+  inline bool is_val_constant_to_p() const { return get_porder() == 0; }
+  inline bool is_jac_constant_to_p() const { return get_porder() <= 1; }
+  inline bool is_hes_constant_to_p() const { return get_porder() <= 2; }
+  inline index_t get_porder() const {
+    return details::function_traits::get_porder<Derived>();
+  }
 
   template <typename Out, typename... Args>
   inline void Val(Out &&val, const Args &...args) const;
@@ -69,7 +102,7 @@ struct function_base {
 
 template <typename Derived>
 template <typename OutV, typename... Args>
-void function_base<Derived>::_check_val_params(
+inline void function_base<Derived>::_check_val_params(
     const OutV &val, [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(val.size() == Nx());
 }
@@ -155,4 +188,5 @@ inline void function_base<Derived>::ValJacHes(OutV &&val, OutJ &&jac,
       &val, &jac, &hes, args...);
 }
 
+#undef EASY_GET
 }  // namespace chaos::mapping

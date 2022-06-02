@@ -61,13 +61,9 @@ class has_coeffRef {
 EASY_VALUE(has_coeffRef);
 
 DEFINE_HAS_MEMBER(p, fill_mode);
-EASY_VALUE(has_member_fill_mode);
 DEFINE_HAS_MEMBER(p, override_mode);
-EASY_VALUE(has_member_override_mode);
 DEFINE_HAS_MEMBER(p, can_parallel);
-EASY_VALUE(has_member_can_parallel);
 DEFINE_HAS_MEMBER(p, can_get_data);
-EASY_VALUE(has_member_can_get_data);
 
 template <typename T>
 class has_one_dim_fill_impl {

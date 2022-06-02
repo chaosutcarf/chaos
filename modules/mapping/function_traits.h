@@ -1,7 +1,10 @@
 #pragma once
 
+#include <type_traits>
+
 #include "common/type.h"
 #include "common/type_traits.h"
+#include "mapping/patt_helper.h"
 
 namespace chaos::mapping::details {
 namespace eval_traits {
@@ -22,7 +25,49 @@ template <int mode> constexpr bool has_eval_hes() { return (mode & HES) != 0; }
 
 };  // namespace eval_traits
 namespace function_traits {
-//-> xdim
-//-> fdim
-}
+//-> xdim, fdim, pdim
+DEFINE_HAS_MEMBER(p, xdim);
+DEFINE_HAS_MEMBER(p, fdim);
+DEFINE_HAS_MEMBER(p, pdim);
+DEFINE_HAS_MEMBER(p, xorder);
+DEFINE_HAS_MEMBER(p, porder);
+
+#define HELPER_GET(member, val)                                         \
+  template <typename T,                                                 \
+            std::enable_if_t<has_member_##member##_v<T>, bool> = true>  \
+  constexpr inline index_t get_##member() {                             \
+    return T::member;                                                   \
+  }                                                                     \
+  template <typename T,                                                 \
+            std::enable_if_t<!has_member_##member##_v<T>, bool> = true> \
+  constexpr inline index_t get_##member() {                             \
+    return val;                                                         \
+  }
+
+HELPER_GET(xdim, -1);
+HELPER_GET(fdim, -1);
+HELPER_GET(pdim, 0);
+HELPER_GET(xorder, -1);
+HELPER_GET(porder, -1);
+#undef HELPER_GET
+
+#define CONST_NO_ARGS_INTERFACE(name, ret)                       \
+  template <typename T>                                          \
+  class has_##name {                                             \
+    template <typename U>                                        \
+    using impl_t = decltype(std::declval<const U&>()._##name()); \
+                                                                 \
+   public:                                                       \
+    static constexpr bool value =                                \
+        std::is_convertible_v<detected_t<impl_t, T>, ret>;       \
+  };                                                             \
+  EASY_VALUE(has_##name);
+CONST_NO_ARGS_INTERFACE(Jpatt_impl, patt_helper::patt_t*);
+CONST_NO_ARGS_INTERFACE(Hpatt_impl, patt_helper::patt_t*)
+CONST_NO_ARGS_INTERFACE(nx_impl, index_t);
+CONST_NO_ARGS_INTERFACE(nf_impl, index_t);
+CONST_NO_ARGS_INTERFACE(np_impl, index_t);
+
+#undef CONST_NO_ARGS_INTERFACE
+}  // namespace function_traits
 }  // namespace chaos::mapping::details

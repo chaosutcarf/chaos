@@ -47,6 +47,10 @@ template <template <class...> class Op, class... Args>
 using detected_t =
     typename details::detector<details::nonesuch, void, Op, Args...>::type;
 
+#define EASY_VALUE(traits) \
+  template <typename T>    \
+  inline constexpr bool traits##_v = traits<T>::value;
+
 #define DEFINE_HAS_MEMBER(prefix, member_name)                        \
   template <typename prefix##T>                                       \
   class has_member_##member_name {                                    \
@@ -58,10 +62,7 @@ using detected_t =
    public:                                                            \
     static constexpr bool value =                                     \
         std::is_same_v<decltype(test<prefix##T>(0)), std::true_type>; \
-  };
-
-#define EASY_VALUE(traits) \
-  template <typename T>    \
-  inline constexpr bool traits##_v = traits<T>::value;
+  };                                                                  \
+  EASY_VALUE(has_member_##member_name);
 
 }  // namespace chaos

@@ -5,24 +5,24 @@
 #include "common/type_traits.h"
 #include "mapping/data_filler.h"
 #include "mapping/data_filler_traits.h"
+#include "mapping/function.h"
+#include "mapping/function_traits.h"
 struct B {};
 using namespace chaos::mapping;
 struct C {
   static constexpr bool override_mode = false;
+  static constexpr int xdim = 1;
 };
 
-struct A {
-  static constexpr bool override_mode = C::override_mode;
-
+struct A : public C {
   static B fill_mode;
   template <typename D, typename _ = double,
             std::enable_if_t<std::is_same_v<_, B>, bool> = true>
   void _batch_fill(D &&v);
-  template <bool _ = override_mode,
-            std::enable_if_t<_ == true, bool> = true>
+  template <bool _ = override_mode, std::enable_if_t<_ == true, bool> = true>
   chaos::real_t *data() {
     return nullptr;
-}
+  }
 };
 
 template <typename T>
@@ -38,7 +38,7 @@ class has_fill {
 };
 
 int main(int argc, char *argv[]) {
-  double val;
+  printf("%u\n", details::function_traits::get_xdim<A>());
   // chaos::matxr_t mat;
   // chaos::mapping::one_dim_filler_t a(val);
   // chaos::mapping::override_lower_mat_filler_t b(mat);
