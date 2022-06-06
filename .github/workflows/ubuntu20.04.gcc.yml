@@ -48,7 +48,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{github.workspace}}/3rd
-          key: 3rd-${{ hashFiles('**/change-3rd-url.py', '**/deps.cmake') }}
+          key: ubt2004-gcc-3rd-${{ hashFiles('**/change-3rd-url.py', '**/deps.cmake') }}
 
       - name: Configure git
         env:
