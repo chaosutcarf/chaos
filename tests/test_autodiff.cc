@@ -11,14 +11,16 @@
 //   }
 // };
 
-// struct poly_f2 : public chaos::mapping::autodiff_function_base<poly_f2, 3, 2> {
+// struct poly_f2 : public chaos::mapping::autodiff_function_base<poly_f2, 3, 2>
+// {
 //   template <typename T>
 //   inline vec_t<T, 2> mapsto(const Eigen::Ref<const vec_t<T, 3>> &x) const {
 //     return vec_t<T, 2>(x.squaredNorm(), x.squaredNorm() * x.sum());
 //   }
 // };
 
-// // struct scalar_filler_t : public mapping::one_dim_filler_base<scalar_filler_t>
+// // struct scalar_filler_t : public
+// mapping::one_dim_filler_base<scalar_filler_t>
 // // {
 // //   scalar_filler_t(real_t &data) : data(data) {}
 // //   inline index_t size() const { return 1; }
@@ -40,9 +42,11 @@
 // // };
 
 // // template <typename T>
-// // struct gra_filler_t : public mapping::two_dim_filler_base<gra_filler_t<T>> {
+// // struct gra_filler_t : public mapping::two_dim_filler_base<gra_filler_t<T>>
+// {
 // //   gra_filler_t(T &data) : data(data) {}
-// //   inline void _fill_impl(index_t, index_t q, real_t val) { data[q] = val; }
+// //   inline void _fill_impl(index_t, index_t q, real_t val) { data[q] = val;
+// }
 // //   inline index_t rows() const { return 1; }
 // //   inline index_t cols() const { return data.size(); }
 
@@ -65,7 +69,8 @@
 // // };
 
 // // template <typename T>
-// // struct mat_filler_t : public mapping::two_dim_filler_base<mat_filler_t<T>> {
+// // struct mat_filler_t : public mapping::two_dim_filler_base<mat_filler_t<T>>
+// {
 // //   mat_filler_t(T &data) : data(data) {}
 // //   inline index_t rows() const { return data.rows(); }
 // //   inline index_t cols() const { return data.cols(); }
@@ -108,7 +113,8 @@
 //   //   // info_msg("val: {}", res);
 //   //   // info_msg("{}, {}", x.sum(), x.squaredNorm());
 //   //   // info_msg("jac: {}", jac);
-//   //   g.ValJacHes(vector_filler_t(res), mat_filler_t(jac), mat_filler_t(H), x);
+//   //   g.ValJacHes(vector_filler_t(res), mat_filler_t(jac), mat_filler_t(H),
+//   x);
 //   //   info_msg("hes: \n{}", H);
 //   //   info_msg("val: \n{}", res);
 //   //   info_msg("jac: \n{}", jac);

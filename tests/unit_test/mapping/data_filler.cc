@@ -1,8 +1,10 @@
 #include "mapping/data_filler.h"
-#include "common/type_helper.h"
+
 #include <catch2/catch.hpp>
 #include <functional>
+
 #include "common/type.h"
+#include "common/type_helper.h"
 
 using namespace chaos::mapping;
 
@@ -86,7 +88,7 @@ TEST_CASE("test one dim filler", "[mapping]") {
       Eigen::Map<chaos::vecxr_t> map_ones(ones.data(), 10);
       CHECK(std::equal_to<chaos::vecxr_t>()(res, map_ones));
       Eigen::VectorXd twos;
-      twos.setConstant(10,2);
+      twos.setConstant(10, 2);
       filler.batch_fill(twos);
       CHECK(std::equal_to<chaos::vecxr_t>()(res, twos));
     }
