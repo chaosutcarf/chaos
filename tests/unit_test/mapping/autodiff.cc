@@ -11,6 +11,39 @@
 using namespace chaos;
 using namespace chaos::mapping;
 
+struct scalar_expected {
+  static real_t val(const Eigen::Ref<const vec_t<real_t>> &x) {
+    return x.squaredNorm();
+  }
+  static vecxr_t jac(const Eigen::Ref<const vec_t<real_t>> &x) { return 2 * x; }
+  static matxr_t hes(const Eigen::Ref<const vec_t<real_t>> &x) {
+    return matxr_t::Identity(x.size(), x.size()) * 2;
+  }
+};
+
+struct vector_expected {
+  static vecxr_t val(const Eigen::Ref<const vec_t<real_t>> &x) {
+    vecxr_t res(2);
+    res[0] = x.squaredNorm();
+    res[1] = x.sum();
+    return res;
+  }
+  static matxr_t jac(const Eigen::Ref<const vec_t<real_t>> &x) {
+    matxr_t J(2, x.size());
+    J.row(0) = 2 * x;
+    J.row(1).setOnes();
+    return J;
+  }
+  static matxr_t hes(const Eigen::Ref<const vec_t<real_t>> &x) {
+    matxr_t H(2 * x.size(), x.size());
+    H.setZero();
+    for (int i = 0; i < x.size(); ++i) {
+      H.col(i).reshaped(2, x.size())(0, i) = 2;
+    }
+    return H;
+  }
+};
+
 template <int Xdim>
 struct auto_poly_f : public autodiff_function_base<auto_poly_f<Xdim>, Xdim, 1> {
   template <typename T>
@@ -42,29 +75,29 @@ TEST_CASE("test autodiff for compile time xdim and fdim", "[mapping]") {
       f.Val(one_dim_filler_t(val), x);
       f.Jac(gra_filler_t(jac), x);
       f.Hes(mat_filler_t(hes), x);
-      CHECK(numerical::near(val, x.squaredNorm()));
-      CHECK(std::equal_to<vecxr_t>()(jac, 2 * x));
-      CHECK(std::equal_to<matxr_t>()(hes, 2 * mat33r_t::Identity()));
+      CHECK(numerical::near(val, scalar_expected::val(x)));
+      CHECK(std::equal_to<vecxr_t>()(jac, scalar_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, scalar_expected::hes(x)));
     }
 
     SECTION("together.call") {
       f.ValJacHes(one_dim_filler_t(val), gra_filler_t(jac), mat_filler_t(hes),
                   x);
-      CHECK(numerical::near(val, x.squaredNorm()));
-      CHECK(std::equal_to<vecxr_t>()(jac, 2 * x));
-      CHECK(std::equal_to<matxr_t>()(hes, 2 * mat33r_t::Identity()));
+      CHECK(numerical::near(val, scalar_expected::val(x)));
+      CHECK(std::equal_to<vecxr_t>()(jac, scalar_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, scalar_expected::hes(x)));
     }
 
     SECTION("valjac") {
       f.ValJac(one_dim_filler_t(val), gra_filler_t(jac), x);
-      CHECK(numerical::near(val, x.squaredNorm()));
-      CHECK(std::equal_to<vecxr_t>()(jac, 2 * x));
+      CHECK(numerical::near(val, scalar_expected::val(x)));
+      CHECK(std::equal_to<vecxr_t>()(jac, scalar_expected::jac(x)));
     }
 
     SECTION("jaches") {
       f.JacHes(gra_filler_t(jac), mat_filler_t(hes), x);
-      CHECK(std::equal_to<vecxr_t>()(jac, 2 * x));
-      CHECK(std::equal_to<matxr_t>()(hes, 2 * mat33r_t::Identity()));
+      CHECK(std::equal_to<vecxr_t>()(jac, scalar_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, scalar_expected::hes(x)));
     }
   }
   SECTION("vector valued function") {
@@ -80,42 +113,42 @@ TEST_CASE("test autodiff for compile time xdim and fdim", "[mapping]") {
     matxr_t hes;
     jac.resize(2, 3);
     hes.resize(6, 3);
-    vec2r_t expected_y;
-    matxr_t expected_J, expected_H;
-    expected_y[0] = x.squaredNorm();
-    expected_y[1] = x.sum();
-    expected_J.resize(2, 3);
-    expected_J.row(0) = 2 * x;
-    expected_J.row(1).setOnes();
-    expected_H.resize(6, 3);
-    expected_H.setZero();
-    expected_H.col(0).reshaped(2, 3)(0, 0) = 2;
-    expected_H.col(1).reshaped(2, 3)(0, 1) = 2;
-    expected_H.col(2).reshaped(2, 3)(0, 2) = 2;
 
     SECTION("independent.call") {
       f.Val(one_dim_filler_t(y), x);
       f.Jac(mat_filler_t(jac), x);
       f.Hes(mat_filler_t(hes), x);
-      CHECK(std::equal_to<vecxr_t>()(y, expected_y));
-      CHECK(std::equal_to<matxr_t>()(jac, expected_J));
-      CHECK(std::equal_to<matxr_t>()(hes, expected_H));
+      CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
+      CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
     }
     SECTION("together.call") {
       f.ValJacHes(one_dim_filler_t(y), mat_filler_t(jac), mat_filler_t(hes), x);
-      CHECK(std::equal_to<vecxr_t>()(y, expected_y));
-      CHECK(std::equal_to<matxr_t>()(jac, expected_J));
-      CHECK(std::equal_to<matxr_t>()(hes, expected_H));
+      CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
+      CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
     }
     SECTION("valjac") {
       f.ValJac(one_dim_filler_t(y), mat_filler_t(jac), x);
-      CHECK(std::equal_to<vecxr_t>()(y, expected_y));
-      CHECK(std::equal_to<matxr_t>()(jac, expected_J));
+      CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
+      CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
     }
     SECTION("jaches") {
       f.JacHes(mat_filler_t(jac), mat_filler_t(hes), x);
-      CHECK(std::equal_to<matxr_t>()(jac, expected_J));
-      CHECK(std::equal_to<matxr_t>()(hes, expected_H));
+      CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
+      CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
     }
   }
 }
+
+template <>
+struct auto_poly_f<-1> : public autodiff_function_base<auto_poly_f<-1>, -1, 1> {
+  auto_poly_f(int xdim);
+
+  template <typename T>
+  T _mapsto(const Eigen::Ref<const vec_t<T>> &x) const {
+    return x.squaredNorm();
+  }
+};
+
+TEST_CASE("test autodiff for dynamic xdim and fdim", "[mapping]") {}
