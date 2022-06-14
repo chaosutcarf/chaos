@@ -262,7 +262,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_x(
       autodiff::wrt(X), autodiff::at(X, args...), _1, J);
   jacptr->template batch_fill(J);
   if constexpr (details::eval_traits::has_eval_val<mode>()) {
-    valptr->template batch_fill(_1);
+    valptr->template batch_fill(_1.template cast<real_t>());
   }
 }
 
