@@ -122,6 +122,20 @@ struct mat_filler_t
  private:
   T &m_data;
 };
+template <typename T, bool Override = true, bool Parallel = true,
+          bool Getdata = true>
+struct gra_filler_t
+    : public two_dim_filler_base<gra_filler_t<T, Override, Parallel, Getdata>> {
+  gra_filler_t(T &data);
+
+  TWO_DIM_INTERFACE(Override, Parallel, MATRIX_FILL_MODE::FULL, Getdata);
+  template <bool _1 = override_mode, std::enable_if_t<_1 == true, bool> = true,
+            bool _2 = can_get_data, std::enable_if_t<_2 == true, bool> = true>
+  inline real_t *data();
+
+ private:
+  T &m_data;
+};
 
 //-> Eigen::SparseBase.
 template <typename T, MATRIX_FILL_MODE Fillmode = MATRIX_FILL_MODE::FULL,
@@ -562,6 +576,43 @@ inline real_t *mat_filler_t<T, Fillmode, Override, Parallel, Getdata>::data() {
   static_assert(
       Override == true && Getdata == true && Fillmode == MATRIX_FILL_MODE::FULL,
       "only override and can_get_data and Fullfill mode can access data!");
+  return m_data.data();
+}
+
+template <typename T, bool Override, bool Parallel, bool Getdata>
+gra_filler_t<T, Override, Parallel, Getdata>::gra_filler_t(T &data)
+    : m_data(data) {
+  static_assert(details::data_filler_traits::has_unary_access_v<T> &&
+                    details::data_filler_traits::has_size_v<T>,
+                "data should provide: size/[i] access!");
+}
+
+template <typename T, bool Override, bool Parallel, bool Getdata>
+inline index_t gra_filler_t<T, Override, Parallel, Getdata>::rows() const {
+  return 1;
+}
+
+template <typename T, bool Override, bool Parallel, bool Getdata>
+inline index_t gra_filler_t<T, Override, Parallel, Getdata>::cols() const {
+  return m_data.size();
+}
+
+template <typename T, bool Override, bool Parallel, bool Getdata>
+inline void gra_filler_t<T, Override, Parallel, Getdata>::_fill_impl(
+    index_t, index_t q, real_t val) {
+  if constexpr (Override) {
+    m_data[q] = val;
+  } else {
+    m_data[q] += val;
+  }
+}
+
+template <typename T, bool Override, bool Parallel, bool Getdata>
+template <bool _1, std::enable_if_t<_1 == true, bool>, bool _2,
+          std::enable_if_t<_2 == true, bool>>
+inline real_t *gra_filler_t<T, Override, Parallel, Getdata>::data() {
+  static_assert(Override == true && Getdata == true,
+                "only override and can_get_data can access data!");
   return m_data.data();
 }
 

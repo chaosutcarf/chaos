@@ -11,15 +11,16 @@
 
 namespace chaos::mapping {
 
-#define EASY_GET(m)                                                          \
-  inline index_t N##m() const {                                              \
-    if constexpr (details::function_traits::get_##m##dim<Derived>() != -1) { \
-      return details::function_traits::get_##m##dim<Derived>();              \
-    } else {                                                                 \
-      static_assert(details::function_traits::has_n##m##_impl_v<Derived>,    \
-                    "Must implement _n" #m "_impl!");                        \
-      return derived()._n##m##_impl();                                       \
-    }                                                                        \
+#define EASY_GET(m)                                                       \
+  inline index_t N##m() const {                                           \
+    if constexpr (details::function_traits::get_##m##dim<Derived>() !=    \
+                  (index_t)-1) {                                          \
+      return details::function_traits::get_##m##dim<Derived>();           \
+    } else {                                                              \
+      static_assert(details::function_traits::has_n##m##_impl_v<Derived>, \
+                    "Must implement _n" #m "_impl!");                     \
+      return derived()._n##m##_impl();                                    \
+    }                                                                     \
   }
 
 #define EASY_PATT(patt)                                                     \
@@ -104,7 +105,7 @@ template <typename Derived>
 template <typename OutV, typename... Args>
 inline void function_base<Derived>::_check_val_params(
     const OutV &val, [[maybe_unused]] const Args &...args) const {
-  CHAOS_DEBUG_ASSERT(val.size() == Nx());
+  CHAOS_DEBUG_ASSERT(val.size() == Nf());
 }
 template <typename Derived>
 template <typename OutJ, typename... Args>
@@ -117,8 +118,8 @@ template <typename Derived>
 template <typename OutH, typename... Args>
 void function_base<Derived>::_check_hes_params(
     const OutH &hes, [[maybe_unused]] const Args &...args) const {
-  CHAOS_DEBUG_ASSERT(hes.rows() == Nf());
   CHAOS_DEBUG_ASSERT(hes.cols() == Nx());
+  CHAOS_DEBUG_ASSERT(hes.rows() == Nf() * Nx());
 }
 
 template <typename Derived>

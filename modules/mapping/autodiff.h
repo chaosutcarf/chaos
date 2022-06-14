@@ -15,12 +15,13 @@ struct autodiff_function_base : public function_base<Derived> {
   FUNCTION_INTERFACE(Xdim, Fdim, Xorder);
   //-> if fdim is 1
   //-> Derived Class should implement this function.
-  // template <typename T>
-  // T mapsto(const Eigen::Ref<const vec_t<T>> &x,
-  //          const function_cache_t *cache = nullptr) const {}
+  // template <typename T, typename... Args>
+  // T _mapsto(const Eigen::Ref<const vec_t<T>> &x, const Args&...args) const {}
   //-> else
-  // vec_t<T> mapsto(const Eigen::Ref<const vec_t<T>> &x,
-  //          const function_cache_t *cache = nullptr) const {}
+  // template <typename T, typename... Args>
+  // vec_t<T> _mapsto(const Eigen::Ref<const vec_t<T>> &x, const Args&...args)
+  // const {}
+
   template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
             typename Wrt, typename... Args>
   void _val_jac_hes_impl(OutVptr valptr, OutJptr jacptr, OutHptr hesptr,
@@ -151,7 +152,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_1(
   auto X = wrt.template cast<dual_t<2>>().eval();
   autodiff::hessian(
       [this](const auto &x, const Args &...args) {
-        return this->derived().template mapsto<dual_t<2>>(x, args...);
+        return this->derived().template _mapsto<dual_t<2>>(x, args...);
       },
       autodiff::wrt(X), autodiff::at(X, args...), _2, G, H);
   hesptr->template batch_fill(H);
@@ -174,25 +175,25 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_x(
   static_assert(!std::is_same_v<OutHptr, std::nullptr_t>,
                 "OutHptr should not be nullptr!");
 
-#define RUN(J, H)                                                           \
-  dual_t<2> _2;                                                             \
-  auto X = wrt.template cast<dual_t<2>>().eval();                           \
-  auto rH = H.reshaped(this->Nf(), this->Nx() * this->Nx());                \
-  for (size_t i = 0; i < this->Nf(); ++i) {                                 \
-    auto &&Ji = J.row(i);                                                   \
-    auto &&Hi = rH.row(i).reshaped(this->Nx(), this->Nx());                 \
-    autodiff::hessian(                                                      \
-        [&i, this](const auto &x, const Args &...args) {                    \
-          return this->derived().template mapsto<dual_t<2>>(x, args...)[i]; \
-        },                                                                  \
-        autodiff::wrt(X), autodiff::at(X, args...), _2, Ji, Hi);            \
-    if constexpr (details::eval_traits::has_eval_val<mode>()) {             \
-      valptr->fill(i, _2.val.val);                                          \
-    }                                                                       \
-  }                                                                         \
-  hesptr->template batch_fill(H);                                           \
-  if constexpr (details::eval_traits::has_eval_jac<mode>()) {               \
-    jacptr->template batch_fill(J);                                         \
+#define RUN(J, H)                                                            \
+  dual_t<2> _2;                                                              \
+  auto X = wrt.template cast<dual_t<2>>().eval();                            \
+  auto rH = H.reshaped(this->Nf(), this->Nx() * this->Nx());                 \
+  for (size_t i = 0; i < this->Nf(); ++i) {                                  \
+    auto &&Ji = J.row(i);                                                    \
+    auto &&Hi = rH.row(i).reshaped(this->Nx(), this->Nx());                  \
+    autodiff::hessian(                                                       \
+        [&i, this](const auto &x, const Args &...args) {                     \
+          return this->derived().template _mapsto<dual_t<2>>(x, args...)[i]; \
+        },                                                                   \
+        autodiff::wrt(X), autodiff::at(X, args...), _2, Ji, Hi);             \
+    if constexpr (details::eval_traits::has_eval_val<mode>()) {              \
+      valptr->fill(i, _2.val.val);                                           \
+    }                                                                        \
+  }                                                                          \
+  hesptr->template batch_fill(H);                                            \
+  if constexpr (details::eval_traits::has_eval_jac<mode>()) {                \
+    jacptr->template batch_fill(J);                                          \
   }
 
   Eigen::Matrix<real_t, fdim, xdim> J;
@@ -226,7 +227,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_1(
   }
   autodiff::gradient(
       [&](const auto &x, const Args &...args) {
-        return this->derived().template mapsto<dual_t<1>>(x, args...);
+        return this->derived().template _mapsto<dual_t<1>>(x, args...);
       },
       autodiff::wrt(X), autodiff::at(X, args...), _1, J);
   jacptr->template batch_fill(J);
@@ -256,7 +257,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_x(
   }
   autodiff::jacobian(
       [&](const auto &x, const Args &...args) {
-        return this->derived().template mapsto<dual_t<1>>(x, args...);
+        return this->derived().template _mapsto<dual_t<1>>(x, args...);
       },
       autodiff::wrt(X), autodiff::at(X, args...), _1, J);
   jacptr->template batch_fill(J);
@@ -274,7 +275,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_val_1(
   static_assert(!std::is_same_v<OutVptr, std::nullptr_t>,
                 "OutVptr should not be a nullptr");
   static_assert(fdim == 1, "fdim should be a compile time variable!");
-  valptr->fill(0, this->derived().template mapsto<real_t>(wrt, args...));
+  valptr->fill(0, this->derived().template _mapsto<real_t>(wrt, args...));
 }
 
 template <typename Derived, int Xdim, int Fdim, int Xorder>
@@ -286,7 +287,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_val_x(
   static_assert(!std::is_same_v<OutVptr, std::nullptr_t>,
                 "OutVptr should not be a nullptr");
   valptr->template batch_fill(
-      this->derived().template mapsto<real_t>(wrt, args...));
+      this->derived().template _mapsto<real_t>(wrt, args...));
 }
 
 }  // namespace chaos::mapping
