@@ -40,15 +40,15 @@ namespace chaos::mapping {
 template <typename Derived>
 struct function_base {
   using patt_t = patt_helper::patt_t;
-  //-> Derived.traits should include:
+  //-> Derived.traits
   /*
-   * xdim: -1 for dynamic
-   * fdim: -1 for dynamic
-   * pdim: -1 for dynamic
-   * xorder: -1 for inf.
-   * porder: -1 for inf.
+   * xdim: -1 for dynamic by default.
+   * fdim: -1 for dynamic by default.
+   * pdim: -1 for dynamic by default.
+   * xorder: -1 for inf by default.
+   * porder: -1 for inf by default.
    */
-  //-> Derived should provide Nx(), Nf(), _val_jac_hes_impl.
+  //-> Derived should provide _nx_impl(), _nf_impl(), _val_jac_hes_impl.
   //-> _Jpatt_impl, _Hpatt_impl [optional]
   CRTP_derived_interface(Derived, function_base);
   EASY_GET(x);  // Nx
@@ -104,20 +104,23 @@ struct function_base {
 template <typename Derived>
 template <typename OutV, typename... Args>
 inline void function_base<Derived>::_check_val_params(
-    const OutV &val, [[maybe_unused]] const Args &...args) const {
+    [[maybe_unused]] const OutV &val,
+    [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(val.size() == Nf());
 }
 template <typename Derived>
 template <typename OutJ, typename... Args>
 void function_base<Derived>::_check_jac_params(
-    const OutJ &jac, [[maybe_unused]] const Args &...args) const {
+    [[maybe_unused]] const OutJ &jac,
+    [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(jac.cols() == Nx());
   CHAOS_DEBUG_ASSERT(jac.rows() == Nf());
 }
 template <typename Derived>
 template <typename OutH, typename... Args>
 void function_base<Derived>::_check_hes_params(
-    const OutH &hes, [[maybe_unused]] const Args &...args) const {
+    [[maybe_unused]] const OutH &hes,
+    [[maybe_unused]] const Args &...args) const {
   CHAOS_DEBUG_ASSERT(hes.cols() == Nx());
   CHAOS_DEBUG_ASSERT(hes.rows() == Nf() * Nx());
 }
@@ -190,4 +193,34 @@ inline void function_base<Derived>::ValJacHes(OutV &&val, OutJ &&jac,
 }
 
 #undef EASY_GET
+
+//-> helper.
+//-> split impl should impl:
+//-> 1. _val_impl
+//-> 2. _jac_impl
+//-> 3. _hes_impl.
+#define FUNCTION_SPLIT_IMPL()                                               \
+  template <int mode, typename OutVptr, typename OutJptr, typename OutHptr, \
+            typename Wrt, typename... Args>                                 \
+  void _val_jac_hes_impl(OutVptr valptr, OutJptr jacptr, OutHptr hesptr,    \
+                         const Wrt &wrt, const Args &...args) const {       \
+    if constexpr (chaos::mapping::details::eval_traits::has_eval_val<       \
+                      mode>()) {                                            \
+      static_assert(!std::is_same_v<OutVptr, std::nullptr_t>,               \
+                    "OutVptr should not be a nullptr");                     \
+      _val_impl(valptr, wrt, args...);                                      \
+    }                                                                       \
+    if constexpr (chaos::mapping::details::eval_traits::has_eval_jac<       \
+                      mode>()) {                                            \
+      static_assert(!std::is_same_v<OutJptr, std::nullptr_t>,               \
+                    "OutJptr should not be a nullptr");                     \
+      _jac_impl(jacptr, wrt, args...);                                      \
+    }                                                                       \
+    if constexpr (chaos::mapping::details::eval_traits::has_eval_hes<       \
+                      mode>()) {                                            \
+      static_assert(!std::is_same_v<OutHptr, std::nullptr_t>,               \
+                    "OutHptr should not be a nullptr");                     \
+      _hes_impl(hesptr, wrt, args...);                                      \
+    }                                                                       \
+  }
 }  // namespace chaos::mapping

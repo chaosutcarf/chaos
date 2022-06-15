@@ -9,8 +9,8 @@ if (CHAOS_BUILD_UNIT_TEST)
 endif(CHAOS_BUILD_UNIT_TEST)
 
 add_unit(bench_eigen_storage_align LIBS chaos::utils chaos::common)
-add_unit(functor_evaluation_cost LIBS
-  chaos OpenMP::OpenMP_CXX)
+add_unit(functor_evaluation_cost LIBS chaos OpenMP::OpenMP_CXX)
+add_unit(functor_evaluation_cost_with_data_filler LIBS chaos OpenMP::OpenMP_CXX)
 add_unit(test_variable LIBS chaos::mapping chaos::maxima)
 # add_unit(test_autodiff LIBS chaos::mapping)
 # target_compile_definitions(test_autodiff PRIVATE AUTODIFF_ENABLE_IMPLICIT_CONVERSION_DUAL)
