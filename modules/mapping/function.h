@@ -11,16 +11,16 @@
 
 namespace chaos::mapping {
 
-#define EASY_GET(m)                                                       \
-  inline index_t N##m() const {                                           \
-    if constexpr (details::function_traits::get_##m##dim<Derived>() !=    \
-                  (index_t)-1) {                                          \
-      return details::function_traits::get_##m##dim<Derived>();           \
-    } else {                                                              \
-      static_assert(details::function_traits::has_n##m##_impl_v<Derived>, \
-                    "Must implement _n" #m "_impl!");                     \
-      return derived()._n##m##_impl();                                    \
-    }                                                                     \
+#define EASY_GET(m)                                                         \
+  inline index_t N##m() const {                                             \
+    if constexpr (!details::function_traits::is_dynamic_dim(                \
+                      details::function_traits::get_##m##dim<Derived>())) { \
+      return details::function_traits::get_##m##dim<Derived>();             \
+    } else {                                                                \
+      static_assert(details::function_traits::has_n##m##_impl_v<Derived>,   \
+                    "Must implement _n" #m "_impl!");                       \
+      return derived()._n##m##_impl();                                      \
+    }                                                                       \
   }
 
 #define EASY_PATT(patt)                                                     \

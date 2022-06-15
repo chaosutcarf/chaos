@@ -1,6 +1,7 @@
 #pragma once
 #include "common/type.h"
 #include "mapping/function.h"
+#include "mapping/function_traits.h"
 //clang-format off
 #include <autodiff/forward/dual.hpp>
 #include <autodiff/forward/dual/eigen.hpp>
@@ -143,7 +144,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_1(
   Eigen::Matrix<real_t, fdim, xdim> G;
   Eigen::Matrix<real_t, xdim, xdim> H;
 
-  if constexpr (xdim == -1) {
+  if constexpr (details::function_traits::is_dynamic_dim(xdim)) {
     G.resize(1, this->Nx());
     H.resize(this->Nx(), this->Nx());
   }
@@ -197,7 +198,8 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_x(
   }
 
   Eigen::Matrix<real_t, fdim, xdim> J;
-  if constexpr (fdim == -1 || xdim == -1) {
+  if constexpr (details::function_traits::is_dynamic_dim(fdim) ||
+                details::function_traits::is_dynamic_dim(xdim)) {
     Eigen::Matrix<real_t, -1, xdim> H;
     H.resize(this->Nf() * this->Nx(), this->Nx());
     J.resize(this->Nf(), this->Nx());
@@ -222,7 +224,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_1(
   auto X = wrt.template cast<dual_t<1>>().eval();
   dual_t<1> _1;
   Eigen::Matrix<real_t, fdim, xdim> J;
-  if constexpr (xdim == -1) {
+  if constexpr (details::function_traits::is_dynamic_dim(xdim)) {
     J.resize(fdim, this->Nx());
   }
   autodiff::gradient(
@@ -249,10 +251,11 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_x(
   auto X = wrt.template cast<dual_t<1>>().eval();
   Eigen::Vector<dual_t<1>, fdim> _1;
   Eigen::Matrix<real_t, fdim, xdim> J;
-  if constexpr (fdim == -1) {
+  if constexpr (details::function_traits::is_dynamic_dim(fdim)) {
     _1.resize(this->Nf());
   }
-  if constexpr (fdim == -1 || xdim == -1) {
+  if constexpr (details::function_traits::is_dynamic_dim(fdim) ||
+                details::function_traits::is_dynamic_dim(xdim)) {
     J.resize(this->Nf(), this->Nx());
   }
   autodiff::jacobian(

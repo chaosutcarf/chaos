@@ -25,6 +25,12 @@ template <int mode> constexpr bool has_eval_hes() { return (mode & HES) != 0; }
 
 };  // namespace eval_traits
 namespace function_traits {
+constexpr index_t dynamic_dim = -1;
+constexpr index_t inf_order = -1;
+
+constexpr bool is_dynamic_dim(index_t dim) { return dim == dynamic_dim; }
+constexpr bool is_inf_order(index_t order) { return order == inf_order; }
+
 //-> xdim, fdim, pdim
 DEFINE_HAS_MEMBER(p, xdim);
 DEFINE_HAS_MEMBER(p, fdim);
