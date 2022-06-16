@@ -11,7 +11,8 @@
 
 namespace chaos::mapping {
 
-template <typename Derived, int Xdim, int Fdim, int Xorder = -1>
+template <typename Derived, int Xdim, int Fdim,
+          index_t Xorder = details::function_traits::inf_order>
 struct autodiff_function_base : public function_base<Derived> {
   FUNCTION_INTERFACE(Xdim, Fdim, Xorder);
   //-> if fdim is 1
@@ -60,7 +61,7 @@ struct autodiff_function_base : public function_base<Derived> {
   using dual_t = autodiff::HigherOrderDual<order, real_t>;
 };
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void
@@ -83,7 +84,7 @@ autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_check_validity(
   CHAOS_DEBUG_ASSERT(wrt.size() == this->Nx());
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void
@@ -97,7 +98,7 @@ autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_val_jac_hes_impl(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void
@@ -113,7 +114,7 @@ autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_val_jac_hes_impl_1(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void
@@ -129,7 +130,7 @@ autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_val_jac_hes_impl_x(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_1(
@@ -165,7 +166,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_1(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename OutHptr,
           typename Wrt, typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_x(
@@ -211,7 +212,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_hes_x(
 #undef RUN
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename Wrt,
           typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_1(
@@ -238,7 +239,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_1(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename OutJptr, typename Wrt,
           typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_x(
@@ -269,7 +270,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_jac_x(
   }
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename Wrt, typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_val_1(
     OutVptr valptr, const Wrt &wrt, const Args &...args) const {
@@ -281,7 +282,7 @@ inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_val_1(
   valptr->fill(0, this->derived().template _mapsto<real_t>(wrt, args...));
 }
 
-template <typename Derived, int Xdim, int Fdim, int Xorder>
+template <typename Derived, int Xdim, int Fdim, index_t Xorder>
 template <int mode, typename OutVptr, typename Wrt, typename... Args>
 inline void autodiff_function_base<Derived, Xdim, Fdim, Xorder>::_eval_val_x(
     OutVptr valptr, const Wrt &wrt, const Args &...args) const {

@@ -2,9 +2,6 @@ file(GLOB_RECURSE source "*.cc")
 file(GLOB_RECURSE header "*.hpp")
 add_library(chaos_mapping ${source} ${header})
 
-target_compile_features(chaos_mapping INTERFACE
-  cxx_std_20)
-
 get_filename_component(ABS_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../ ABSOLUTE)
 
 target_include_directories(chaos_mapping
