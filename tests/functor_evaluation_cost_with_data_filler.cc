@@ -149,7 +149,7 @@ int run(const params_t &prm) {
 
   //-> extract DoF.
   Eigen::Map<const vecxr_t> x(line.pos().data(), line.pos().size());
-  info_msg("spaceDof: {}, totalDof: {}", space_dim, x.size());
+  info_msg("spaceDof: {}, totalDof: {}", space_dim, energy.Nx());
 
   real_t val = 0;
   utils::STW_START("eval.val");

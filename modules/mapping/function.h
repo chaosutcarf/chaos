@@ -39,18 +39,22 @@ namespace chaos::mapping {
 
 template <typename Derived>
 struct function_base {
+  CRTP_derived_interface(Derived, function_base);
   using patt_t = patt_helper::patt_t;
+  using dim_t = index_t;
+  using order_t = index_t;
   //-> Derived.traits
   /*
    * xdim: -1 for dynamic by default.
    * fdim: -1 for dynamic by default.
-   * pdim: -1 for dynamic by default.
-   * xorder: -1 for inf by default.
-   * porder: -1 for inf by default.
+   * pdim:  0 by default.
+   * xorder: -2 for inf by default.
+   * porder: -2 for inf by default.
    */
   //-> Derived should provide _nx_impl(), _nf_impl(), _val_jac_hes_impl.
   //-> _Jpatt_impl, _Hpatt_impl [optional]
-  CRTP_derived_interface(Derived, function_base);
+  //-> TODO. compile-time-query.
+  //-> TODO. runtime-query.
   EASY_GET(x);  // Nx
   EASY_GET(f);  // Nf
   EASY_GET(p);  // Np
@@ -59,18 +63,31 @@ struct function_base {
   EASY_PATT(Hpatt);  // Hpatt
 #undef EASY_PATT
 
-  inline bool is_val_constant() const { return get_xorder() == 0; }
-  inline bool is_jac_constant() const { return get_xorder() <= 1; }
-  inline bool is_hes_constant() const { return get_xorder() <= 2; }
-  inline index_t get_xorder() const {
-    return details::function_traits::get_xorder<Derived>();
+  constexpr index_t get_xorder() const {
+    if constexpr (!details::function_traits::is_dynamic_order(
+                      details::function_traits::get_xorder<Derived>())) {
+      return details::function_traits::get_xorder<Derived>();
+    } else {
+      static_assert(details::function_traits::has_xorder_impl_v<Derived>,
+                    "Derived must implement _xorder_impl!");
+      return derived()._xorder_impl();
+    }
   }
-  inline bool is_val_constant_to_p() const { return get_porder() == 0; }
-  inline bool is_jac_constant_to_p() const { return get_porder() <= 1; }
-  inline bool is_hes_constant_to_p() const { return get_porder() <= 2; }
-  inline index_t get_porder() const {
-    return details::function_traits::get_porder<Derived>();
+  constexpr index_t get_porder() const {
+    if constexpr (!details::function_traits::is_dynamic_order(
+                      details::function_traits::get_porder<Derived>())) {
+      return details::function_traits::get_porder<Derived>();
+    } else {
+    }
   }
+
+  constexpr bool is_val_const_wrt_x() const { return get_xorder() == 0; }
+  constexpr bool is_jac_const_wrt_x() const { return get_xorder() <= 1; }
+  constexpr bool is_hes_const_wrt_x() const { return get_xorder() <= 2; }
+
+  constexpr bool is_val_const_wrt_p() const { return get_porder() == 0; }
+  constexpr bool is_jac_const_wrt_p() const { return get_porder() <= 1; }
+  constexpr bool is_hes_const_wrt_p() const { return get_porder() <= 2; }
 
   template <typename Out, typename... Args>
   inline void Val(Out &&val, const Args &...args) const;
@@ -93,36 +110,45 @@ struct function_base {
                         const Args &...args) const;
 
  private:
-  template <typename OutV, typename... Args>
-  void _check_val_params(const OutV &val, const Args &...args) const;
-  template <typename OutJ, typename... Args>
-  void _check_jac_params(const OutJ &jac, const Args &...args) const;
-  template <typename OutH, typename... Args>
-  void _check_hes_params(const OutH &hes, const Args &...args) const;
+  template <typename OutV, typename Wrt, typename... Args>
+  void _check_val_params(const OutV &val, const Wrt &wrt,
+                         const Args &...args) const;
+  template <typename OutJ, typename Wrt, typename... Args>
+  void _check_jac_params(const OutJ &jac, const Wrt &wrt,
+                         const Args &...args) const;
+  template <typename OutH, typename Wrt, typename... Args>
+  void _check_hes_params(const OutH &hes, const Wrt &wrt,
+                         const Args &...args) const;
 };
 
 template <typename Derived>
-template <typename OutV, typename... Args>
+template <typename OutV, typename Wrt, typename... Args>
 inline void function_base<Derived>::_check_val_params(
-    [[maybe_unused]] const OutV &val,
+    [[maybe_unused]] const OutV &val, [[maybe_unused]] const Wrt &wrt,
     [[maybe_unused]] const Args &...args) const {
-  CHAOS_DEBUG_ASSERT(val.size() == Nf());
+  CHAOS_DEBUG_ASSERT(val.size() == Nf(), val.size(), Nf());
+  CHAOS_DEBUG_ASSERT(is_val_const_wrt_x() || wrt.size() == Nx(),
+                     is_val_const_wrt_x(), wrt.size(), Nx());
 }
 template <typename Derived>
-template <typename OutJ, typename... Args>
+template <typename OutJ, typename Wrt, typename... Args>
 void function_base<Derived>::_check_jac_params(
-    [[maybe_unused]] const OutJ &jac,
+    [[maybe_unused]] const OutJ &jac, [[maybe_unused]] const Wrt &wrt,
     [[maybe_unused]] const Args &...args) const {
-  CHAOS_DEBUG_ASSERT(jac.cols() == Nx());
-  CHAOS_DEBUG_ASSERT(jac.rows() == Nf());
+  CHAOS_DEBUG_ASSERT(jac.cols() == Nx() && jac.rows() == Nf(), jac.rows(),
+                     jac.cols(), Nx(), Nf());
+  CHAOS_DEBUG_ASSERT(is_jac_const_wrt_x() || wrt.size() == Nx(),
+                     is_jac_const_wrt_x(), wrt.size(), Nx());
 }
 template <typename Derived>
-template <typename OutH, typename... Args>
+template <typename OutH, typename Wrt, typename... Args>
 void function_base<Derived>::_check_hes_params(
-    [[maybe_unused]] const OutH &hes,
+    [[maybe_unused]] const OutH &hes, [[maybe_unused]] const Wrt &wrt,
     [[maybe_unused]] const Args &...args) const {
-  CHAOS_DEBUG_ASSERT(hes.cols() == Nx());
-  CHAOS_DEBUG_ASSERT(hes.rows() == Nf() * Nx());
+  CHAOS_DEBUG_ASSERT(hes.cols() == Nx() && hes.rows() == Nf() * Nx(),
+                     hes.cols(), hes.rows(), Nx(), Nf(), Nf() * Nx());
+  CHAOS_DEBUG_ASSERT(is_hes_const_wrt_x() || wrt.size() == Nx(),
+                     is_hes_const_wrt_x(), wrt.size(), Nx());
 }
 
 template <typename Derived>

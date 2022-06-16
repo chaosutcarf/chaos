@@ -27,8 +27,12 @@ coverage:
         only_pulls: false
   ignore:
     - "3rd/**/*"
-    - "/usr/include"
+    - "3rd/*"
+    - "/usr/include/**/*"
+    - "/usr/include/*"
+    - "apps/*"
     - "apps/**/*"
+    - "tests/*"
     - "tests/**/*"
     - "build-debug"
     - "build-release"

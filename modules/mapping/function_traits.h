@@ -24,11 +24,16 @@ template <int mode> constexpr bool has_eval_hes() { return (mode & HES) != 0; }
 // clang-format on
 
 };  // namespace eval_traits
+
 namespace function_traits {
 constexpr index_t dynamic_dim = -1;
-constexpr index_t inf_order = -1;
+constexpr index_t dynamic_order = -1;
+constexpr index_t inf_order = -2;
 
 constexpr bool is_dynamic_dim(index_t dim) { return dim == dynamic_dim; }
+constexpr bool is_dynamic_order(index_t order) {
+  return order == dynamic_order;
+}
 constexpr bool is_inf_order(index_t order) { return order == inf_order; }
 
 //-> xdim, fdim, pdim
@@ -50,11 +55,14 @@ DEFINE_HAS_MEMBER(p, porder);
     return val;                                                         \
   }
 
-HELPER_GET(xdim, -1);
-HELPER_GET(fdim, -1);
+//-> default is dynamic.
+HELPER_GET(xdim, dynamic_dim);
+HELPER_GET(fdim, dynamic_dim);
+//-> default is 0.
 HELPER_GET(pdim, 0);
-HELPER_GET(xorder, -1);
-HELPER_GET(porder, -1);
+//-> default is inf.
+HELPER_GET(xorder, inf_order);
+HELPER_GET(porder, inf_order);
 #undef HELPER_GET
 
 #define CONST_NO_ARGS_INTERFACE(name, ret)                       \
@@ -73,6 +81,8 @@ CONST_NO_ARGS_INTERFACE(Hpatt_impl, patt_helper::patt_t*)
 CONST_NO_ARGS_INTERFACE(nx_impl, index_t);
 CONST_NO_ARGS_INTERFACE(nf_impl, index_t);
 CONST_NO_ARGS_INTERFACE(np_impl, index_t);
+CONST_NO_ARGS_INTERFACE(xorder_impl, index_t);
+CONST_NO_ARGS_INTERFACE(porder_impl, index_t);
 
 #undef CONST_NO_ARGS_INTERFACE
 }  // namespace function_traits
