@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-22.04
     name: "ubuntu 22.04 GCC"
     env:
-      CC: gcc
-      CXX: g++
+      CC: gcc-10
+      CXX: g++-10
       LD_LIBRARY_PATH: ${{github.workspace}}/3rd/lib
       CLANG_FORMAT: OFF
       CLANG_TIDY: OFF
