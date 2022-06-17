@@ -33,8 +33,8 @@ namespace chaos::mapping {
   }
 
 #define FUNCTION_INTERFACE(Xdim, Fdim, Xorder) \
-  static constexpr index_t xdim = Xdim;        \
-  static constexpr index_t fdim = Fdim;        \
+  static constexpr int xdim = Xdim;        \
+  static constexpr int fdim = Fdim;        \
   static constexpr index_t xorder = Xorder;
 
 template <typename Derived>

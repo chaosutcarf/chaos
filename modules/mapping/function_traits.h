@@ -26,11 +26,11 @@ template <int mode> constexpr bool has_eval_hes() { return (mode & HES) != 0; }
 };  // namespace eval_traits
 
 namespace function_traits {
-constexpr index_t dynamic_dim = -1;
+constexpr int dynamic_dim = -1;
 constexpr index_t dynamic_order = -1;
 constexpr index_t inf_order = -2;
 
-constexpr bool is_dynamic_dim(index_t dim) { return dim == dynamic_dim; }
+constexpr bool is_dynamic_dim(int dim) { return dim == dynamic_dim; }
 constexpr bool is_dynamic_order(index_t order) {
   return order == dynamic_order;
 }

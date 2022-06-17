@@ -61,7 +61,7 @@ struct spring_chain_energy
     vecxr_t g;
     real_t *g_data = nullptr;
 
-    if constexpr (jacptr->can_get_data) {
+    if constexpr (std::remove_pointer_t<OutPtr>::can_get_data) {
       g_data = jacptr->data();
     } else {
       utils::STW_START("g.allocate");
@@ -83,7 +83,7 @@ struct spring_chain_energy
     }
     utils::STW_STOP("g.eval");
 
-    if constexpr (!jacptr->can_get_data) {
+    if constexpr (!std::remove_pointer_t<OutPtr>::can_get_data) {
       utils::STW_START("g.fill");
       jacptr->template batch_fill(g.transpose());
       utils::STW_STOP("g.fill");
