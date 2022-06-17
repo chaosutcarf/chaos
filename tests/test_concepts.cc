@@ -34,7 +34,6 @@ constexpr int f(A a) {
   }
 }
 
-
 int main(int argc, char *argv[]) {
   printf("%d\n", f(A()));
   return 0;

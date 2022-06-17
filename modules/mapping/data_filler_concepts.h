@@ -8,12 +8,12 @@
 namespace chaos::mapping::details {
 
 template <typename T>
-concept OneDimFillerConcept = requires{
+concept OneDimFillerConcept = requires {
   true;
 };
 
 template <typename T>
-concept TwoDimFillerConcept = requires{
+concept TwoDimFillerConcept = requires {
   true;
 };
 
