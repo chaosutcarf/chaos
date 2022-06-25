@@ -1,4 +1,4 @@
 ---
-Checks: '-*,performance-*,openmp-*,clang-analyzer-*,bugprone-*,-bugprone-macro-parentheses,-bugprone-narrowing-conversions,misc-unused-parameters,misc-definitions-in-headers,misc-misplaced-const,misc-redundant-expression,misc-unconventional-assign-operator,misc-uniqueptr-reset-release,misc-unused-parameters,readability-static-definition-in-anonymous-namespace,readability-braces-around-statements,readability-container-size-empty'
+Checks: '-*,performance-*,openmp-*,clang-analyzer-*,bugprone-*,-bugprone-macro-parentheses,-bugprone-reserved-identifier,-bugprone-narrowing-conversions,misc-unused-parameters,misc-definitions-in-headers,misc-misplaced-const,misc-redundant-expression,misc-unconventional-assign-operator,misc-uniqueptr-reset-release,misc-unused-parameters,readability-static-definition-in-anonymous-namespace,readability-braces-around-statements,readability-container-size-empty'
 HeaderFilterRegex: '^(.*3rd.*|)$'
 ...
