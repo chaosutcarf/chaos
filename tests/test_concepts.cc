@@ -9,7 +9,7 @@
 struct AAA {
   template <typename T>
   requires std::floating_point<T>
-  void f(const T &a) const {
+  inline void f(const T &a) const {
     static_assert(std::floating_point<T>, "floating");
   }
 };
@@ -69,7 +69,19 @@ struct D3 : public Base<D3> {
 // };
 
 int main(int argc, char *argv[]) {
-  if constexpr (testC<AAA, AAA>) {
+  // if constexpr (testC<AAA, AAA>) {
+  //   printf("yes\n");
+  // } else {
+  //   printf("no\n");
+  // }
+  chaos::matxr_t A, B;
+  A.resize(2, 2);
+  B.resize(2, 2);
+  auto C = (A+B).transpose();
+
+
+  if constexpr (chaos::mapping::data_filler_concepts::EigenMatrixBase<
+                    decltype(C)>) {
     printf("yes\n");
   } else {
     printf("no\n");

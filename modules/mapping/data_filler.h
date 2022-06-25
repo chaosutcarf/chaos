@@ -7,33 +7,32 @@
 
 namespace chaos::mapping {
 //-> use CRTP to do some common dim checking.
-template <details::data_filler_concepts::OneDimFillerConcept Derived>
+template <data_filler_concepts::OneDimFillerConcept Derived>
 struct one_dim_filler_base {
   CRTP_derived_interface(Derived, one_dim_filler_base);
 
   inline index_t size() const { return derived()._size(); }
 
   template <bool override_mode = true>
-  requires(details::data_filler_concepts::IsOverride<Derived> ||
-           !override_mode) inline void fill(index_t pos, real_t val) {
+  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  inline void fill(index_t pos, real_t val) {
     CHAOS_DEBUG_ASSERT(pos < size(), pos, size());
     constexpr bool is_override =
-        override_mode && details::data_filler_concepts::IsOverride<Derived>;
+        override_mode && data_filler_concepts::IsOverride<Derived>;
     derived().template _fill<is_override>(pos, val);
   }
 
   template <bool override_mode = true, typename DerivedV>
-  requires(details::data_filler_concepts::IsOverride<Derived> ||
-           !override_mode) inline void batch_fill(const DerivedV &vec) {
+  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  inline void batch_fill(const DerivedV &vec) {
     constexpr bool is_floating_point{std::floating_point<DerivedV>};
     constexpr bool is_unary_accessible{
-        details::data_filler_concepts::UnaryAccessible<DerivedV>};
+        data_filler_concepts::UnaryAccessible<DerivedV>};
     constexpr bool is_override =
-        override_mode && details::data_filler_concepts::IsOverride<Derived>;
+        override_mode && data_filler_concepts::IsOverride<Derived>;
     constexpr bool has_batch_fill{
-        details::data_filler_concepts::ProvideBatchFill<Derived, DerivedV>};
-    constexpr bool can_parallel{
-        details::data_filler_concepts::CanParallel<Derived>};
+        data_filler_concepts::ProvideBatchFill<Derived, DerivedV>};
+    constexpr bool can_parallel{data_filler_concepts::CanParallel<Derived>};
 
     static_assert(is_floating_point || is_unary_accessible,
                   "vec should satisfy UnaryAccessible | floating_point");
@@ -68,7 +67,7 @@ struct one_dim_filler_base {
 };
 
 //-> use CRTP to do some common dim checking.
-template <details::data_filler_concepts::TwoDimFillerConcept Derived>
+template <data_filler_concepts::TwoDimFillerConcept Derived>
 struct two_dim_filler_base {
   CRTP_derived_interface(Derived, two_dim_filler_base);
 
@@ -76,22 +75,22 @@ struct two_dim_filler_base {
   inline index_t cols() const { return derived()._cols(); }
 
   template <bool override_mode = true>
-  requires(details::data_filler_concepts::IsOverride<Derived> ||
-           !override_mode) inline void fill(index_t r, index_t c, real_t val) {
+  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  inline void fill(index_t r, index_t c, real_t val) {
     CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols());
 
     constexpr bool is_override =
-        override_mode && details::data_filler_concepts::IsOverride<Derived>;
+        override_mode && data_filler_concepts::IsOverride<Derived>;
 
     derived().template _fill<is_override>(r, c, val);
   }
 
   template <bool override_mode = true,
-            details::data_filler_concepts::BinaryAccessible DerivedH>
-  requires(details::data_filler_concepts::IsOverride<Derived> ||
-           !override_mode) inline void batch_fill(const DerivedH &H) {
+            data_filler_concepts::BinaryAccessible DerivedH>
+  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  inline void batch_fill(const DerivedH &H) {
     constexpr bool is_override =
-        override_mode && details::data_filler_concepts::IsOverride<Derived>;
+        override_mode && data_filler_concepts::IsOverride<Derived>;
 
 #define RUN()                                               \
   for (index_t r = 0; r < rows(); ++r) {                    \
@@ -102,12 +101,11 @@ struct two_dim_filler_base {
 
     CHAOS_DEBUG_ASSERT(H.rows() == rows(), H.cols() == cols(), H.rows(),
                        H.cols(), rows(), cols());
-    if constexpr (details::data_filler_concepts::ProvideBatchFill<Derived,
-                                                                  DerivedH>) {
+    if constexpr (data_filler_concepts::ProvideBatchFill<Derived, DerivedH>) {
       derived().template _batch_fill<is_override, DerivedH>(H);
     } else {
       //-> default batch fill.
-      if constexpr (details::data_filler_concepts::CanParallel<Derived>) {
+      if constexpr (data_filler_concepts::CanParallel<Derived>) {
 #pragma omp parallel for default(none) shared(H)
         RUN();
       } else {

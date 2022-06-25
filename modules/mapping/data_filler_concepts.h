@@ -6,7 +6,7 @@
 #include "common/type.h"
 #include "common/type_traits.h"
 
-namespace chaos::mapping::details::data_filler_concepts {
+namespace chaos::mapping::data_filler_concepts {
 
 #define const_interface_no_args(Op, op)         \
   template <typename T>                         \
@@ -58,6 +58,9 @@ concept OverrideAPI = IsOverride<T> && requires(T a) {
   {a.setZero()};
 };
 
+template <bool override_mode, typename T>
+concept FillOverrideCheck = IsOverride<T> || !override_mode;
+
 template <typename T>
 concept OneDimFillerConcept = (!IsOverride<T> ||
                                OverrideAPI<T>)&&requires(T a) {
@@ -100,7 +103,7 @@ concept BinaryAccessible = HasRows<T> && HasCols<T> && requires(const T a) {
 };
 
 template <typename T>
-concept BinaryAssignable = HasRows<T> && HasCols<T> && requires(const T a) {
+concept BinaryAssignable = HasRows<T> && HasCols<T> && requires(T a) {
   {
     a(std::declval<index_t>(), std::declval<index_t>())
     } -> std::assignable_from<real_t>;
@@ -112,4 +115,14 @@ concept ProvideBatchFill = requires(T a, U &&data) {
   a.template _batch_fill<false, U>(data);
 };
 
-}  // namespace chaos::mapping::details::data_filler_concepts
+template <typename T>
+concept EigenDenseMatrixBase = std::derived_from<T, Eigen::MatrixBase<T>>;
+
+template <typename T>
+concept EigenSparseMatrixBase = HasRows<T> && HasCols<T> && requires(T a) {
+  {
+    a.coeffRef(std::declval<index_t>(), std::declval<index_t>())
+    } -> std::assignable_from<real_t>;
+};
+
+}  // namespace chaos::mapping::data_filler_concepts
