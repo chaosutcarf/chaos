@@ -83,30 +83,30 @@ concept TwoDimFillerConcept = (!IsOverride<T> ||
                           std::declval<real_t>());
 };
 
-template <typename T>
+template <typename T, typename U = real_t>
 concept UnaryAccessible = HasSize<T> && requires(const T a) {
   //-> access operation.
-  { a[std::declval<index_t>()] } -> std::convertible_to<real_t>;
+  { a[std::declval<index_t>()] } -> std::convertible_to<U>;
 };
 
-template <typename T>
+template <typename T, typename U = real_t>
 concept UnaryAssignable = HasSize<T> && requires(T a) {
-  { a[std::declval<index_t>()] } -> std::assignable_from<real_t>;
+  { a[std::declval<index_t>()] } -> std::assignable_from<U>;
 };
 
-template <typename T>
+template <typename T, typename U = real_t>
 concept BinaryAccessible = HasRows<T> && HasCols<T> && requires(const T a) {
   //-> access operation.
   {
     a(std::declval<index_t>(), std::declval<index_t>())
-    } -> std::convertible_to<real_t>;
+    } -> std::convertible_to<U>;
 };
 
-template <typename T>
+template <typename T, typename U = real_t>
 concept BinaryAssignable = HasRows<T> && HasCols<T> && requires(T a) {
   {
     a(std::declval<index_t>(), std::declval<index_t>())
-    } -> std::assignable_from<real_t>;
+    } -> std::assignable_from<U>;
 };
 
 template <typename T, typename U>

@@ -92,11 +92,19 @@ struct two_dim_filler_base {
     constexpr bool is_override =
         override_mode && data_filler_concepts::IsOverride<Derived>;
 
-#define RUN()                                               \
-  for (index_t r = 0; r < rows(); ++r) {                    \
-    for (index_t c = 0; c < cols(); ++c) {                  \
-      derived().template _fill<is_override>(r, c, H(r, c)); \
-    }                                                       \
+#define RUN()                                                            \
+  for (index_t r = 0; r < rows(); ++r) {                                 \
+    index_t c, end;                                                      \
+    if constexpr (data_filler_concepts::FullFillMode<Derived>) {         \
+      c = 0, end = cols();                                               \
+    } else if constexpr (data_filler_concepts::LowerFillMode<Derived>) { \
+      c = 0, end = r + 1;                                                \
+    } else {                                                             \
+      c = r, end = cols();                                               \
+    }                                                                    \
+    for (; c < end; ++c) {                                               \
+      derived().template _fill<is_override>(r, c, H(r, c));              \
+    }                                                                    \
   }
 
     CHAOS_DEBUG_ASSERT(H.rows() == rows(), H.cols() == cols(), H.rows(),
@@ -112,6 +120,7 @@ struct two_dim_filler_base {
         RUN();
       }
     }
+#undef RUN
   }
 };
 
