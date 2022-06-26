@@ -7,6 +7,8 @@
 namespace chaos::mapping {
 template <data_filler_concepts::OneDimFillerConcept T>
 struct offset_1d_filler_t : public one_dim_filler_base<offset_1d_filler_t<T>> {
+  ONE_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>, false);
   offset_1d_filler_t(T& filler, index_t offset)
       : filler(filler), offset(offset) {
     CHAOS_DEBUG_ASSERT(offset < filler._size(), offset, filler._size());
@@ -26,6 +28,9 @@ struct offset_1d_filler_t : public one_dim_filler_base<offset_1d_filler_t<T>> {
 
 template <data_filler_concepts::TwoDimFillerConcept T>
 struct offset_2d_filler_t : public two_dim_filler_base<offset_2d_filler_t<T>> {
+  TWO_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>,
+                    data_filler_concepts::MatFillMode<T>(), false);
   offset_2d_filler_t(T& filler, index_t off_r, index_t off_c)
       : filler(filler), off_r(off_r), off_c(off_c) {
     CHAOS_DEBUG_ASSERT(off_r < filler._rows() && off_c < filler._cols(), off_r,

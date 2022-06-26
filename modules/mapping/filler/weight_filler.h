@@ -7,6 +7,8 @@ namespace chaos::mapping {
 
 template <data_filler_concepts::OneDimFillerConcept T>
 struct weight_1d_filler_t : public one_dim_filler_base<weight_1d_filler_t<T>> {
+  ONE_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>, false);
   weight_1d_filler_t(T& filler, real_t w) : filler(filler), w(w) {}
 
   inline index_t _size() const { return filler._size(); }
@@ -23,6 +25,9 @@ struct weight_1d_filler_t : public one_dim_filler_base<weight_1d_filler_t<T>> {
 
 template <data_filler_concepts::TwoDimFillerConcept T>
 struct weight_2d_filler_t : public two_dim_filler_base<weight_2d_filler_t<T>> {
+  TWO_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>,
+                    data_filler_concepts::MatFillMode<T>(), false);
   weight_2d_filler_t(T& filler, real_t w) : filler(filler), w(w) {}
 
   inline index_t _rows() const { return filler._rows(); }

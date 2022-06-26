@@ -4,13 +4,6 @@
 #include "mapping/data_filler.h"
 
 namespace chaos::mapping {
-#define TWO_DIM_INTERFACE(_Override, _Parallel, _FillMode, _GetData) \
-  static constexpr bool Override = _Override;                        \
-  static constexpr bool CanParallel = _Parallel;                     \
-  static constexpr MATRIX_FILL_MODE FillMode = _FillMode;            \
-  static constexpr bool CanGetData =                                 \
-      _Override && _FillMode == MATRIX_FILL_MODE::FULL && _GetData;
-
 //-> Eigen::DenseBase
 template <data_filler_concepts::EigenDenseMatrixBase T,
           MATRIX_FILL_MODE _FillMode = MATRIX_FILL_MODE::FULL,

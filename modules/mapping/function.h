@@ -41,8 +41,6 @@ template <typename Derived>
 struct function_base {
   CRTP_derived_interface(Derived, function_base);
   using patt_t = patt_helper::patt_t;
-  using dim_t = index_t;
-  using order_t = index_t;
   //-> Derived.traits
   /*
    * xdim: -1 for dynamic by default.

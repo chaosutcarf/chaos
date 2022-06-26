@@ -37,6 +37,15 @@ template <typename T>
 concept CanParallel = HasMemberCanParallel<T> && T::CanParallel;
 
 template <typename T>
+requires HasMemberMatFillMode<T>
+constexpr MATRIX_FILL_MODE MatFillMode() { return T::FillMode; }
+
+template <typename T>
+constexpr MATRIX_FILL_MODE MatFillMode() {
+  return MATRIX_FILL_MODE::FULL;
+}
+
+template <typename T>
 concept FullFillMode =
     !HasMemberMatFillMode<T> || T::FillMode == MATRIX_FILL_MODE::FULL;
 
@@ -55,7 +64,7 @@ concept CanGetData = FullFillMode<T> && IsOverride<T> &&
 template <typename T>
 concept OverrideAPI = IsOverride<T> && requires(T a) {
   //-> set zero.
-  {a.setZero()};
+  a.setZero();
 };
 
 template <bool override_mode, typename T>

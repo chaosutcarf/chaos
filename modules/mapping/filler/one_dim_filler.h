@@ -6,11 +6,6 @@
 #include "mapping/data_filler.h"
 
 namespace chaos::mapping {
-#define ONE_DIM_INTERFACE(_Override, _Parallel, _GetData) \
-  static constexpr bool Override = _Override;             \
-  static constexpr bool CanParallel = _Parallel;          \
-  static constexpr bool CanGetData = _GetData;
-
 template <std::floating_point T, bool _Override = true, bool _GetData = true>
 struct scalar_filler_t
     : public one_dim_filler_base<scalar_filler_t<T, _Override, _GetData>> {

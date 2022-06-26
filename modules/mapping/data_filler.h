@@ -124,4 +124,15 @@ struct two_dim_filler_base {
   }
 };
 
+#define ONE_DIM_INTERFACE(_Override, _Parallel, _GetData) \
+  static constexpr bool Override = _Override;             \
+  static constexpr bool CanParallel = _Parallel;          \
+  static constexpr bool CanGetData = _GetData;
+
+#define TWO_DIM_INTERFACE(_Override, _Parallel, _FillMode, _GetData) \
+  static constexpr bool Override = _Override;                        \
+  static constexpr bool CanParallel = _Parallel;                     \
+  static constexpr MATRIX_FILL_MODE FillMode = _FillMode;            \
+  static constexpr bool CanGetData =                                 \
+      _Override && _FillMode == MATRIX_FILL_MODE::FULL && _GetData;
 }  // namespace chaos::mapping

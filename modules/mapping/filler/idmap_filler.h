@@ -1,15 +1,40 @@
 #pragma once
 
+#include <set>
+
 #include "common/type.h"
 #include "mapping/data_filler.h"
-
+#include "utils/logger/logger.h"
 namespace chaos::mapping {
+
+#ifndef NDEBUG
+#define IDMAP_CHECK()                         \
+  std::set<index_t> idset;                    \
+  index_t _max = 0;                           \
+  for (size_t i = 0; i < idmap.size(); ++i) { \
+    if (idmap[i] < _max) {                    \
+      _max = idmap[i];                        \
+    }                                         \
+    idset.insert(idmap[i]);                   \
+  }                                           \
+  CHAOS_DEBUG_ASSERT(idset.size() == idmap.size());
+#else
+#define IDMAP_CHECK()
+#endif
+
 template <data_filler_concepts::OneDimFillerConcept T,
           data_filler_concepts::UnaryAccessible IndexList>
 struct idmap_1d_filler_t
     : public one_dim_filler_base<idmap_1d_filler_t<T, IndexList>> {
+  ONE_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>, false);
   idmap_1d_filler_t(T &filler, const IndexList &idmap)
-      : filler(filler), idmap(idmap) {}
+      : filler(filler), idmap(idmap) {
+    IDMAP_CHECK();
+#ifndef NDEBUG
+    CHAOS_DEBUG_ASSERT(_max < filler.size(), _max, filler.size());
+#endif
+  }
 
   inline index_t _size() const { return idmap.size(); }
 
@@ -23,35 +48,45 @@ struct idmap_1d_filler_t
   const IndexList &idmap;
 };
 
-struct identity_mapping {
-  identity_mapping(index_t m_size) : m_size(m_size) {}
-  inline index_t size() const { return m_size; }
-  index_t operator[](index_t x) const { return x; }
-
- private:
-  index_t m_size;
-};
-
-template <data_filler_concepts::TwoDimFillerConcept T, typename IndexListC,
-          typename IndexListR>
-requires data_filler_concepts::UnaryAccessible<IndexListC, index_t> &&
-    data_filler_concepts::UnaryAccessible<IndexListR, index_t>
+template <data_filler_concepts::TwoDimFillerConcept T, typename IndexList,
+          bool BothMap = true>
+requires data_filler_concepts::UnaryAccessible<IndexList, index_t>
 struct idmap_2d_filler_t
-    : public two_dim_filler_base<idmap_2d_filler_t<T, IndexListC, IndexListR>> {
-  idmap_2d_filler_t(T &filler, const IndexListC &idmap_c)
-      : filler(filler), idmap_c(idmap_c) {}
+    : public two_dim_filler_base<idmap_2d_filler_t<T, IndexList, BothMap>> {
+  TWO_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
+                    data_filler_concepts::CanParallel<T>,
+                    data_filler_concepts::MatFillMode<T>(), false);
+  idmap_2d_filler_t(T &filler, const IndexList &idmap)
+      : filler(filler), idmap(idmap) {
+    IDMAP_CHECK();
+#ifndef NDEBUG
+    CHAOS_DEBUG_ASSERT(_max < filler.rows() && _max < filler.cols(), _max,
+                       filler.cols(), filler.rows());
+#endif
+  }
 
-  inline index_t _rows() const { return idmap_r.size(); }
-  inline index_t _cols() const { return idmap_c.size(); }
+  inline index_t _rows() const {
+    if constexpr (BothMap) {
+      return idmap.size();
+    } else {
+      return filler._rows();
+    }
+  }
+  inline index_t _cols() const { return idmap.size(); }
 
   template <bool is_override>
   inline void _fill(index_t r, index_t c, real_t val) {
-    filler.template _fill<is_override>(idmap_r[r], idmap_c[c], val);
+    if constexpr (BothMap) {
+      filler.template _fill<is_override>(idmap[r], idmap[c], val);
+    } else {
+      filler.template _fill<is_override>(r, idmap[c], val);
+    }
   }
 
  private:
   T &filler;
-  const IndexListC &idmap_c;
-  const IndexListR &idmap_r;
+  const IndexList &idmap;
 };
+
+#undef IDMAP_CHECK
 }  // namespace chaos::mapping
