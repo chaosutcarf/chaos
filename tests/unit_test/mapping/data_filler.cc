@@ -34,7 +34,6 @@ TEST_CASE("test scalar filler", "[data_filler]") {
     scalar_filler_t<double, false> f(res);
     CHECK(numerical::near<double>(res, 0));
     f.batch_fill(10);
-
   }
 }
 // #include "mapping/data_filler.h"
