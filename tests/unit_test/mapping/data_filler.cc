@@ -1,3 +1,42 @@
+#include <catch2/catch.hpp>
+
+#include "common/numerical.h"
+#include "mapping/basic_data_filler.h"
+
+using namespace chaos;
+using namespace chaos::mapping;
+using namespace chaos::mapping::data_filler_concepts;
+
+TEST_CASE("test scalar filler", "[data_filler]") {
+  double res{0};
+  SECTION("Override") {
+    scalar_filler_t f(res);
+    using type = decltype(f);
+    CHECK(IsOverride<type>);
+    CHECK(CanGetData<type>);
+    CHECK(!CanGetData<scalar_filler_t<double, true, true>>);
+    CHECK(!CanGetData<scalar_filler_t<double, true, false>>);
+    CHECK(!CanGetData<scalar_filler_t<double, false, true>>);
+    CHECK(!CanGetData<scalar_filler_t<double, false, false>>);
+    CHECK(f.size() == 1);
+    f.batch_fill(10);
+    CHECK(numerical::near<double>(res, 10));
+    //-> check fill.
+    f.fill<false>(0, 1);
+    CHECK(numerical::near<double>(res, 11));
+    f.fill<true>(0, 1);
+    CHECK(numerical::near<double>(res, 1));
+    f.setZero();
+    CHECK(numerical::near<double>(res, 0));
+    CHECK(f.data() != nullptr);
+  }
+  SECTION("Accumulate") {
+    scalar_filler_t<double, false> f(res);
+    CHECK(numerical::near<double>(res, 0));
+    f.batch_fill(10);
+
+  }
+}
 // #include "mapping/data_filler.h"
 
 // #include <catch2/catch.hpp>

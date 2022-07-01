@@ -6,87 +6,39 @@
 #include "common/type.h"
 #include "mapping/data_filler_concepts.h"
 
-struct AAA {
-  template <typename T>
-  requires std::floating_point<T>
-  inline void f(const T &a) const {
-    static_assert(std::floating_point<T>, "floating");
-  }
-};
+using namespace chaos;
+using namespace chaos::mapping::data_filler_concepts;
 
-template <typename T, typename U>
-concept testC = requires(T a, U b) {
-  {a.template f<U>(b)};
-};
-
-template <typename T, bool flag>
-void f(const T &mat) {
-  printf("%d\n", flag);
-}
-
-template <typename T>
-concept isOverride = requires(T a) {
-  { T::Override } -> std::convertible_to<bool>;
-};
-
-template <typename Derived>
+template <typename Derived, OneDimTraitsConcept _Traits>
 struct Base {
-  CRTP_derived_interface(Derived, Base);
-  template <bool tested = true>
-  void hello() const {
-    //-> check.
-    derived().template _hello<tested && isOverride<Derived>>();
-  }
+  using Traits = _Traits;
+  Base() {
+    static_assert(OneDimFillerConcept<Derived>, "check!");
+}
 };
 
-struct D1 : public Base<D1> {
-  template <bool flag>
-  void _hello() const {
-    printf("d1.%d\n", flag);
-  }
-};
-struct D2 : public Base<D2> {
+struct AAATraits {
   static constexpr bool Override = true;
-  template <bool flag>
-  void _hello() const {
-    printf("d2.%d\n", flag);
-  }
+  static constexpr bool CanParallel = true;
+  static constexpr bool CanGetData = true;
 };
 
-struct D3 : public Base<D3> {
-  static constexpr bool Override = false;
-  template <bool flag>
-  void _hello() const {
-    printf("d3.%d\n", flag);
-  }
+struct AAA : public Base<AAA, AAATraits> {
+  index_t _size() const {return 1;}
 };
 
-// struct D {
-//   static constexpr bool CanGetData = false;
-//   static constexpr bool Override = true;
-//   // static constexpr chaos::MATRIX_FILL_MODE FillMode =
-//   // chaos::MATRIX_FILL_MODE::FULL;
-// };
+struct BBB {
+  // using Traits = int;
+};
 
 int main(int argc, char *argv[]) {
-  // if constexpr (testC<AAA, AAA>) {
-  //   printf("yes\n");
-  // } else {
-  //   printf("no\n");
-  // }
-  chaos::matxr_t A, B;
-  A.resize(2, 2);
-  B.resize(2, 2);
-  auto C = (A+B).transpose();
+  AAA a;
 
-
-  if constexpr (chaos::mapping::data_filler_concepts::EigenMatrixBase<
-                    decltype(C)>) {
+  if constexpr (OneDimFillerConcept<AAA>) {
     printf("yes\n");
   } else {
     printf("no\n");
   }
-  return 0;
 }
 
 // template <typename T>

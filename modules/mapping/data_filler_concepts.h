@@ -31,66 +31,57 @@ has_member(MATRIX_FILL_MODE, MatFillMode);
 #undef has_member
 
 template <typename T>
-concept IsOverride = HasMemberOverride<T> && T::Override;
+concept OneDimTraitsConcept =
+    HasMemberOverride<T> && HasMemberCanGetData<T> && HasMemberCanParallel<T>;
 
 template <typename T>
-concept CanParallel = HasMemberCanParallel<T> && T::CanParallel;
+concept TwoDimTraitsConcept = HasMemberMatFillMode<T> && HasMemberOverride<T> &&
+    HasMemberCanParallel<T> && HasMemberCanGetData<T>;
 
 template <typename T>
-requires HasMemberMatFillMode<T>
-constexpr MATRIX_FILL_MODE MatFillMode() { return T::FillMode; }
-
-template <typename T>
-constexpr MATRIX_FILL_MODE MatFillMode() {
-  return MATRIX_FILL_MODE::FULL;
-}
-
-template <typename T>
-concept FullFillMode =
-    !HasMemberMatFillMode<T> || T::FillMode == MATRIX_FILL_MODE::FULL;
-
-template <typename T>
-concept UpperFillMode =
-    HasMemberMatFillMode<T> && T::FillMode == MATRIX_FILL_MODE::UPPER;
-
-template <typename T>
-concept LowerFillMode =
-    HasMemberMatFillMode<T> && T::FillMode == MATRIX_FILL_MODE::LOWER;
-
-template <typename T>
-concept CanGetData = FullFillMode<T> && IsOverride<T> &&
-    (!HasMemberCanGetData<T> || T::CanGetData);
-
-template <typename T>
-concept OverrideAPI = IsOverride<T> && requires(T a) {
-  //-> set zero.
-  a.setZero();
-};
-
-template <bool override_mode, typename T>
-concept FillOverrideCheck = IsOverride<T> || !override_mode;
-
-template <typename T>
-concept OneDimFillerConcept = (!IsOverride<T> ||
-                               OverrideAPI<T>)&&requires(T a) {
-  //-> has _size.
-  { a._size() } -> std::convertible_to<index_t>;
-  //-> has fill.
-  a.template _fill<true && IsOverride<T>>(std::declval<index_t>(),
-                                          std::declval<real_t>());
-  a.template _fill<false>(std::declval<index_t>(), std::declval<real_t>());
+concept OneDimFillerConcept = requires {
+  OneDimTraitsConcept<typename T::Traits>;
+  //-> const api.
+  requires requires(const T a) {
+    { a._size() } -> std::convertible_to<index_t>;
+  };
+  //-> non-const api
+  requires requires(T a) {
+    a.template _fill<true && T::Traits::Override>(std::declval<index_t>(),
+                                                  std::declval<real_t>());
+    a.template _fill<false>(std::declval<index_t>(), std::declval<real_t>());
+    a.setZero();
+  };
 };
 
 template <typename T>
-concept TwoDimFillerConcept = (!IsOverride<T> ||
-                               OverrideAPI<T>)&&requires(T a) {
-  { a._rows() } -> std::convertible_to<index_t>;
-  { a._cols() } -> std::convertible_to<index_t>;
-  a.template _fill<true && IsOverride<T>>(
-      std::declval<index_t>(), std::declval<index_t>(), std::declval<real_t>());
-  a.template _fill<false>(std::declval<index_t>(), std::declval<index_t>(),
-                          std::declval<real_t>());
+concept TwoDimFillerConcept = requires {
+  TwoDimTraitsConcept<typename T::Traits>;
+  //-> const api.
+  requires requires(const T a) {
+    { a._rows() } -> std::convertible_to<index_t>;
+    { a._cols() } -> std::convertible_to<index_t>;
+  };
+  //-> non-const api
+  requires requires(T a) {
+    a.template _fill<true && T::Traits::Override>(std::declval<index_t>(),
+                                                  std::declval<index_t>(),
+                                                  std::declval<real_t>());
+    a.template _fill<false>(std::declval<index_t>(), std::declval<index_t>(),
+                            std::declval<real_t>());
+    a.setZero();
+  };
 };
+
+template <typename T, typename U>
+concept ProvideBatchFill = (OneDimFillerConcept<T> ||
+                            TwoDimFillerConcept<T>)&&requires(T a, U &&data) {
+  a.template _batch_fill<true && T::Traits::Override, U>(data);
+  a.template _batch_fill<false, U>(data);
+};
+
+template <bool fillmode, bool Override>
+concept FillOverrideCheck = Override || !fillmode;
 
 template <typename T, typename U = real_t>
 concept UnaryAccessible = HasSize<T> && requires(const T a) {
@@ -102,6 +93,9 @@ template <typename T, typename U = real_t>
 concept UnaryAssignable = HasSize<T> && requires(T a) {
   { a[std::declval<index_t>()] } -> std::assignable_from<U>;
 };
+
+template <typename T>
+concept ArithmeticType = std::is_arithmetic_v<T>;
 
 template <typename T, typename U = real_t>
 concept BinaryAccessible = HasRows<T> && HasCols<T> && requires(const T a) {
@@ -116,12 +110,6 @@ concept BinaryAssignable = HasRows<T> && HasCols<T> && requires(T a) {
   {
     a(std::declval<index_t>(), std::declval<index_t>())
     } -> std::assignable_from<U>;
-};
-
-template <typename T, typename U>
-concept ProvideBatchFill = requires(T a, U &&data) {
-  a.template _batch_fill<true && IsOverride<T>, U>(data);
-  a.template _batch_fill<false, U>(data);
 };
 
 template <typename T>

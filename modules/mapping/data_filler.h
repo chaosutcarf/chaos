@@ -6,55 +6,78 @@
 #include "utils/logger/logger.h"
 
 namespace chaos::mapping {
+
+template <bool _Override = false, bool _AllowGetData = false,
+          bool _Parallel = false>
+struct OneDimTraits {
+  static constexpr bool Override = _Override;
+  static constexpr bool CanGetData = _Override && _AllowGetData;
+  static constexpr bool CanParallel = _Parallel;
+};
+
+template <MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
+          bool _Override = false, bool _AllowGetData = false,
+          bool _Parallel = false>
+struct TwoDimTraits {
+  static constexpr MATRIX_FILL_MODE MatFillMode = _MatFillMode;
+  static constexpr bool Override = _Override;
+  static constexpr bool CanGetData =
+      _MatFillMode == MATRIX_FILL_MODE::FULL && _Override && _AllowGetData;
+  static constexpr bool CanParallel = _Parallel;
+};
+
 //-> use CRTP to do some common dim checking.
-template <data_filler_concepts::OneDimFillerConcept Derived>
+template <typename Derived,
+          data_filler_concepts::OneDimTraitsConcept _Traits = OneDimTraits<>>
 struct one_dim_filler_base {
+  using Traits = _Traits;
+  one_dim_filler_base() {
+    //-> since Derived is a incomplete type, so check it here.
+    static_assert(data_filler_concepts::OneDimFillerConcept<Derived>,
+                  "Check OneDimFillerConcept.");
+  }
+
   CRTP_derived_interface(Derived, one_dim_filler_base);
 
   inline index_t size() const { return derived()._size(); }
 
-  template <bool override_mode = true>
-  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  template <bool mode = Traits::Override>
+  requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
   inline void fill(index_t pos, real_t val) {
     CHAOS_DEBUG_ASSERT(pos < size(), pos, size());
-    constexpr bool is_override =
-        override_mode && data_filler_concepts::IsOverride<Derived>;
-    derived().template _fill<is_override>(pos, val);
+    derived().template _fill<mode>(pos, val);
   }
 
-  template <bool override_mode = true, typename DerivedV>
-  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  template <bool mode = Traits::Override, typename DerivedV>
+  requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
   inline void batch_fill(const DerivedV &vec) {
-    constexpr bool is_floating_point{std::floating_point<DerivedV>};
+    constexpr bool is_scalar{data_filler_concepts::ArithmeticType<DerivedV>};
     constexpr bool is_unary_accessible{
         data_filler_concepts::UnaryAccessible<DerivedV>};
-    constexpr bool is_override =
-        override_mode && data_filler_concepts::IsOverride<Derived>;
     constexpr bool has_batch_fill{
         data_filler_concepts::ProvideBatchFill<Derived, DerivedV>};
-    constexpr bool can_parallel{data_filler_concepts::CanParallel<Derived>};
 
-    static_assert(is_floating_point || is_unary_accessible,
-                  "vec should satisfy UnaryAccessible | floating_point");
+    static_assert(is_scalar || is_unary_accessible,
+                  "vec should satisfy UnaryAccessible | ArithmeticType");
 
-    if constexpr (is_floating_point) {
+    if constexpr (is_scalar) {
       CHAOS_DEBUG_ASSERT(size() == 1, size());
       if constexpr (has_batch_fill) {
-        derived().template _batch_fill<is_override, DerivedV>(vec);
+        derived().template _batch_fill<mode, DerivedV>(vec);
       } else {
-        derived().template _fill<is_override>(0, vec);
+        derived().template _fill<mode>(0, vec);
       }
     } else {
       CHAOS_DEBUG_ASSERT(vec.size() == size(), vec.size(), size());
       if constexpr (has_batch_fill) {
-        derived().template _batch_fill<is_override, DerivedV>(vec);
+        derived().template _batch_fill<mode, DerivedV>(vec);
       } else {
-#define RUN()                                         \
-  for (index_t i = 0; i < size(); ++i) {              \
-    derived().template _fill<is_override>(i, vec[i]); \
+#define RUN()                                  \
+  for (index_t i = 0; i < size(); ++i) {       \
+    derived().template _fill<mode>(i, vec[i]); \
   }
 
-        if constexpr (can_parallel) {
+        if constexpr (Traits::CanParallel) {
 #pragma omp parallel for default(none) shared(vec)
           RUN();
         } else {
@@ -67,53 +90,54 @@ struct one_dim_filler_base {
 };
 
 //-> use CRTP to do some common dim checking.
-template <data_filler_concepts::TwoDimFillerConcept Derived>
+template <typename Derived,
+          data_filler_concepts::TwoDimTraitsConcept _Traits = TwoDimTraits<>>
 struct two_dim_filler_base {
+  using Traits = _Traits;
+  two_dim_filler_base() {
+    //-> since Derived is an incomplete type, so check here.
+    static_assert(data_filler_concepts::TwoDimFillerConcept<Derived>,
+                  "Check TwoDimFillerConcept.");
+  }
+
   CRTP_derived_interface(Derived, two_dim_filler_base);
 
   inline index_t rows() const { return derived()._rows(); }
   inline index_t cols() const { return derived()._cols(); }
 
-  template <bool override_mode = true>
-  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  template <bool mode = Traits::Override>
+  requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
   inline void fill(index_t r, index_t c, real_t val) {
     CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols());
-
-    constexpr bool is_override =
-        override_mode && data_filler_concepts::IsOverride<Derived>;
-
-    derived().template _fill<is_override>(r, c, val);
+    derived().template _fill<mode>(r, c, val);
   }
 
-  template <bool override_mode = true,
+  template <bool mode = Traits::Override,
             data_filler_concepts::BinaryAccessible DerivedH>
-  requires data_filler_concepts::FillOverrideCheck<override_mode, Derived>
+  requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
   inline void batch_fill(const DerivedH &H) {
-    constexpr bool is_override =
-        override_mode && data_filler_concepts::IsOverride<Derived>;
-
-#define RUN()                                                            \
-  for (index_t r = 0; r < rows(); ++r) {                                 \
-    index_t c, end;                                                      \
-    if constexpr (data_filler_concepts::FullFillMode<Derived>) {         \
-      c = 0, end = cols();                                               \
-    } else if constexpr (data_filler_concepts::LowerFillMode<Derived>) { \
-      c = 0, end = r + 1;                                                \
-    } else {                                                             \
-      c = r, end = cols();                                               \
-    }                                                                    \
-    for (; c < end; ++c) {                                               \
-      derived().template _fill<is_override>(r, c, H(r, c));              \
-    }                                                                    \
+#define RUN()                                                              \
+  for (index_t r = 0; r < rows(); ++r) {                                   \
+    index_t c, end;                                                        \
+    if constexpr (Traits::MatFillMode == MATRIX_FILL_MODE::FULL) {         \
+      c = 0, end = cols();                                                 \
+    } else if constexpr (Traits::MatFillMode == MATRIX_FILL_MODE::LOWER) { \
+      c = 0, end = r + 1;                                                  \
+    } else {                                                               \
+      c = r, end = cols();                                                 \
+    }                                                                      \
+    for (; c < end; ++c) {                                                 \
+      derived().template _fill<mode>(r, c, H(r, c));                       \
+    }                                                                      \
   }
 
     CHAOS_DEBUG_ASSERT(H.rows() == rows(), H.cols() == cols(), H.rows(),
                        H.cols(), rows(), cols());
     if constexpr (data_filler_concepts::ProvideBatchFill<Derived, DerivedH>) {
-      derived().template _batch_fill<is_override, DerivedH>(H);
+      derived().template _batch_fill<mode, DerivedH>(H);
     } else {
       //-> default batch fill.
-      if constexpr (data_filler_concepts::CanParallel<Derived>) {
+      if constexpr (Traits::CanParallel) {
 #pragma omp parallel for default(none) shared(H)
         RUN();
       } else {
@@ -124,15 +148,4 @@ struct two_dim_filler_base {
   }
 };
 
-#define ONE_DIM_INTERFACE(_Override, _Parallel, _GetData) \
-  static constexpr bool Override = _Override;             \
-  static constexpr bool CanParallel = _Parallel;          \
-  static constexpr bool CanGetData = _GetData;
-
-#define TWO_DIM_INTERFACE(_Override, _Parallel, _FillMode, _GetData) \
-  static constexpr bool Override = _Override;                        \
-  static constexpr bool CanParallel = _Parallel;                     \
-  static constexpr MATRIX_FILL_MODE FillMode = _FillMode;            \
-  static constexpr bool CanGetData =                                 \
-      _Override && _FillMode == MATRIX_FILL_MODE::FULL && _GetData;
 }  // namespace chaos::mapping

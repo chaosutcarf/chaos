@@ -33,7 +33,16 @@ has_runtime_op(index_t, Porder, _porder);
 
 template <typename T>
 concept FunctionLike = requires(T a) {
-  a + a;
+  a+a;
+  //-> CompileTimeNx or RuntimeNx
+  //-> CompileTimeNf or RuntimeNf
+  //-> [optional] Np. 0 by default.
+
+  //-> CompileTimeXorder or RuntimeXorder
+  //-> [optional] If Np provide and is non-zero, then CompileTimePorder or RuntimePorder. INF by default.
+
+  //-> <EVAL_LEVEL>_eval.
+  //-> [optional] Hpatt, Jpatt.
 };
 
 }  // namespace chaos::mapping::function_concepts

@@ -6,7 +6,8 @@
 #include "mapping/data_filler.h"
 
 namespace chaos::mapping {
-template <std::floating_point T, bool _Override = true, bool _GetData = true>
+template <data_filler_concepts::ArithmeticType T, bool _Override = true,
+          bool _GetData = true>
 struct scalar_filler_t
     : public one_dim_filler_base<scalar_filler_t<T, _Override, _GetData>> {
   static constexpr bool Override = _Override;
@@ -29,7 +30,7 @@ struct scalar_filler_t
     }
   }
 
-  template <bool is_override, std::floating_point U>
+  template <bool is_override, data_filler_concepts::ArithmeticType U>
   inline void _batch_fill(const U &val) {
     _fill<is_override>(0, val);
   }
