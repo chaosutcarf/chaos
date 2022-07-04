@@ -113,10 +113,10 @@ struct std::hash<chaos::vec_t<Scalar>> {
     constexpr size_t p3 = 100001651;
     constexpr size_t p4 = 83492791;
     constexpr size_t p5 = 73856093;
-    const size_t t1 = v.sum() * p1;
-    const size_t t2 = v[p2 % v.size()] * p2;
-    const size_t t3 = v[p3 % v.size()] * p3;
-    const size_t t4 = v[p4 % v.size()] * p4;
+    const size_t t1 = static_cast<size_t>(v.sum()) * p1;
+    const size_t t2 = static_cast<size_t>(v[p2 % v.size()]) * p2;
+    const size_t t3 = static_cast<size_t>(v[p3 % v.size()]) * p3;
+    const size_t t4 = static_cast<size_t>(v[p4 % v.size()]) * p4;
     const size_t t5 = v.size() * p5;
     const size_t t6 =
         v.hasNaN() * chaos::numerical::constant<double>::golden_ratio;

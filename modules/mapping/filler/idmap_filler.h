@@ -25,9 +25,14 @@ namespace chaos::mapping {
 template <data_filler_concepts::OneDimFillerConcept T,
           data_filler_concepts::UnaryAccessible IndexList>
 struct idmap_1d_filler_t
-    : public one_dim_filler_base<idmap_1d_filler_t<T, IndexList>> {
-  ONE_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
-                    data_filler_concepts::CanParallel<T>, false);
+    : public one_dim_filler_base<
+          idmap_1d_filler_t<T, IndexList>,
+          OneDimTraits<T::Traits::Override, false, T::Traits::CanParallel>> {
+  using Base = one_dim_filler_base<
+      idmap_1d_filler_t<T, IndexList>,
+      OneDimTraits<T::Traits::Override, false, T::Traits::CanParallel>>;
+  using typename Base::Traits;
+
   idmap_1d_filler_t(T &filler, const IndexList &idmap)
       : filler(filler), idmap(idmap) {
     IDMAP_CHECK();
@@ -39,7 +44,7 @@ struct idmap_1d_filler_t
   inline index_t _size() const { return idmap.size(); }
 
   template <bool is_override>
-  inline void _fill(index_t p, real_t val) {
+  inline void _fill(index_t p, real_t val) FILLER_FILL_REQUIRES {
     filler.template _fill<is_override>(idmap[p], val);
   }
 
@@ -52,10 +57,16 @@ template <data_filler_concepts::TwoDimFillerConcept T, typename IndexList,
           bool BothMap = true>
 requires data_filler_concepts::UnaryAccessible<IndexList, index_t>
 struct idmap_2d_filler_t
-    : public two_dim_filler_base<idmap_2d_filler_t<T, IndexList, BothMap>> {
-  TWO_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
-                    data_filler_concepts::CanParallel<T>,
-                    data_filler_concepts::MatFillMode<T>(), false);
+    : public two_dim_filler_base<
+          idmap_2d_filler_t<T, IndexList, BothMap>,
+          TwoDimTraits<T::Traits::MatFillMode, T::Traits::Override, false,
+                       T::Traits::CanParallel>> {
+  using Base = two_dim_filler_base<
+      idmap_2d_filler_t<T, IndexList, BothMap>,
+      TwoDimTraits<T::Traits::MatFillMode, T::Traits::Override, false,
+                   T::Traits::CanParallel>>;
+  using typename Base::Traits;
+
   idmap_2d_filler_t(T &filler, const IndexList &idmap)
       : filler(filler), idmap(idmap) {
     IDMAP_CHECK();
@@ -75,7 +86,7 @@ struct idmap_2d_filler_t
   inline index_t _cols() const { return idmap.size(); }
 
   template <bool is_override>
-  inline void _fill(index_t r, index_t c, real_t val) {
+  inline void _fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
     if constexpr (BothMap) {
       filler.template _fill<is_override>(idmap[r], idmap[c], val);
     } else {

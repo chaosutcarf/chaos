@@ -148,4 +148,10 @@ struct two_dim_filler_base {
   }
 };
 
+#define FILLER_DATA_REQUIRES requires Traits::CanGetData
+
+#define FILLER_FILL_REQUIRES                                        \
+  requires chaos::mapping::data_filler_concepts::FillOverrideCheck< \
+      is_override, Traits::Override>
+
 }  // namespace chaos::mapping

@@ -6,15 +6,21 @@
 namespace chaos::mapping {
 
 template <data_filler_concepts::OneDimFillerConcept T>
-struct weight_1d_filler_t : public one_dim_filler_base<weight_1d_filler_t<T>> {
-  ONE_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
-                    data_filler_concepts::CanParallel<T>, false);
+struct weight_1d_filler_t
+    : public one_dim_filler_base<
+          weight_1d_filler_t<T>,
+          OneDimTraits<T::Traits::Override, false, T::Traits::CanParallel>> {
+  using Base = one_dim_filler_base<
+      weight_1d_filler_t<T>,
+      OneDimTraits<T::Traits::Override, false, T::Traits::CanParallel>>;
+  using typename Base::Traits;
+
   weight_1d_filler_t(T& filler, real_t w) : filler(filler), w(w) {}
 
   inline index_t _size() const { return filler._size(); }
 
   template <bool is_override>
-  inline void _fill(index_t p, real_t val) {
+  inline void _fill(index_t p, real_t val) FILLER_FILL_REQUIRES {
     filler.template _fill<is_override>(p, w * val);
   }
 
@@ -24,17 +30,24 @@ struct weight_1d_filler_t : public one_dim_filler_base<weight_1d_filler_t<T>> {
 };
 
 template <data_filler_concepts::TwoDimFillerConcept T>
-struct weight_2d_filler_t : public two_dim_filler_base<weight_2d_filler_t<T>> {
-  TWO_DIM_INTERFACE(data_filler_concepts::IsOverride<T>,
-                    data_filler_concepts::CanParallel<T>,
-                    data_filler_concepts::MatFillMode<T>(), false);
+struct weight_2d_filler_t
+    : public two_dim_filler_base<
+          weight_2d_filler_t<T>,
+          TwoDimTraits<T::Traits::MatFillMode, T::Traits::Override, false,
+                       T::Traits::CanParallel>> {
+  using Base = two_dim_filler_base<
+      weight_2d_filler_t<T>,
+      TwoDimTraits<T::Traits::MatFillMode, T::Traits::Override, false,
+                   T::Traits::CanParallel>>;
+  using typename Base::Traits;
+
   weight_2d_filler_t(T& filler, real_t w) : filler(filler), w(w) {}
 
   inline index_t _rows() const { return filler._rows(); }
   inline index_t _cols() const { return filler._cols(); }
 
   template <bool is_override>
-  inline void _fill(index_t r, index_t c, real_t val) {
+  inline void _fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
     filler.template _fill<is_override>(r, c, val * w);
   }
 
