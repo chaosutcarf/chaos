@@ -51,7 +51,7 @@ struct mat_filler_t
 
   template <bool is_override,
             data_filler_concepts::EigenDenseMatrixBase DerivedH>
-  inline void _batch_fill(const DerivedH &H) FILLER_FILL_REQUIRES {
+  inline void _fill(const DerivedH &H) FILLER_FILL_REQUIRES {
 #define FILL(H)                             \
   if constexpr (is_override && _Override) { \
     m_data = H;                             \
@@ -103,7 +103,7 @@ struct gra_filler_t : public two_dim_filler_base<
   }
 
   template <bool is_override, data_filler_concepts::UnaryAccessible DerivedV>
-  inline void _batch_fill(const DerivedV &V) FILLER_FILL_REQUIRES {
+  inline void _fill(const DerivedV &V) FILLER_FILL_REQUIRES {
 #pragma omp parallel for
     for (index_t i = 0; i < V.size(); ++i) {
       _fill<is_override>(0, i, V[i]);

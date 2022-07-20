@@ -50,7 +50,7 @@ struct one_dim_filler_base {
 
   template <bool mode = Traits::Override, typename DerivedV>
   requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
-  inline void batch_fill(const DerivedV &vec) {
+  inline void fill(const DerivedV &vec) {
     constexpr bool is_scalar{data_filler_concepts::ArithmeticType<DerivedV>};
     constexpr bool is_unary_accessible{
         data_filler_concepts::UnaryAccessible<DerivedV>};
@@ -63,14 +63,14 @@ struct one_dim_filler_base {
     if constexpr (is_scalar) {
       CHAOS_DEBUG_ASSERT(size() == 1, size());
       if constexpr (has_batch_fill) {
-        derived().template _batch_fill<mode, DerivedV>(vec);
+        derived().template _fill<mode, DerivedV>(vec);
       } else {
         derived().template _fill<mode>(0, vec);
       }
     } else {
       CHAOS_DEBUG_ASSERT(vec.size() == size(), vec.size(), size());
       if constexpr (has_batch_fill) {
-        derived().template _batch_fill<mode, DerivedV>(vec);
+        derived().template _fill<mode, DerivedV>(vec);
       } else {
 #define RUN()                                  \
   for (index_t i = 0; i < size(); ++i) {       \
@@ -115,7 +115,7 @@ struct two_dim_filler_base {
   template <bool mode = Traits::Override,
             data_filler_concepts::BinaryAccessible DerivedH>
   requires data_filler_concepts::FillOverrideCheck<mode, Traits::Override>
-  inline void batch_fill(const DerivedH &H) {
+  inline void fill(const DerivedH &H) {
 #define RUN()                                                              \
   for (index_t r = 0; r < rows(); ++r) {                                   \
     index_t c, end;                                                        \
@@ -134,7 +134,7 @@ struct two_dim_filler_base {
     CHAOS_DEBUG_ASSERT(H.rows() == rows(), H.cols() == cols(), H.rows(),
                        H.cols(), rows(), cols());
     if constexpr (data_filler_concepts::ProvideBatchFill<Derived, DerivedH>) {
-      derived().template _batch_fill<mode, DerivedH>(H);
+      derived().template _fill<mode, DerivedH>(H);
     } else {
       //-> default batch fill.
       if constexpr (Traits::CanParallel) {

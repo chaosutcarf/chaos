@@ -5,36 +5,33 @@
 #include "common/pattern.h"
 #include "common/type.h"
 #include "mapping/data_filler_concepts.h"
-
+#include "mapping/function_concepts.h"
 using namespace chaos;
 using namespace chaos::mapping::data_filler_concepts;
+using namespace chaos::mapping::function_concepts;
+template <typename T>
+concept HasT = requires {
+  T::Traits::Flag;
+};
 
-template <typename Derived, OneDimTraitsConcept _Traits>
+template <typename T>
+concept TestTraits = HasT<T>;
+
+template <typename T>
 struct Base {
-  using Traits = _Traits;
-  Base() {
-    static_assert(OneDimFillerConcept<Derived>, "check!");
-}
+  Base() { static_assert(TestTraits<T>, "check"); }
 };
 
-struct AAATraits {
-  static constexpr bool Override = true;
-  static constexpr bool CanParallel = true;
-  static constexpr bool CanGetData = true;
+struct ATraits {
+  static constexpr bool Flag = true;
 };
 
-struct AAA : public Base<AAA, AAATraits> {
-  index_t _size() const {return 1;}
-};
-
-struct BBB {
-  // using Traits = int;
+struct A : public Base<A> {
+    static constexpr int fdim{11};
 };
 
 int main(int argc, char *argv[]) {
-  AAA a;
-
-  if constexpr (OneDimFillerConcept<AAA>) {
+  if constexpr (CompileTimeNfConcept<A>) {
     printf("yes\n");
   } else {
     printf("no\n");

@@ -65,7 +65,7 @@ TEST_CASE("test scalar filler", "[data_filler]") {
     CHECK(type::Traits::CanGetData);
 
     CHECK(f.size() == 1);
-    f.batch_fill(10);
+    f.fill(10);
     CHECK(numerical::near<double>(res, 10));
     //-> check fill.
     f.fill<false>(0, 1);
@@ -82,9 +82,9 @@ TEST_CASE("test scalar filler", "[data_filler]") {
     CHECK(!type::Traits::Override);
     CHECK(!type::Traits::CanGetData);
     CHECK(numerical::near<double>(res, 0));
-    f.batch_fill(10);
+    f.fill(10);
     CHECK(numerical::near<double>(res, 10));
-    f.batch_fill(10);
+    f.fill(10);
     CHECK(numerical::near<double>(res, 20));
     f.setZero();
     CHECK(numerical::near<double>(res, 0));
@@ -103,11 +103,11 @@ TEST_CASE("test vector filler", "[data_filler]") {
     CHECK(type::Traits::CanGetData);
     CHECK(filler.size() == res.size());
     CHECK(filler.data() == res.data());
-    filler.batch_fill(vec3r_t::Ones());
+    filler.fill(vec3r_t::Ones());
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Ones()));
-    filler.batch_fill(vec3r_t::Ones());
+    filler.fill(vec3r_t::Ones());
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Ones()));
-    filler.batch_fill<false>(vec3r_t::Ones());
+    filler.fill<false>(vec3r_t::Ones());
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Constant(2)));
     filler.setZero();
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Zero()));
@@ -120,9 +120,9 @@ TEST_CASE("test vector filler", "[data_filler]") {
     CHECK(!type::Traits::Override);
     CHECK(!type::Traits::CanGetData);
     CHECK(filler.size() == res.size());
-    filler.batch_fill(vec3r_t::Ones());
+    filler.fill(vec3r_t::Ones());
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Ones()));
-    filler.batch_fill(vec3r_t::Ones());
+    filler.fill(vec3r_t::Ones());
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Constant(2)));
     filler.setZero();
     CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Zero()));
@@ -143,9 +143,9 @@ TEST_CASE("test two dim filler", "[data_filler]") {
     CHECK(filler.cols() == res.cols());
     mat_t<double, 2, 3> val;
     val.setRandom();
-    filler.batch_fill(val);
+    filler.fill(val);
     CHECK(std::equal_to<matxr_t>()(res, val));
-    filler.batch_fill(val);
+    filler.fill(val);
     CHECK(std::equal_to<matxr_t>()(res, val));
     filler.setZero();
     CHECK(std::equal_to<matxr_t>()(res, mat_t<double, 2, 3>::Zero()));
@@ -162,63 +162,11 @@ TEST_CASE("test two dim filler", "[data_filler]") {
     CHECK(filler.cols() == res.cols());
     mat_t<double, 2, 3> val;
     val.setRandom();
-    filler.batch_fill(val);
+    filler.fill(val);
     CHECK(std::equal_to<matxr_t>()(res, val));
-    filler.batch_fill(val);
+    filler.fill(val);
     CHECK(std::equal_to<matxr_t>()(res, 2 * val));
     filler.setZero();
     CHECK(std::equal_to<matxr_t>()(res, mat_t<double, 2, 3>::Zero()));
   }
 }
-
-// TEST_CASE("test two dim filler", "[mapping]") {
-//   SECTION("mat filler") {
-//     SECTION("override") {
-//       chaos::matxr_t res(2, 3);
-//       mat_filler_t filler(res);
-//       CHECK(filler.rows() == 2);
-//       CHECK(filler.cols() == 3);
-//       CHECK(filler.can_get_data == true);
-//       CHECK(filler.data() == res.data());
-//       CHECK(filler.override_mode == true);
-//       chaos::matxr_t val(2, 3);
-//       val.setRandom();
-//       filler.batch_fill(val);
-//       CHECK(std::equal_to<chaos::matxr_t>()(val, res));
-//       filler.batch_fill(val);
-//       CHECK(std::equal_to<chaos::matxr_t>()(val, res));
-//     }
-//     SECTION("UPPER") {
-//       chaos::matxr_t res(3, 3);
-//       res.setZero();
-//       mat_filler_t<decltype(res), chaos::MATRIX_FILL_MODE::UPPER>
-//       filler(res); CHECK(filler.rows() == 3); CHECK(filler.cols() == 3);
-//       CHECK(filler.can_get_data == false);
-//       CHECK(filler.override_mode == true);
-//       chaos::matxr_t val(3, 3);
-//       val.setRandom();
-//       filler.batch_fill(val);
-//       chaos::matxr_t trig = val.triangularView<Eigen::Upper>();
-//       CHECK(std::equal_to<chaos::matxr_t>()(trig, res));
-//       filler.batch_fill(val);
-//       CHECK(std::equal_to<chaos::matxr_t>()(trig, res));
-//     }
-//     SECTION("LOWER") {
-//       chaos::matxr_t res(3, 3);
-//       res.setZero();
-//       mat_filler_t<decltype(res), chaos::MATRIX_FILL_MODE::LOWER>
-//       filler(res); CHECK(filler.rows() == 3); CHECK(filler.cols() == 3);
-//       CHECK(filler.can_get_data == false);
-//       CHECK(filler.override_mode == true);
-//       chaos::matxr_t val(3, 3);
-//       val.setRandom();
-//       chaos::matxr_t trig = val.triangularView<Eigen::Upper>();
-//       chaos::matxr_t diag = val.diagonal().asDiagonal();
-//       filler.batch_fill(trig);
-//       CHECK(std::equal_to<chaos::matxr_t>()(diag, res));
-//       res.setZero();
-//       filler.batch_fill(trig.transpose());
-//       CHECK(std::equal_to<chaos::matxr_t>()(trig.transpose(), res));
-//     }
-//   }
-// }

@@ -2,9 +2,9 @@
 
 namespace chaos::mapping {
 
-auto patt_helper::diag_patt(size_t xdim) -> patt_ptr_t {
+auto patt_helper::diag_patt(index_t xdim) -> patt_ptr_t {
   auto patt = std::make_unique<patt_t>();
-  for (size_t i = 0; i < xdim; ++i) {
+  for (index_t i = 0; i < xdim; ++i) {
     patt->insert({i, i});
   }
   return patt;

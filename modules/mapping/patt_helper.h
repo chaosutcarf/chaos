@@ -9,19 +9,19 @@
 namespace chaos::mapping {
 
 struct patt_helper {
-  using patt_t = std::set<std::pair<size_t, size_t>>;
+  using patt_t = std::set<std::pair<index_t, index_t>>;
   using patt_ptr_t = std::unique_ptr<patt_t>;
 
   static const patt_ptr_t empty_patt;
 
-  static patt_ptr_t diag_patt(size_t xdim);
+  static patt_ptr_t diag_patt(index_t xdim);
   static patt_ptr_t self_adjoint_patt(const patt_t *patt);
 
   template <bool UpperOnly, typename Derived>
   static patt_ptr_t extract_A_patt(const Eigen::MatrixBase<Derived> &A) {
     using Index = typename Derived::Index;
     auto patt = std::make_unique<patt_t>();
-    const auto insert = [&patt, &A](size_t row, size_t col) {
+    const auto insert = [&patt, &A](index_t row, index_t col) {
       if (!numerical::is_zero(A(row, col))) {
         patt->insert({row, col});
       }

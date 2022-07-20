@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
   double res = 0;
   scalar_filler_t f(res);
   CHAOS_DEBUG_ASSERT(f.size() == 1);
-  f.batch_fill(5);
+  f.fill(5);
   CHAOS_DEBUG_ASSERT(numerical::near<double>(res, 5));
   f.fill<false>(0, 1);
   CHAOS_DEBUG_ASSERT(numerical::near<double>(res, 6));

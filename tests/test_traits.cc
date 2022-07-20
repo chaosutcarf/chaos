@@ -18,7 +18,7 @@
 //   static B fill_mode;
 //   template <typename D, typename _ = double,
 //             std::enable_if_t<std::is_same_v<_, B>, bool> = true>
-//   void _batch_fill(D &&v);
+//   void _fill(D &&v);
 //   template <bool _ = override_mode, std::enable_if_t<_ == true, bool> = true>
 //   chaos::real_t *data() {
 //     return nullptr;

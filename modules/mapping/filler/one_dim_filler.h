@@ -24,11 +24,11 @@ struct scalar_filler_t
 
   template <bool is_override>
   inline void _fill(index_t, real_t val) FILLER_FILL_REQUIRES {
-    _batch_fill<is_override>(val);
+    _fill<is_override>(val);
   }
 
   template <bool is_override, data_filler_concepts::ArithmeticType U>
-  inline void _batch_fill(const U &val) FILLER_FILL_REQUIRES {
+  inline void _fill(const U &val) FILLER_FILL_REQUIRES {
     if constexpr (is_override) {
       m_data = val;
     } else {
@@ -67,7 +67,7 @@ struct one_dim_filler_t
   }
 
   template <bool is_override, data_filler_concepts::UnaryAccessible DerivedV>
-  inline void _batch_fill(const DerivedV &val) FILLER_FILL_REQUIRES {
+  inline void _fill(const DerivedV &val) FILLER_FILL_REQUIRES {
     if constexpr (is_override) {
       m_data = val;
     } else {

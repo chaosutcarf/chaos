@@ -85,7 +85,7 @@ struct spring_chain_energy
 
     if constexpr (!std::remove_pointer_t<OutPtr>::can_get_data) {
       utils::STW_START("g.fill");
-      jacptr->template batch_fill(g.transpose());
+      jacptr->template fill(g.transpose());
       utils::STW_STOP("g.fill");
     }
   }

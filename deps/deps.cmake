@@ -97,13 +97,13 @@ if (CHAOS_BUILD_WITH_SUITESPARSE)
 endif(CHAOS_BUILD_WITH_SUITESPARSE)
 
 # python bindings.
-if (CHAOS_USE_PYTHON_BINDINGS)
-  require_git_package(pybind11 "git@github.com:pybind/pybind11.git" "v2.8.1"
-    CMAKE_ARGS "-DPYBIND11_TEST=OFF"
-    VERSION "2.8.1"
-    )
-  add_subdirectory(pychaos)
-endif(CHAOS_USE_PYTHON_BINDINGS)
+# if (CHAOS_USE_PYTHON_BINDINGS)
+#   require_git_package(pybind11 "git@github.com:pybind/pybind11.git" "v2.8.1"
+#     CMAKE_ARGS "-DPYBIND11_TEST=OFF"
+#     VERSION "2.8.1"
+#     )
+#   add_subdirectory(pychaos)
+# endif(CHAOS_USE_PYTHON_BINDINGS)
 
 if (CHAOS_BUILD_UNIT_TEST)
   require_git_package(Catch2 "ssh://git@ryon.ren:10022/mirrors/Catch2.git" "v2.13.7"

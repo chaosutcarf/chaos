@@ -76,8 +76,8 @@ concept TwoDimFillerConcept = requires {
 template <typename T, typename U>
 concept ProvideBatchFill = (OneDimFillerConcept<T> ||
                             TwoDimFillerConcept<T>)&&requires(T a, U &&data) {
-  a.template _batch_fill<true && T::Traits::Override, U>(data);
-  a.template _batch_fill<false, U>(data);
+  a.template _fill<true && T::Traits::Override, U>(data);
+  a.template _fill<false, U>(data);
 };
 
 template <bool fillmode, bool Override>
