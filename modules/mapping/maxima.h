@@ -3,16 +3,17 @@
 #include <cstddef>
 
 #include "mapping/function.h"
+#include "mapping/function_concepts.h"
 #include "utils/logger/logger.h"
 
 namespace chaos::mapping {
 
-template <typename FuncPtr, int Xdim, int Fdim, int Xorder>
+template <typename FuncPtr, dim_t Xdim, dim_t Fdim, order_t Xorder = inf_order>
 struct maxima_wrapper_t
     : public function_base<maxima_wrapper_t<FuncPtr, Xdim, Fdim, Xorder>> {
-  static constexpr int xdim = Xdim;
-  static constexpr int fdim = Fdim;
-  static constexpr index_t xorder = Xorder;
+  DECLARE_COMPILETIME_XDIM(Xdim);
+  DECLARE_COMPILETIME_FDIM(Fdim);
+  DECLARE_COMPILETIME_XORDER(Xorder);
 
   maxima_wrapper_t(FuncPtr val_impl, FuncPtr jac_impl, FuncPtr hes_impl)
       : m_val_impl(val_impl), m_jac_impl(jac_impl), m_hes_impl(hes_impl) {

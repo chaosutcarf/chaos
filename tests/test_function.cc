@@ -1,10 +1,35 @@
 #include <type_traits>
 
 #include "common/type.h"
+#include "mapping/autodiff.h"
 #include "mapping/function.h"
+#include "mapping/function_concepts.h"
+#include "utils/logger/logger.h"
 
 using namespace chaos::mapping;
 using namespace chaos;
+
+struct test_auto_f : public autodiff_function_base<test_auto_f> {
+  DECLARE_COMPILETIME_XDIM(3);
+  DECLARE_COMPILETIME_FDIM(1);
+  DECLARE_COMPILETIME_XORDER(inf_order);
+
+  template <typename T, typename Wrt>
+  auto _mapsto(const Wrt &x) const {
+    return x.squaredNorm();
+  }
+};
+
+struct test_auto_f2 : public autodiff_function_base<test_auto_f2> {
+  DECLARE_COMPILETIME_FDIM(2);
+  DECLARE_COMPILETIME_XDIM(3);
+  DECLARE_COMPILETIME_XORDER(inf_order);
+
+  template <typename T, typename Wrt>
+  auto _mapsto(const Wrt &x) const {
+    return vec_t<T, 2>{x.squaredNorm(), x.sum()};
+  }
+};
 
 struct poly_f : public function_base<poly_f> {
   static constexpr int xdim = 3;
@@ -27,8 +52,20 @@ struct poly_f : public function_base<poly_f> {
 
 int main(int argc, char *argv[]) {
   poly_f f;
+  test_auto_f g;
+  test_auto_f2 g2;
   vec3r_t x;
   x.setRandom();
+  info_msg("g.Nf: {}", g.Nf());
+  info_msg("g.Nx: {}", g.Nx());
+  info_msg("g.val: {}", g.Val(x));
+  info_msg("g.jac: {}", g.Jac(x));
+  info_msg("g.hes: {}", g.Hes(x));
+  info_msg("g2.Nf: {}", g2.Nf());
+  info_msg("g2.Nx: {}", g2.Nx());
+  info_msg("g2.val: {}", g2.Val(x));
+  info_msg("g2.jac: {}", g2.Jac(x));
+  info_msg("g2.hes: {}", g2.Hes(x));
   info_msg("x: {}", x);
   info_msg("Nf: {}", f.Nf());
   info_msg("Nx: {}", f.Nx());

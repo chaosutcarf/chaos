@@ -25,21 +25,21 @@ struct CompileTimeInfos {
     return !function_concepts::RuntimeXorderConcept<T>;
   }
   //-> eval.
-  constexpr static int Nx() {
+  constexpr static dim_t Nx() {
     if constexpr (HasNx()) {
       return T::xdim;
     } else {
       return -1;
     }
   }
-  constexpr static int Nf() {
+  constexpr static dim_t Nf() {
     if constexpr (HasNf()) {
       return T::fdim;
     } else {
       return -1;
     }
   }
-  constexpr static index_t Xorder() {
+  constexpr static order_t Xorder() {
     static_assert(HasXorder(), "call CompileTimeInfo::Xorder before check!");
     if constexpr (function_concepts::HasMemberXorder<T>) {
       return T::xorder;
@@ -56,7 +56,6 @@ struct CompileTimeInfos {
 template <typename Derived>
 struct function_base {
   CRTP_derived_interface(Derived, function_base);
-  using patt_t = patt_helper::patt_t;
   function_base() {
     static_assert(function_concepts::FunctionConcept<Derived>,
                   "Check FunctionConcept");
@@ -64,9 +63,9 @@ struct function_base {
   //-> CompileTime Informations
   using CTI = CompileTimeInfos<Derived>;
   //-> Runtime Informations
-  inline int Nx() const;
-  inline int Nf() const;
-  inline index_t Xorder() const;
+  inline dim_t Nx() const;
+  inline dim_t Nf() const;
+  inline order_t Xorder() const;
   inline bool isValConstWrtX() const { return Xorder() <= 0; }
   inline bool isJacConstWrtX() const { return Xorder() <= 1; }
   inline bool isHesConstWrtX() const { return Xorder() <= 2; }
@@ -184,7 +183,7 @@ inline auto function_base<Derived>::Hes(const Wrt &wrt,
 
 #define DefineDim(f)                                     \
   template <typename Derived>                            \
-  inline int function_base<Derived>::N##f() const {      \
+  inline dim_t function_base<Derived>::N##f() const {    \
     static_assert(function_concepts::NfConcept<Derived>, \
                   "Should satisfy N" #f " Concept!");    \
     if constexpr (CTI::HasN##f()) {                      \
@@ -199,7 +198,7 @@ DefineDim(x);
 #undef DefineDim
 
 template <typename Derived>
-inline index_t function_base<Derived>::Xorder() const {
+inline order_t function_base<Derived>::Xorder() const {
   if constexpr (CTI::HasXorder()) {
     return CTI::Xorder();
   } else {
@@ -313,3 +312,6 @@ inline void function_base<Derived>::ValJacHes(OutV &&val, OutJ &&jac,
       _eval_val(vptr, wrt, args...);                                   \
     }                                                                  \
   }
+#define DECLARE_COMPILETIME_XDIM(d) static constexpr dim_t xdim = d;
+#define DECLARE_COMPILETIME_FDIM(d) static constexpr dim_t fdim = d;
+#define DECLARE_COMPILETIME_XORDER(o) static constexpr order_t xorder = o;

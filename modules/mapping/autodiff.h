@@ -11,15 +11,12 @@ namespace chaos::mapping {
 
 template <typename Derived>
 struct autodiff_function_base : public function_base<Derived> {
-  //-> if fdim is 1.
-  //-> Derived Class should implement this function:
-  // template <typename T, typename... Args>
-  // T _mapsto(const Eigen::Ref<const vec_t<T>> &x, const Args &...args) const
-  // {}
-  //-> else
-  // template <typename T, typename... Args>
-  // vec_t<T> _mapsto(const Eigen::Ref<const vec_t<T>> &x, const Args &...args)
-  // const {}
+  //-> Derived should be implemented this function.
+  // return type: scalar_t if fdim == 1.
+  // return type: vector_t if fdim != 1.
+  //
+  // template<typename T, typename Wrt, typename...Args>
+  // auto _mapsto(const Wrt&wrt, const Args&...args) const;
 
   template <typename Vptr, typename Jptr, typename Hptr, typename Wrt,
             typename... Args>
@@ -56,7 +53,7 @@ void autodiff_function_base<Derived>::_eval(Vptr vptr, Jptr jptr, Hptr hptr,
                                             const Args &...args) const {
   if constexpr (not_nullptr<Hptr>()) {
     _eval_hes(vptr, jptr, hptr, wrt, args...);
-  } else if constexpr (not_nullptr<Hptr>()) {
+  } else if constexpr (not_nullptr<Jptr>()) {
     _eval_jac(vptr, jptr, wrt, args...);
   } else if constexpr (not_nullptr<Vptr>()) {
     _eval_val(vptr, wrt, args...);
@@ -114,12 +111,12 @@ void autodiff_function_base<Derived>::_eval_hes_x(Vptr vptr, Jptr jptr,
           return this->derived().template _mapsto<dual_t<2>>(x, args...)[i]; \
         },                                                                   \
         autodiff::wrt(X), autodiff::at(X, args...), _2, Ji, Hi);             \
-    if constexpr (not_nullptr<Vptr>()) {                                       \
+    if constexpr (not_nullptr<Vptr>()) {                                     \
       vptr->fill(i, _2.val.val);                                             \
     }                                                                        \
   }                                                                          \
   hptr->fill(H);                                                             \
-  if constexpr (not_nullptr<Jptr>()) {                                         \
+  if constexpr (not_nullptr<Jptr>()) {                                       \
     jptr->fill(J);                                                           \
   }
 

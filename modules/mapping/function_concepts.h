@@ -7,6 +7,10 @@
 #include "mapping/patt_helper.h"
 
 namespace chaos::mapping {
+using dim_t = int;
+using order_t = index_t;
+using patt_t = patt_helper::patt_t;
+constexpr order_t inf_order = -1;
 
 template <typename T>
 constexpr bool not_nullptr() {
@@ -34,7 +38,7 @@ has_function(patt_helper::patt_t *, Jpatt, _Jpatt);
   concept CompileTimeN##f##Concept = T::f##dim > 0;                \
   template <typename T>                                            \
   concept RuntimeN##f##Concept = requires(const T a) {             \
-    { a._N##f() } -> std::convertible_to<int>;                     \
+    { a._N##f() } -> std::convertible_to<dim_t>;                   \
   };                                                               \
   template <typename T>                                            \
   concept N##f##Concept =                                          \
@@ -52,7 +56,7 @@ concept HasMemberXorder = requires {
 
 template <typename T>
 concept RuntimeXorderConcept = requires(const T a) {
-  { a._Xorder() } -> std::convertible_to<index_t>;
+  { a._Xorder() } -> std::convertible_to<order_t>;
 };
 
 template <typename T>
