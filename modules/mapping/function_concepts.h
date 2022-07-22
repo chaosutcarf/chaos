@@ -8,6 +8,10 @@
 
 namespace chaos::mapping {
 
+template <typename T>
+constexpr bool need_eval() {
+  return !std::is_same_v<T, std::nullptr_t>;
+}
 // namespace eval_traits {
 // enum {
 //   VAL = 1,
@@ -19,9 +23,10 @@ namespace chaos::mapping {
 //   VAL_JAC_HES = VAL | JAC | HES,
 // };
 // // clang-format off
-// template <int mode> constexpr bool has_eval_val() { return (mode & VAL) != 0; }
-// template <int mode> constexpr bool has_eval_jac() { return (mode & JAC) != 0; }
-// template <int mode> constexpr bool has_eval_hes() { return (mode & HES) != 0; }
+// template <int mode> constexpr bool has_eval_val() { return (mode & VAL) != 0;
+// } template <int mode> constexpr bool has_eval_jac() { return (mode & JAC) !=
+// 0; } template <int mode> constexpr bool has_eval_hes() { return (mode & HES)
+// != 0; }
 // // clang-format on
 // };  // namespace eval_traits
 
