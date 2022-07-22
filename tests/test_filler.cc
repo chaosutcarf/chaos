@@ -1,12 +1,11 @@
+#include "common/numerical.h"
 #include "mapping/basic_data_filler.h"
 #include "utils/logger/logger.h"
-#include "common/numerical.h"
 
 using namespace chaos;
 using namespace chaos::mapping;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   //-> one_dim_filler.
   double res = 0;
   scalar_filler_t f(res);

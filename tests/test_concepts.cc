@@ -27,7 +27,7 @@ struct ATraits {
 };
 
 struct A : public Base<A> {
-    static constexpr int fdim{11};
+  static constexpr int fdim{11};
 };
 
 int main(int argc, char *argv[]) {
