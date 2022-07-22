@@ -4,6 +4,7 @@
 #include "mapping/autodiff.h"
 #include "mapping/function.h"
 #include "mapping/function_concepts.h"
+#include "mapping/function_with_context.h"
 #include "utils/logger/logger.h"
 
 using namespace chaos::mapping;
@@ -54,8 +55,15 @@ int main(int argc, char *argv[]) {
   poly_f f;
   test_auto_f g;
   test_auto_f2 g2;
+  function_with_context f_ctx(f);
   vec3r_t x;
   x.setRandom();
+  f_ctx.set_x(x);
+  info_msg("f_ctx.Nf(): {}", f_ctx.Nf());
+  info_msg("f_ctx.Nx(): {}", f_ctx.Nx());
+  info_msg("f_ctx.val: {}", f_ctx.Val());
+  info_msg("f_ctx.jac: {}", f_ctx.Jac());
+  info_msg("f_ctx.hes: {}", f_ctx.Hes());
   info_msg("g.Nf: {}", g.Nf());
   info_msg("g.Nx: {}", g.Nx());
   info_msg("g.val: {}", g.Val(x));
