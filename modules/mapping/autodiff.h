@@ -54,11 +54,11 @@ template <typename Vptr, typename Jptr, typename Hptr, typename Wrt,
 void autodiff_function_base<Derived>::_eval(Vptr vptr, Jptr jptr, Hptr hptr,
                                             const Wrt &wrt,
                                             const Args &...args) const {
-  if constexpr (!std::is_same_v<Hptr, std::nullptr_t>) {
+  if constexpr (not_nullptr<Hptr>()) {
     _eval_hes(vptr, jptr, hptr, wrt, args...);
-  } else if constexpr (!std::is_same_v<Hptr, std::nullptr_t>) {
+  } else if constexpr (not_nullptr<Hptr>()) {
     _eval_jac(vptr, jptr, wrt, args...);
-  } else if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {
+  } else if constexpr (not_nullptr<Vptr>()) {
     _eval_val(vptr, wrt, args...);
   }
 }
@@ -87,10 +87,10 @@ void autodiff_function_base<Derived>::_eval_hes(Vptr vptr, Jptr jptr, Hptr hptr,
         },
         autodiff::wrt(X), autodiff::at(X, args...), _2, G, H);
     hptr->fill(H);
-    if constexpr (!std::is_same_v<Jptr, std::nullptr_t>) {
+    if constexpr (not_nullptr<Jptr>()) {
       jptr->fill(G);
     }
-    if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {
+    if constexpr (not_nullptr<Vptr>()) {
       vptr->fill(_2.val.val);
     }
   }
@@ -114,12 +114,12 @@ void autodiff_function_base<Derived>::_eval_hes_x(Vptr vptr, Jptr jptr,
           return this->derived().template _mapsto<dual_t<2>>(x, args...)[i]; \
         },                                                                   \
         autodiff::wrt(X), autodiff::at(X, args...), _2, Ji, Hi);             \
-    if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {                   \
+    if constexpr (not_nullptr<Vptr>()) {                                       \
       vptr->fill(i, _2.val.val);                                             \
     }                                                                        \
   }                                                                          \
   hptr->fill(H);                                                             \
-  if constexpr (!std::is_same_v<Jptr, std::nullptr_t>) {                     \
+  if constexpr (not_nullptr<Jptr>()) {                                         \
     jptr->fill(J);                                                           \
   }
 
@@ -156,7 +156,7 @@ void autodiff_function_base<Derived>::_eval_jac(Vptr vptr, Jptr jptr,
         },
         autodiff::wrt(X), autodiff::at(X, args...), _1, J);
     jptr->fill(J);
-    if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {
+    if constexpr (not_nullptr<Vptr>()) {
       vptr->fill(_1.val);
     }
   }
@@ -182,7 +182,7 @@ void autodiff_function_base<Derived>::_eval_jac_x(Vptr vptr, Jptr jptr,
       },
       autodiff::wrt(X), autodiff::at(X, args...), _1, J);
   jptr->fill(J);
-  if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {
+  if constexpr (not_nullptr<Vptr>()) {
     vptr->fill(_1.template cast<real_t>());
   }
 }

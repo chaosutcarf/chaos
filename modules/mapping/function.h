@@ -293,5 +293,23 @@ inline void function_base<Derived>::ValJacHes(OutV &&val, OutJ &&jac,
 #undef CHECK_VAL_PARAMS
 #undef CHECK_JAC_PARAMS
 #undef CHECK_HES_PARAMS
-
 }  // namespace chaos::mapping
+
+#define FUNCTION_SPLIT_IMPL()                                          \
+  template <typename Vptr, typename Jptr, typename Hptr, typename Wrt, \
+            typename... Args>                                          \
+  void _eval(Vptr vptr, Jptr jptr, Hptr hptr, const Wrt &wrt,          \
+             const Args &...args) const {                              \
+    if constexpr (not_nullptr(hptr)) {                                 \
+      CHAOS_DEBUG_ASSERT(hptr != nullptr);                             \
+      _eval_hes(hptr, wrt, args...);                                   \
+    }                                                                  \
+    if constexpr (not_nullptr(jptr)) {                                 \
+      CHAOS_DEBUG_ASSERT(jptr != nullptr);                             \
+      _eval_jac(jptr, wrt, args...);                                   \
+    }                                                                  \
+    if constexpr (not_nullptr(vptr)) {                                 \
+      CHAOS_DEBUG_ASSERT(vptr != nullptr);                             \
+      _eval_val(vptr, wrt, args...);                                   \
+    }                                                                  \
+  }

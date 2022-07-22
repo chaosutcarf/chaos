@@ -13,13 +13,13 @@ struct poly_f : public function_base<poly_f> {
   template <typename Vptr, typename Jptr, typename Hptr>
   void _eval(Vptr vptr, Jptr jptr, Hptr hptr,
              const Eigen::Ref<const vec3r_t> &x) const {
-    if constexpr (chaos::mapping::need_eval<Vptr>()) {
+    if constexpr (not_nullptr(vptr)) {
       vptr->fill(x.squaredNorm());
     }
-    if constexpr (!std::is_same_v<Jptr, std::nullptr_t>) {
+    if constexpr (not_nullptr(jptr)) {
       jptr->fill(2 * x.transpose());
     }
-    if constexpr (!std::is_same_v<Hptr, std::nullptr_t>) {
+    if constexpr (not_nullptr(hptr)) {
       hptr->fill(mat33r_t::Identity() * 2);
     }
   }

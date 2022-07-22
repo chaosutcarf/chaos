@@ -20,22 +20,7 @@ struct maxima_wrapper_t
                   "currently not support dynamic dim setting!");
   }
 
-  template <typename Vptr, typename Jptr, typename Hptr, typename Wrt,
-            typename... Args>
-  void _eval(Vptr vptr, Jptr jptr, Hptr hptr, const Wrt &wrt,
-             const Args &...args) const {
-    if constexpr (!std::is_same_v<Vptr, std::nullptr_t>) {
-      _eval_val(vptr, wrt, args...);
-    }
-
-    if constexpr (!std::is_same_v<Jptr, std::nullptr_t>) {
-      _eval_jac(jptr, wrt, args...);
-    }
-
-    if constexpr (!std::is_same_v<Hptr, std::nullptr_t>) {
-      _eval_hes(hptr, wrt, args...);
-    }
-  }
+  FUNCTION_SPLIT_IMPL();
 
  private:
   template <typename Vptr, typename Wrt, typename... Args>

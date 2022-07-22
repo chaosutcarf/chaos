@@ -9,26 +9,14 @@
 namespace chaos::mapping {
 
 template <typename T>
-constexpr bool need_eval() {
+constexpr bool not_nullptr() {
   return !std::is_same_v<T, std::nullptr_t>;
 }
-// namespace eval_traits {
-// enum {
-//   VAL = 1,
-//   JAC = 2,
-//   VAL_JAC = VAL | JAC,
-//   HES = 4,
-//   VAL_HES = VAL | HES,
-//   JAC_HES = JAC | HES,
-//   VAL_JAC_HES = VAL | JAC | HES,
-// };
-// // clang-format off
-// template <int mode> constexpr bool has_eval_val() { return (mode & VAL) != 0;
-// } template <int mode> constexpr bool has_eval_jac() { return (mode & JAC) !=
-// 0; } template <int mode> constexpr bool has_eval_hes() { return (mode & HES)
-// != 0; }
-// // clang-format on
-// };  // namespace eval_traits
+
+template <typename T>
+constexpr bool not_nullptr(const T &) {
+  return not_nullptr<T>();
+}
 
 namespace function_concepts {
 #define has_function(RetType, Op, op)             \
@@ -37,8 +25,8 @@ namespace function_concepts {
     { a.op() } -> std::convertible_to<RetType>;   \
   }
 
-has_function(patt_helper::patt_t*, Hpatt, _Hpatt);
-has_function(patt_helper::patt_t*, Jpatt, _Jpatt);
+has_function(patt_helper::patt_t *, Hpatt, _Hpatt);
+has_function(patt_helper::patt_t *, Jpatt, _Jpatt);
 #undef has_function
 
 #define DeclareDimConcept(f)                                       \
