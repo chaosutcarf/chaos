@@ -206,22 +206,23 @@ inline order_t function_base<Derived>::Xorder() const {
   }
 }
 
-#define CHECK_VAL_PARAMS(Val, In)                                             \
-  CHAOS_DEBUG_ASSERT(Val.size() == Nf(), Val.size(), Nf());                   \
-  CHAOS_DEBUG_ASSERT(isValConstWrtX() || In.size() == Nx(), isValConstWrtX(), \
-                     In.size(), Nx());
+#define CHECK_VAL_PARAMS(Val, In)                                  \
+  CHAOS_DEBUG_ASSERT((dim_t)Val.size() == Nf(), Val.size(), Nf()); \
+  CHAOS_DEBUG_ASSERT(isValConstWrtX() || (dim_t)In.size() == Nx(), \
+                     isValConstWrtX(), In.size(), Nx());
 
-#define CHECK_JAC_PARAMS(Jac, In)                                             \
-  CHAOS_DEBUG_ASSERT(Jac.cols() == Nx() && Jac.rows() == Nf(), Jac.cols(),    \
-                     Jac.rows(), Nx(), Nf());                                 \
-  CHAOS_DEBUG_ASSERT(isJacConstWrtX() || In.size() == Nx(), isJacConstWrtX(), \
-                     In.size(), Nx());
+#define CHECK_JAC_PARAMS(Jac, In)                                            \
+  CHAOS_DEBUG_ASSERT((dim_t)Jac.cols() == Nx() && (dim_t)Jac.rows() == Nf(), \
+                     Jac.cols(), Jac.rows(), Nx(), Nf());                    \
+  CHAOS_DEBUG_ASSERT(isJacConstWrtX() || (dim_t)In.size() == Nx(),           \
+                     isJacConstWrtX(), In.size(), Nx());
 
-#define CHECK_HES_PARAMS(Hes, In)                                             \
-  CHAOS_DEBUG_ASSERT(Hes.cols() == Nx() && Hes.rows() == Nf() * Nx(),         \
-                     Hes.cols(), Hes.rows(), Nx(), Nf(), Nf() * Nx());        \
-  CHAOS_DEBUG_ASSERT(isHesConstWrtX() || In.size() == Nx(), isHesConstWrtX(), \
-                     In.size(), Nx());
+#define CHECK_HES_PARAMS(Hes, In)                                    \
+  CHAOS_DEBUG_ASSERT(                                                \
+      (dim_t)Hes.cols() == Nx() && (dim_t)Hes.rows() == Nf() * Nx(), \
+      Hes.cols(), Hes.rows(), Nx(), Nf(), Nf() * Nx());              \
+  CHAOS_DEBUG_ASSERT(isHesConstWrtX() || (dim_t)In.size() == Nx(),   \
+                     isHesConstWrtX(), In.size(), Nx());
 
 template <typename Derived>
 template <typename OutV, typename Wrt, typename... Args>
