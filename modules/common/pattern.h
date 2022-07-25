@@ -81,3 +81,8 @@
     return *static_cast<Derived *>(const_cast<Base *>(this));         \
   }                                                                   \
   inline const Derived &const_derived() const { return derived(); }
+
+#define MIXIN_core_interface(Core)                                             \
+  inline Core &core() { return *static_cast<Core *>(this); }                   \
+  inline const Core &core() const { return *static_cast<const Core *>(this); } \
+  inline const Core &const_core() const { return core(); }

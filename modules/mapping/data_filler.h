@@ -1,5 +1,5 @@
 #pragma once
-
+#include "common/pattern.h"
 #include "common/type.h"
 #include "mapping/data_filler_concepts.h"
 #include "utils/logger/logger.h"
@@ -31,6 +31,8 @@ struct OneDimFiller : public Core {
   using Core::size;
   using typename Core::Traits;
 
+  MIXIN_core_interface(Core);
+
   template <bool mode = Traits::Override>
   inline void fill(index_t pos, real_t val);
 
@@ -45,12 +47,16 @@ struct TwoDimFiller : public Core {
   using Core::rows;
   using typename Core::Traits;
 
+  MIXIN_core_interface(Core);
+
   template <bool mode = Traits::Override>
   inline void fill(index_t row, index_t col, real_t val);
 
   template <bool mode = Traits::Override, typename DerivedH>
   inline void fill(const DerivedH& H);
 };
+#define CHECK_OVERRIDE_FILLMODE() \
+  static_assert(Traits::Override || !mode, "Check override mode");
 ///////////////////////////////////////////////////////////////////////////////
 //                          template implementation                          //
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,6 +64,7 @@ template <OneDimCoreConcept Core>
 template <bool mode>
 inline void OneDimFiller<Core>::fill(index_t pos, real_t val) {
   CHAOS_DEBUG_ASSERT(pos < size(), pos, size());
+  CHECK_OVERRIDE_FILLMODE();
   Core::template fill<mode>(pos, val);
 }
 
@@ -70,6 +77,7 @@ inline void OneDimFiller<Core>::fill(const DerivedV& vec) {
 
   static_assert(is_scalar || is_unary_accessible,
                 "vec should satisfy UnaryAccessible | ArithmeticType");
+  CHECK_OVERRIDE_FILLMODE();
 
   if constexpr (is_scalar) {
     CHAOS_DEBUG_ASSERT(size() == 1, size());
@@ -103,6 +111,7 @@ template <TwoDimCoreConcept Core>
 template <bool mode>
 inline void TwoDimFiller<Core>::fill(index_t r, index_t c, real_t val) {
   CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols());
+  CHECK_OVERRIDE_FILLMODE();
   Core::template fill<mode>(r, c, val);
 }
 
@@ -112,6 +121,7 @@ inline void TwoDimFiller<Core>::fill(const DerivedH& H) {
   constexpr bool core_provide_fill{ProvideBatchFill<Core, DerivedH>};
   CHAOS_DEBUG_ASSERT(H.rows() == rows() && H.cols() == cols(), H.rows(), rows(),
                      H.cols(), cols());
+  CHECK_OVERRIDE_FILLMODE();
   if constexpr (core_provide_fill) {
     Core::template fill<mode, DerivedH>(H);
   } else {
@@ -144,4 +154,4 @@ inline void TwoDimFiller<Core>::fill(const DerivedH& H) {
 #define FILLER_DATA_REQUIRES requires Traits::CanGetData
 
 #define FILLER_FILL_REQUIRES \
-  requires chaos::mapping::FillOverrideCheck<is_override, Traits::Override>
+  requires chaos::mapping::FillOverrideCheck<isOverride, Traits::Override>

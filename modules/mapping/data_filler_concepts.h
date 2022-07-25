@@ -30,6 +30,12 @@ HAS_CONST_FUNCTION(index_t, Cols, cols);
 HAS_CONST_FUNCTION(index_t, Size, size);
 #undef HAS_CONST_FUNCTION
 
+template <bool isOverride, typename Ltype, typename Rtype>
+concept AssignableConcept = (isOverride &&
+                             std::assignable_from<Ltype, Rtype>) ||
+                            (!isOverride &&
+                             requires(Ltype a, Rtype b) { a += b; });
+
 template <typename T>
 concept OneDimTraitsConcept =
     HasMemberOverride<T> && HasMemberCanGetData<T> && HasMemberCanParallel<T>;
