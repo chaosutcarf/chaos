@@ -78,7 +78,8 @@ concept OneDimCoreConcept = HasFunctionSize<T> && requires {
 };
 
 template <typename T>
-concept TwoDimCoreConcept = HasFunctionRows<T> && HasFunctionCols<T> && requires(T a) {
+concept TwoDimCoreConcept = HasFunctionRows<T> && HasFunctionCols<T> &&
+    requires(T a) {
   //-> has TwoDimTraits.
   TwoDimTraitsConcept<typename T::Traits>;
   //-> non-const api.

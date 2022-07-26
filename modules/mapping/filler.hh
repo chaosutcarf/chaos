@@ -48,12 +48,14 @@ template <OneDimCoreConcept Core>
 template <bool mode>
 inline void OneDimFiller<Core>::fill(index_t pos, real_t val) {
   CHAOS_DEBUG_ASSERT(pos < size(), pos, size());
+  CHECK_OVERRIDE_FILLMODE();
   Core::template fill<mode>(pos, val);
 }
 template <TwoDimCoreConcept Core>
 template <bool mode>
 inline void TwoDimFiller<Core>::fill(index_t r, index_t c, real_t val) {
   CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols());
+  CHECK_OVERRIDE_FILLMODE();
   Core::template fill<mode>(r, c, val);
 }
 
@@ -63,6 +65,10 @@ inline void OneDimFiller<Core>::fill(const U& rhs) {
   constexpr bool is_scalar{ArithmeticType<U>};
   constexpr bool is_unary_accessible{UnaryAccessible<U>};
   constexpr bool core_provide_fill{ProvideBatchFill<Core, U>};
+
+  static_assert(is_scalar || is_unary_accessible,
+                "vec should satisfy UnaryAccessible | ArithmeticType");
+  CHECK_OVERRIDE_FILLMODE();
 
   if constexpr (is_scalar) {
     CHAOS_DEBUG_ASSERT(size() == 1, size());
