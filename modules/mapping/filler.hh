@@ -1,92 +1,59 @@
 #pragma once
 
-#include "common/pattern.h"
-#include "mapping/filler_concept.hh"
+#include "mapping/filler_concepts.hh"
 #include "utils/logger/logger.h"
 
 namespace chaos::mapping {
-//-> use MIXIN to do some common dim checking.
-template <OneDimCoreConcept Core>
-struct OneDimFiller : public Core {
-  using Core::Core;
-  using Core::size;
-  using typename Core::Traits;
 
-  MIXIN_core_interface(Core);
+#define CHECK_OVERRIDE_FILLMODE(Override, fillmode) \
+  static_assert(Override || !(fillmode),            \
+                "Check Traits::Override and "       \
+                "fillmode");
+#define CHECK_1D_FILL(pos, Override, fillmode)   \
+  CHAOS_DEBUG_ASSERT(pos < size(), pos, size()); \
+  CHECK_OVERRIDE_FILLMODE(Override, fillmode);
 
-  template <bool mode = Traits::Override>
-  inline void fill(index_t pos, real_t val);
+#define CHECK_2D_FILL(r, c, Override, fillmode)                       \
+  CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols()); \
+  CHECK_OVERRIDE_FILLMODE(Override, fillmode);
 
-  template <bool mode = Traits::Override, typename DerivedV>
-  inline void fill(const DerivedV& vec);
-};
-
-template <TwoDimCoreConcept Core>
-struct TwoDimFiller : public Core {
-  using Core::cols;
-  using Core::Core;
-  using Core::rows;
-  using typename Core::Traits;
-
-  MIXIN_core_interface(Core);
-
-  template <bool mode = Traits::Override>
-  inline void fill(index_t row, index_t col, real_t val);
-
-  template <bool mode = Traits::Override, typename DerivedH>
-  inline void fill(const DerivedH& H);
-};
-#define CHECK_OVERRIDE_FILLMODE() \
-  static_assert(Traits::Override || !mode, "Check override mode");
-#define FILLER_FILL_REQUIRES \
-  requires chaos::mapping::FillOverrideCheck<isOverride, Traits::Override>
-#define FILLER_DATA_REQUIRES requires Traits::CanGetData
-//////////////////////////////////////////////////////////////////////////////
-//                          template implementation                          //
-///////////////////////////////////////////////////////////////////////////////
-template <OneDimCoreConcept Core>
-template <bool mode>
-inline void OneDimFiller<Core>::fill(index_t pos, real_t val) {
-  CHAOS_DEBUG_ASSERT(pos < size(), pos, size());
-  CHECK_OVERRIDE_FILLMODE();
-  Core::template fill<mode>(pos, val);
-}
-template <TwoDimCoreConcept Core>
-template <bool mode>
-inline void TwoDimFiller<Core>::fill(index_t r, index_t c, real_t val) {
-  CHAOS_DEBUG_ASSERT(r < rows() && c < cols(), r, c, rows(), cols());
-  CHECK_OVERRIDE_FILLMODE();
-  Core::template fill<mode>(r, c, val);
-}
-
-template <OneDimCoreConcept Core>
-template <bool mode, typename U>
-inline void OneDimFiller<Core>::fill(const U& rhs) {
-  constexpr bool is_scalar{ArithmeticType<U>};
-  constexpr bool is_unary_accessible{UnaryAccessible<U>};
-  constexpr bool core_provide_fill{ProvideBatchFill<Core, U>};
-
-  static_assert(is_scalar || is_unary_accessible,
-                "vec should satisfy UnaryAccessible | ArithmeticType");
-  CHECK_OVERRIDE_FILLMODE();
-
-  if constexpr (is_scalar) {
-    CHAOS_DEBUG_ASSERT(size() == 1, size());
-    if constexpr (core_provide_fill) {
-      Core::template fill<mode, U>(rhs);
-    } else {
-      Core::template fill<mode>(0, rhs);
-    }
+#define FILLER_FILL_REQUIRES requires FillOverrideCheck<isOverride, Override>
+//-> fillmode: -1 use the default OverrideMode of Filler.
+//->            0 means accumulate
+//->            1 means override.
+template <int fillmode, typename Filler>
+constexpr bool Fillmode2Override() {
+  if constexpr (fillmode == 0) {
+    return false;
+  } else if constexpr (fillmode == 1) {
+    return true;
   } else {
-    CHAOS_DEBUG_ASSERT(rhs.size() == size(), rhs.size(), size());
-    if constexpr (core_provide_fill) {
-      Core::template fill<mode, U>(rhs);
-    } else {
-#define RUN()                             \
-  for (index_t i = 0; i < size(); ++i) {  \
-    Core::template fill<mode>(i, rhs[i]); \
+    return FillerTraits<Filler>::Override();
   }
-      if constexpr (Traits::CanParallel) {
+}
+
+template <int fillmode = -1, OneDimFillerConcept Filler, typename U>
+inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
+  using Traits = FillerTraits<Filler>;
+  constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
+
+  CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
+  if constexpr (ProvideBatchFill<Filler, U>) {
+    filler.template fill<isOverride, U>(rhs);
+  } else {
+    static_assert(ArithmeticType<U> || UnaryAccessible<U>,
+                  "U should be ArithmeticType || UnaryAccessible");
+    if constexpr (ArithmeticType<U>) {
+      CHAOS_DEBUG_ASSERT(filler.size() == 1, filler.size());
+      filler.template fill<isOverride>(0, rhs);
+    } else if constexpr (UnaryAccessible<U>) {
+      CHAOS_DEBUG_ASSERT(filler.size() == rhs.size(), filler.size(),
+                         rhs.size());
+#define RUN()                                    \
+  for (index_t i = 0; i < filler.size(); ++i) {  \
+    filler.template fill<isOverride>(i, rhs[i]); \
+  }
+      if constexpr (Traits::CanParallel()) {
 #pragma omp parallel for default(none) shared(rhs)
         RUN();
       } else {
@@ -97,39 +64,52 @@ inline void OneDimFiller<Core>::fill(const U& rhs) {
   }
 }
 
-template <TwoDimCoreConcept Core>
-template <bool mode, typename DerivedH>
-inline void TwoDimFiller<Core>::fill(const DerivedH& H) {
-  constexpr bool core_provide_fill{ProvideBatchFill<Core, DerivedH>};
-  CHAOS_DEBUG_ASSERT(H.rows() == rows() && H.cols() == cols(), H.rows(), rows(),
-                     H.cols(), cols());
-  if constexpr (core_provide_fill) {
-    Core::template fill<mode, DerivedH>(H);
-  } else {
-    //-> default batch fill.
-#define RUN()                                                              \
-  for (index_t r = 0; r < rows(); ++r) {                                   \
-    index_t c, end;                                                        \
-    if constexpr (Traits::MatFillMode == MATRIX_FILL_MODE::FULL) {         \
-      c = 0, end = cols();                                                 \
-    } else if constexpr (Traits::MatFillMode == MATRIX_FILL_MODE::LOWER) { \
-      c = 0, end = r + 1;                                                  \
-    } else {                                                               \
-      c = r, end = cols();                                                 \
-    }                                                                      \
-    for (; c < end; ++c) {                                                 \
-      Core::template fill<mode>(r, c, H(r, c));                            \
-    }                                                                      \
-  }
+template <int fillmode = -1, TwoDimFillerConcept Filler, typename U>
+inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
+  using Traits = FillerTraits<Filler>;
+  constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
 
-    if constexpr (Traits::CanParallel) {
-#pragma omp parallel for default(none) shared(H)
-      RUN();
-    } else {
-      RUN();
+  CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
+  if constexpr (ProvideBatchFill<Filler, U>) {
+    filler.template fill<isOverride, U>(rhs);
+  } else {
+    constexpr bool isArithmetic = ArithmeticType<U>;
+    constexpr bool isMatrix = BinaryAccessible<U>;
+    static_assert(isArithmetic || isMatrix,
+                  "U should be ArithmeticType || BinaryAccessible");
+    if constexpr (isArithmetic) {
+      CHAOS_DEBUG_ASSERT(filler.rows() == 1 && filler.cols() == 1,
+                         filler.rows(), filler.cols());
+      filler.template fill<isOverride>(0, 0, rhs);
+    } else if constexpr (isMatrix) {
+      CHAOS_DEBUG_ASSERT(
+          filler.rows() == rhs.rows() && filler.cols() == rhs.cols(),
+          filler.rows(), filler.cols(), rhs.rows(), rhs.cols());
+#define RUN()                                                  \
+  for (index_t r = 0; r, filler.rows(); ++r) {                 \
+    constexpr auto MatMode = Traits::MatFillMode();            \
+    index_t c = 0, end;                                        \
+    if constexpr (MatMode == MATRIX_FILL_MODE::FULL) {         \
+      c = 0, end = filler.cols();                              \
+    } else if constexpr (MatMode == MATRIX_FILL_MODE::LOWER) { \
+      c = 0, end = r + 1;                                      \
+    } else if constexpr (MatMode == MATRIX_FILL_MODE::UPPER) { \
+      c = r;                                                   \
+      end = filler.cols();                                     \
+    }                                                          \
+    for (; c < end; ++c) {                                     \
+      filler.template fill<isOverride>(r, c, rhs(r, c));       \
+    }                                                          \
+  }
+      if constexpr (Traits::CanParallel()) {
+#pragma omp parallel for default(none) shared(rhs)
+        RUN();
+      } else {
+        RUN();
+      }
+#undef RUN
     }
   }
-#undef RUN
 }
 
 }  // namespace chaos::mapping

@@ -5,7 +5,7 @@
 namespace chaos::mapping {
 #define SIMPLE_BATCH_FILL(T)                                         \
   template <bool isOverride, typename U>                             \
-  inline void fill(const U &rhs)                                     \
+  inline void _fill(const U &rhs)                                    \
       FILLER_FILL_REQUIRES &&AssignableConcept<isOverride, T &, U> { \
     if constexpr (isOverride) {                                      \
       m_data = rhs;                                                  \
@@ -21,8 +21,8 @@ struct ScalarFillerCore {
   inline void setZero() { m_data = 0; }
   static constexpr index_t size() { return 1; }
   template <bool isOverride>
-  inline void fill(index_t, real_t val) FILLER_FILL_REQUIRES {
-    fill<isOverride>(val);
+  inline void _fill(index_t, real_t val) FILLER_FILL_REQUIRES {
+    _fill<isOverride>(val);
   }
 
   SIMPLE_BATCH_FILL(T);
@@ -33,7 +33,7 @@ struct ScalarFillerCore {
 };
 
 template <ArithmeticType T, bool Override = true, bool AllowGetData = true>
-auto ScalarFiller(T &data) {
+inline auto ScalarFiller(T &data) {
   return OneDimFiller<ScalarFillerCore<T, Override, AllowGetData>>(data);
 }
 
@@ -46,7 +46,7 @@ struct VectorFillerCore {
   inline void setZero() { m_data.setZero(); }
   inline index_t size() const { return m_data.size(); }
   template <bool isOverride>
-  inline void fill(index_t p, real_t val) FILLER_FILL_REQUIRES {
+  inline void _fill(index_t p, real_t val) FILLER_FILL_REQUIRES {
     if constexpr (isOverride) {
       m_data[p] = val;
     } else {
@@ -59,8 +59,9 @@ struct VectorFillerCore {
  private:
   T &m_data;
 };
+
 template <typename T, bool Override = true, bool AllowGetData = true>
-auto VectorFiller(T &data) {
+inline auto VectorFiller(T &data) {
   return OneDimFiller<VectorFillerCore<T, Override, AllowGetData>>(data);
 }
 
@@ -88,7 +89,7 @@ struct DenseMatrixFillerCore {
   inline index_t rows() const { return m_data.rows(); }
   inline index_t cols() const { return m_data.cols(); }
   template <bool isOverride>
-  inline void fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
+  inline void _fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
 #define FILL(r, c, val)       \
   if constexpr (isOverride) { \
     m_data(r, c) = val;       \
@@ -99,7 +100,7 @@ struct DenseMatrixFillerCore {
 #undef FILL
   }
   template <bool isOverride, EigenDenseMatrixConcept U>
-  inline void fill(const U &rhs)
+  inline void _fill(const U &rhs)
       FILLER_FILL_REQUIRES &&AssignableConcept<isOverride, T, U> {
 #define FILL(H)                           \
   if constexpr (isOverride && Override) { \
@@ -121,9 +122,10 @@ struct DenseMatrixFillerCore {
  private:
   T &m_data;
 };
+
 template <typename T, MATRIX_FILL_MODE MatFillMode = MATRIX_FILL_MODE::FULL,
           bool Override = true, bool AllowGetData = true>
-auto DenseMatrixFiller(T &data) {
+inline auto DenseMatrixFiller(T &data) {
   return TwoDimFiller<
       DenseMatrixFillerCore<T, MatFillMode, Override, AllowGetData>>(data);
 }
@@ -136,7 +138,7 @@ struct GraFillerCore {
   inline index_t rows() const { return 1; }
   inline index_t cols() const { return m_data.size(); }
   template <bool isOverride>
-  inline void fill(index_t, index_t c, real_t val) FILLER_FILL_REQUIRES {
+  inline void _fill(index_t, index_t c, real_t val) FILLER_FILL_REQUIRES {
     if constexpr (isOverride) {
       m_data[c] = val;
     } else {
@@ -145,10 +147,10 @@ struct GraFillerCore {
   }
 
   template <bool isOverride, UnaryAccessible U>
-  inline void fill(const U &rhs) FILLER_FILL_REQUIRES {
+  inline void _fill(const U &rhs) FILLER_FILL_REQUIRES {
 #pragma omp parallel for
     for (index_t i = 0; i < rhs.size(); ++i) {
-      fill<isOverride>(0, i, rhs[i]);
+      _fill<isOverride>(0, i, rhs[i]);
     }
   }
 
@@ -158,7 +160,7 @@ struct GraFillerCore {
   T &m_data;
 };
 template <typename T, bool Override = true, bool AllowGetData = true>
-auto GraFiller(T &data) {
+inline auto GraFiller(T &data) {
   return TwoDimFiller<GraFillerCore<T, Override, AllowGetData>>(data);
 }
 //-> SparseMatrix.
@@ -175,7 +177,7 @@ struct SparseMatrixFillerCore {
   inline index_t rows() const { return m_data.rows(); }
   inline index_t cols() const { return m_data.cols(); }
   template <bool isOverride>
-  inline void fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
+  inline void _fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
 #define FILL(r, c, val)           \
   if constexpr (isOverride) {     \
     m_data.coeffRef(r, c) = val;  \
@@ -192,7 +194,7 @@ struct SparseMatrixFillerCore {
 template <EigenSparseMatrixConcept T,
           MATRIX_FILL_MODE MatFillMode = MATRIX_FILL_MODE::FULL,
           bool Override = true>
-auto SparseMatrixFiller(T &data) {
+inline auto SparseMatrixFiller(T &data) {
   return TwoDimFiller<SparseMatrixFillerCore<T, MatFillMode, Override>>(data);
 }
 //-> COO.
@@ -205,7 +207,7 @@ struct COOFillerCore {
   inline index_t cols() const { return m_cols; }
   inline void setZero() const { m_data.clear(); }
   template <bool isOverride>
-  inline void fill(index_t r, index_t c, real_t val) requires isOverride {
+  inline void _fill(index_t r, index_t c, real_t val) requires isOverride {
     static_assert(isOverride, "only support override mode!");
 #define FILL(r, c, val) m_data.emplace_back(r, c, val);
     MAT_EACH_FILL(r, c, val);
@@ -216,8 +218,9 @@ struct COOFillerCore {
   T &m_data;
   index_t m_rows, m_cols;
 };
+
 template <typename T, MATRIX_FILL_MODE MatFillMode = MATRIX_FILL_MODE::UPPER>
-auto COOFiller(T &data, index_t rows, index_t cols) {
+inline auto COOFiller(T &data, index_t rows, index_t cols) {
   return TwoDimFiller<COOFillerCore<T, MatFillMode>>(data, rows, cols);
 }
 #undef MAT_EACH_FILL

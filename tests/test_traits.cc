@@ -1,43 +1,26 @@
 #include "iostream"
-#include "mapping/filler_concept.hh"
+#include "mapping/concept.hh"
 using namespace chaos::mapping;
 using namespace std;
 
-template <typename Derived>
-struct Base {
-  void world() {
-    this->print();
-    std::cout << "world\n";
+struct A {
+  static constexpr bool Override{true};
+  static constexpr bool CanGetData{true};
+  static constexpr chaos::MATRIX_FILL_MODE MatFillMode{chaos::MATRIX_FILL_MODE::FULL};
+  using Traits = FillerTraits<A>;
+
+  template <bool fillmode = Traits::Override()>
+  void hello() {
+    cout << fillmode << std::endl;
+    cout << "mat: " << (int)Traits::MatFillMode() << std::endl;
+    cout << "CanGetData: " << Traits::CanGetData() << std::endl;
+    cout << "CanParallel: " << Traits::CanParallel() << std::endl;
+    cout << "Override: " << Traits::Override() << std::endl;
   }
 };
 
-template <typename T>
-struct B : public T {
-  using T::T;
-  void print() const { std::cout << "print" << std::endl; }
-};
-
-template<bool flag>
-struct Traits{
-    constexpr static bool _f = flag;
-};
-
-template<bool f>
-struct A {
-    using t = Traits<f>;
-
-    template<bool flag = t::_f>
-    void print() {
-        std::cout << flag << std::endl;
-    }
-};
-
-
-
 int main(int argc, char *argv[]) {
-    A<true> a;
-    A<false> b;
-    a.print();
-    b.print();
+  A a;
+  a.hello();
   return 0;
 }
