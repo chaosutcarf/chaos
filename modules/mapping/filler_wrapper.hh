@@ -6,42 +6,64 @@ namespace chaos::mapping {
 #define CONSTEXPR_VAR(name) static constexpr decltype(_##name) name{_##name};
 
 //-> scalar filler.
-template <ArithmeticType T, bool _Override = true>
+template <bool _Override = true, ArithmeticType T = real_t>
 struct ScalarFiller {
   CONSTEXPR_VAR(Override);
+  using Scalar = T;
 
   ScalarFiller(T &data) : m_data(data) {}
   static constexpr index_t size() { return 1; }
   static constexpr index_t cols() { return 1; }
   static constexpr index_t rows() { return 1; }
+  inline T *data() { return &m_data; }
   inline void setZero() { m_data = 0; }
 
   template <bool isOverride = Override>
   inline void fill(index_t p, real_t val) FILLER_FILL_REQUIRES {
     CHECK_1D_FILL(p, Override, isOverride);
-    fill<isOverride>(val);
+    _fill<isOverride>(val);
   }
 
   template <bool isOverride = Override>
   inline void fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
     CHECK_2D_FILL(r, c, Override, isOverride);
-    fill<isOverride>(val);
+    _fill<isOverride>(val);
   }
 
-  template <bool isOverride = Override>
-  inline void fill(real_t val) FILLER_FILL_REQUIRES {
+  template <bool isOverride = Override, typename U>
+  inline void fill(const U &rhs) FILLER_FILL_REQUIRES {
+    constexpr bool isScalar = ArithmeticType<U>;
+    constexpr bool isVector = UnaryAccessible<U>;
+    constexpr bool isMatrix = BinaryAccessible<U>;
+    static_assert(
+        isScalar || isVector || isMatrix,
+        "U should be ArithmeticType | UnaryAccessible | BinaryAccessible");
+    if constexpr (isScalar) {
+      _fill<isOverride>(rhs);
+    } else if constexpr (isVector) {
+      CHAOS_DEBUG_ASSERT(rhs.size() == 1, rhs.size());
+      _fill<isOverride>(rhs[0]);
+    } else if constexpr (isMatrix) {
+      CHAOS_DEBUG_ASSERT(rhs.rows() == 1 && rhs.cols() == 1, rhs.rows(),
+                         rhs.cols());
+      _fill<isOverride>(rhs(0, 0));
+    }
+  }
+
+ private:
+  template <bool isOverride>
+  inline void _fill(real_t val) FILLER_FILL_REQUIRES {
     if constexpr (isOverride) {
       m_data = val;
     } else {
       m_data += val;
     }
   }
-
- private:
   T &m_data;
 };
+
 //-> vector filler.
-template <typename T, bool _Override = true>
+template <bool _Override = true, typename T = Eigen::VectorXd>
 struct VectorFiller {
   CONSTEXPR_VAR(Override);
   static constexpr bool CanParallel{true};
@@ -78,8 +100,8 @@ struct VectorFiller {
       cmd;                                                       \
     }                                                            \
   }
-template <typename T, MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
-          bool _Override = true>
+template <MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
+          bool _Override = true, typename T = Eigen::MatrixXd>
 requires EigenDenseMatrixConcept<T> || EigenSparseMatrixConcept<T>
 struct MatrixFiller {
   CONSTEXPR_VAR(MatFillMode);
@@ -126,7 +148,8 @@ struct MatrixFiller {
 };
 
 //-> coo filler.
-template <typename T, MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL>
+template <MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
+          typename T = coo_list_t<real_t>>
 struct COOFiller {
   CONSTEXPR_VAR(MatFillMode);
   static constexpr bool Override{false};
@@ -151,4 +174,5 @@ struct COOFiller {
   T &m_data;
   index_t m_rows, m_cols;
 };
+#undef MAT_EACH_FILL
 }  // namespace chaos::mapping

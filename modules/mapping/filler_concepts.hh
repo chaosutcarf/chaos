@@ -30,22 +30,27 @@ HAS_MEMBER(MATRIX_FILL_MODE, MatFillMode);
 
 template <typename T>
 struct FillerTraits {
-#define DEF_TRAITS(Type, Name, Default, ...) \
-  static constexpr Type Name() {             \
-    if constexpr (HasMember##Name<T>) {      \
-      return T::Name __VA_ARGS__;            \
-    } else {                                 \
-      return Default;                        \
-    }                                        \
+#define DEF_TRAITS(Type, Name, Default) \
+  static constexpr Type Name() {        \
+    if constexpr (HasMember##Name<T>) { \
+      return T::Name;                   \
+    } else {                            \
+      return Default;                   \
+    }                                   \
   }
-
   DEF_TRAITS(bool, Override, false);
   DEF_TRAITS(bool, CanParallel, false);
   DEF_TRAITS(MATRIX_FILL_MODE, MatFillMode, MATRIX_FILL_MODE::FULL);
-  DEF_TRAITS(bool, CanGetData, false,
-             &&MatFillMode() == MATRIX_FILL_MODE::FULL && Override() == true);
 
 #undef DEF_TRAITS
+  static constexpr bool CanGetData() {
+    if constexpr (HasMemberAllowGetData<T>) {
+      return T::AllowGetData && MatFillMode() == MATRIX_FILL_MODE::FULL &&
+             Override() == true;
+    } else {
+      return false;
+    }
+  }
 };
 
 template <bool isOverride, typename LHS, typename RHS>

@@ -18,6 +18,7 @@ namespace chaos::mapping {
   CHECK_OVERRIDE_FILLMODE(Override, fillmode);
 
 #define FILLER_FILL_REQUIRES requires FillOverrideCheck<isOverride, Override>
+#define FILLER_DATA_REQUIRES requires true
 //-> fillmode: -1 use the default OverrideMode of Filler.
 //->            0 means accumulate
 //->            1 means override.
@@ -36,19 +37,25 @@ template <int fillmode = -1, OneDimFillerConcept Filler, typename U>
 inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
   using Traits = FillerTraits<Filler>;
   constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
+  constexpr bool isArithmetic = ArithmeticType<U>;
+  constexpr bool isVector = UnaryAccessible<U>;
+  static_assert(isArithmetic || isVector,
+                "U should be ArithmeticType || UnaryAccessible");
+
+  //-> check dim.
+  if constexpr (isArithmetic) {
+    CHAOS_DEBUG_ASSERT(filler.size() == 1, filler.size());
+  } else if constexpr (isVector) {
+    CHAOS_DEBUG_ASSERT(filler.size() == rhs.size(), filler.size(), rhs.size());
+  }
 
   CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
   if constexpr (ProvideBatchFill<Filler, U>) {
     filler.template fill<isOverride, U>(rhs);
   } else {
-    static_assert(ArithmeticType<U> || UnaryAccessible<U>,
-                  "U should be ArithmeticType || UnaryAccessible");
     if constexpr (ArithmeticType<U>) {
-      CHAOS_DEBUG_ASSERT(filler.size() == 1, filler.size());
       filler.template fill<isOverride>(0, rhs);
     } else if constexpr (UnaryAccessible<U>) {
-      CHAOS_DEBUG_ASSERT(filler.size() == rhs.size(), filler.size(),
-                         rhs.size());
 #define RUN()                                    \
   for (index_t i = 0; i < filler.size(); ++i) {  \
     filler.template fill<isOverride>(i, rhs[i]); \
@@ -68,25 +75,28 @@ template <int fillmode = -1, TwoDimFillerConcept Filler, typename U>
 inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
   using Traits = FillerTraits<Filler>;
   constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
+  constexpr bool isArithmetic = ArithmeticType<U>;
+  constexpr bool isMatrix = BinaryAccessible<U>;
+  static_assert(isArithmetic || isMatrix,
+                "U should be ArithmeticType || BinaryAccessible");
+  if constexpr (isArithmetic) {
+    CHAOS_DEBUG_ASSERT(filler.rows() == 1 && filler.cols() == 1, filler.rows(),
+                       filler.cols());
+  } else if constexpr (isMatrix) {
+    CHAOS_DEBUG_ASSERT(
+        filler.rows() == rhs.rows() && filler.cols() == rhs.cols(),
+        filler.rows(), filler.cols(), rhs.rows(), rhs.cols());
+  }
 
   CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
   if constexpr (ProvideBatchFill<Filler, U>) {
     filler.template fill<isOverride, U>(rhs);
   } else {
-    constexpr bool isArithmetic = ArithmeticType<U>;
-    constexpr bool isMatrix = BinaryAccessible<U>;
-    static_assert(isArithmetic || isMatrix,
-                  "U should be ArithmeticType || BinaryAccessible");
     if constexpr (isArithmetic) {
-      CHAOS_DEBUG_ASSERT(filler.rows() == 1 && filler.cols() == 1,
-                         filler.rows(), filler.cols());
       filler.template fill<isOverride>(0, 0, rhs);
     } else if constexpr (isMatrix) {
-      CHAOS_DEBUG_ASSERT(
-          filler.rows() == rhs.rows() && filler.cols() == rhs.cols(),
-          filler.rows(), filler.cols(), rhs.rows(), rhs.cols());
 #define RUN()                                                  \
-  for (index_t r = 0; r, filler.rows(); ++r) {                 \
+  for (index_t r = 0; r < filler.rows(); ++r) {                \
     constexpr auto MatMode = Traits::MatFillMode();            \
     index_t c = 0, end;                                        \
     if constexpr (MatMode == MATRIX_FILL_MODE::FULL) {         \
