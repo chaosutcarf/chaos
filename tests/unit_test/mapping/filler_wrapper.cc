@@ -6,6 +6,7 @@
 #include "common/type.h"
 #include "common/type_helper.h"
 #include "mapping/filler.hh"
+#include "utils/logger/logger.h"
 
 using namespace chaos;
 using namespace chaos::mapping;
@@ -282,4 +283,21 @@ TEST_CASE("test Matrix filler", "[filler_wrapper]") {
       CHECK(std::equal_to<matxr_t>()(res.toDense(), 2 * dat));
     }
   }
+}
+
+TEST_CASE("test coo filler", "[filler_wrapper]") {
+  coo_list_t<real_t> res;
+  COOFiller f(res, 3, 3);
+  using type = decltype(f);
+  CHAOS_DEBUG_ASSERT(TwoDimFillerConcept<type>);
+  using Traits = type::Traits;
+  CHAOS_DEBUG_ASSERT(!Traits::Override());
+  CHAOS_DEBUG_ASSERT(!Traits::CanParallel());
+  CHAOS_DEBUG_ASSERT(!Traits::CanGetData());
+  mat33r_t dat;
+  dat.setConstant(1);
+  default_2d_batch_fill(f, dat);
+  csr_matr_t mat(3, 3);
+  mat.setFromTriplets(res.begin(), res.end());
+  CHECK(std::equal_to<matxr_t>()(mat.toDense(), dat));
 }

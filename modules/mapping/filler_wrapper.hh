@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mapping/filler.hh"
+#include "mapping/filler_concepts.hh"
 
 namespace chaos::mapping {
 #define CONSTEXPR_VAR(name) static constexpr decltype(_##name) name{_##name};
@@ -167,6 +168,7 @@ struct COOFiller {
   CONSTEXPR_VAR(MatFillMode);
   static constexpr bool Override{false};
   static constexpr bool CanParallel{false};
+  using Traits = FillerTraits<COOFiller<T, MatFillMode>>;
 
   COOFiller(T &data, index_t rows, index_t cols)
       : m_data(data), m_rows(rows), m_cols(cols) {}
