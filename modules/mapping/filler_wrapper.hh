@@ -9,13 +9,15 @@ namespace chaos::mapping {
 template <bool _Override = true, ArithmeticType T = real_t>
 struct ScalarFiller {
   CONSTEXPR_VAR(Override);
+  static constexpr bool AllowGetData{true};
+  using Traits = FillerTraits<ScalarFiller<Override, T>>;
   using Scalar = T;
 
   ScalarFiller(T &data) : m_data(data) {}
   static constexpr index_t size() { return 1; }
   static constexpr index_t cols() { return 1; }
   static constexpr index_t rows() { return 1; }
-  inline T *data() { return &m_data; }
+  inline Scalar *data() FILLER_DATA_REQUIRES { return &m_data; }
   inline void setZero() { m_data = 0; }
 
   template <bool isOverride = Override>
@@ -67,9 +69,12 @@ template <bool _Override = true, typename T = Eigen::VectorXd>
 struct VectorFiller {
   CONSTEXPR_VAR(Override);
   static constexpr bool CanParallel{true};
+  static constexpr bool AllowGetData{HasFunctionData<T>};
+  using Scalar = typename T::Scalar;
+  using Traits = FillerTraits<VectorFiller<Override, T>>;
 
   VectorFiller(T &data) : m_data(data) {}
-
+  inline Scalar *data() FILLER_DATA_REQUIRES { return m_data.data(); }
   inline index_t size() const { return m_data.size(); }
   inline void setZero() { m_data.setZero(); }
 
@@ -108,10 +113,14 @@ struct MatrixFiller {
   CONSTEXPR_VAR(Override);
   static constexpr bool isDense{EigenDenseMatrixConcept<T>};
   static constexpr bool CanParallel{true};
+  static constexpr bool AllowGetData{HasFunctionData<T>};
+  using Scalar = typename T::Scalar;
+  using Traits = FillerTraits<MatrixFiller<MatFillMode, Override, T>>;
 
   MatrixFiller(T &data) : m_data(data) {}
   inline index_t rows() const { return m_data.rows(); }
   inline index_t cols() const { return m_data.cols(); }
+  inline Scalar *data() FILLER_DATA_REQUIRES { return m_data.data(); }
   inline void setZero() {
     if constexpr (isDense) {
       m_data.setZero();

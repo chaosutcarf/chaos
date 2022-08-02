@@ -53,6 +53,11 @@ struct FillerTraits {
   }
 };
 
+template <typename T>
+concept HasFunctionData = requires(T a) {
+  a.data();
+};
+
 template <bool isOverride, typename LHS, typename RHS>
 concept AssignableConcept = (isOverride && std::assignable_from<LHS, RHS>) ||
                             (!isOverride && requires(LHS a, RHS b) { a += b; });

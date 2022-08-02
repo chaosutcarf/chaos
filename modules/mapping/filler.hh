@@ -18,25 +18,31 @@ namespace chaos::mapping {
   CHECK_OVERRIDE_FILLMODE(Override, fillmode);
 
 #define FILLER_FILL_REQUIRES requires FillOverrideCheck<isOverride, Override>
-#define FILLER_DATA_REQUIRES requires true
+namespace details {
+template <bool flag>
+concept is_true = flag;
+}  // namespace details
+
+#define FILLER_DATA_REQUIRES \
+  requires chaos::mapping::details::is_true<Traits::CanGetData()>
 //-> fillmode: -1 use the default OverrideMode of Filler.
 //->            0 means accumulate
 //->            1 means override.
-template <int fillmode, typename Filler>
+template <int fillmode, typename Traits>
 constexpr bool Fillmode2Override() {
   if constexpr (fillmode == 0) {
     return false;
   } else if constexpr (fillmode == 1) {
     return true;
   } else {
-    return FillerTraits<Filler>::Override();
+    return Traits::Override();
   }
 }
 
 template <int fillmode = -1, OneDimFillerConcept Filler, typename U>
 inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
-  using Traits = FillerTraits<Filler>;
-  constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
+  using Traits = typename std::decay_t<Filler>::Traits;
+  constexpr bool isOverride{Fillmode2Override<fillmode, Traits>()};
   constexpr bool isArithmetic = ArithmeticType<U>;
   constexpr bool isVector = UnaryAccessible<U>;
   static_assert(isArithmetic || isVector,
@@ -73,8 +79,8 @@ inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
 
 template <int fillmode = -1, TwoDimFillerConcept Filler, typename U>
 inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
-  using Traits = FillerTraits<Filler>;
-  constexpr bool isOverride{Fillmode2Override<fillmode, Filler>()};
+  using Traits = typename std::decay_t<Filler>::Traits;
+  constexpr bool isOverride{Fillmode2Override<fillmode, Traits>()};
   constexpr bool isArithmetic = ArithmeticType<U>;
   constexpr bool isMatrix = BinaryAccessible<U>;
   static_assert(isArithmetic || isMatrix,

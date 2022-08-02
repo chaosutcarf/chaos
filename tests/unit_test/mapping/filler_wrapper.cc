@@ -104,6 +104,7 @@ TEST_CASE("Test Scalar Filler", "[filler_wrapper]") {
     //-> check traits.
     using Traits = FillerTraits<type>;
     CHECK(Traits::Override());
+    CHECK(Traits::CanGetData());
     //-> check fill behavior.
     CHECK(f.size() == 1);
     CHECK(f.rows() == 1);
@@ -116,14 +117,48 @@ TEST_CASE("Test Scalar Filler", "[filler_wrapper]") {
     //-> check twodim fill.
     f.fill<true>(0, 0, 1);
     CHECK(numerical::near<double>(res, 1));
+    default_1d_batch_fill(f, 2);
+    CHECK(res == 2);
+    CHECK(numerical::near<double>(res, 2));
+    default_2d_batch_fill(f, 3);
+    CHECK(numerical::near<double>(res, 3));
+    default_1d_batch_fill<false>(f, 2);
+    CHECK(numerical::near<double>(res, 5));
+    default_2d_batch_fill<false>(f, 3);
+    CHECK(numerical::near<double>(res, 8));
     f.setZero();
     CHECK(numerical::near<double>(res, 0));
+    //-> check data.
+    if constexpr (Traits::CanGetData()) {
+      CHECK(f.data() == &res);
+    }
+    //-> check throws
+    CHECK_THROWS(f.fill(1, 1));
+    CHECK_THROWS(f.fill(1, 1, 1));
   }
   SECTION("Accumulate") {
     ScalarFiller<false> f(res);
     using type = decltype(f);
     CHECK(OneDimFillerConcept<type>);
     CHECK(TwoDimFillerConcept<type>);
-    CHECK(!FillerTraits<type>::Override());
+    using Traits = FillerTraits<type>;
+    CHECK(!Traits::Override());
+    CHECK(!Traits::CanGetData());
+    CHECK(!HasFunctionData<type>);
+    f.setZero();
+    CHECK(numerical::near<double>(res, 0));
+    f.fill(10);
+    CHECK(numerical::near<double>(res, 10));
+    f.fill<false>(0, 1);
+    CHECK(numerical::near<double>(res, 11));
+    default_1d_batch_fill(f, 1);
+    CHECK(numerical::near<double>(res, 12));
+    default_2d_batch_fill(f, 2);
+    CHECK(numerical::near<double>(res, 14));
+    f.fill<false>(0, 0, 1);
+    CHECK(numerical::near<double>(res, 15));
+    //-> check throws
+    CHECK_THROWS(f.fill<false>(0, 1, 1));
+    CHECK_THROWS(f.fill<false>(1, 1));
   }
 }
