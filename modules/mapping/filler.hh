@@ -67,7 +67,7 @@ inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
     filler.template fill<isOverride>(i, rhs[i]); \
   }
       if constexpr (Traits::CanParallel()) {
-#pragma omp parallel for default(none) shared(rhs)
+#pragma omp parallel for default(none) shared(rhs, filler)
         RUN();
       } else {
         RUN();
@@ -118,7 +118,7 @@ inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
     }                                                          \
   }
       if constexpr (Traits::CanParallel()) {
-#pragma omp parallel for default(none) shared(rhs)
+#pragma omp parallel for default(none) shared(rhs, filler)
         RUN();
       } else {
         RUN();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <type_traits>
 
 #include "common/type.h"
 
@@ -28,8 +29,9 @@ HAS_MEMBER(bool, AllowGetData);
 HAS_MEMBER(MATRIX_FILL_MODE, MatFillMode);
 #undef HAS_MEMBER
 
-template <typename T>
+template <typename _T>
 struct FillerTraits {
+  using T = std::decay_t<_T>;
 #define DEF_TRAITS(Type, Name, Default) \
   static constexpr Type Name() {        \
     if constexpr (HasMember##Name<T>) { \
@@ -85,11 +87,6 @@ concept OneDimFillerConcept = HasFunctionSize<T> && requires(T a) {
   a.template fill<true && FillerTraits<T>::Override()>(ARGS);
   a.template fill<false>(ARGS);
 #undef ARGS
-  //-> batch fill.
-#define ARGS std::declval<details::_ONE_DIM_READ_DATA_INTERFACE_>()
-  a.template fill<true && FillerTraits<T>::Override()>(ARGS);
-  a.template fill<false>(ARGS);
-#undef ARGS
 };
 
 template <typename T>
@@ -99,11 +96,6 @@ concept TwoDimFillerConcept = HasFunctionRows<T> && HasFunctionCols<T> &&
 //-> individual fill.
 #define ARGS \
   std::declval<index_t>(), std::declval<index_t>(), std::declval<real_t>()
-  a.template fill<true && FillerTraits<T>::Override()>(ARGS);
-  a.template fill<false>(ARGS);
-#undef ARGS
-  //-> batch fill.
-#define ARGS std::declval<details::_TWO_DIM_READ_DATA_INTERFACE_>()
   a.template fill<true && FillerTraits<T>::Override()>(ARGS);
   a.template fill<false>(ARGS);
 #undef ARGS

@@ -6,11 +6,11 @@ namespace chaos::mapping {
 #define CONSTEXPR_VAR(name) static constexpr decltype(_##name) name{_##name};
 
 //-> scalar filler.
-template <bool _Override = true, ArithmeticType T = real_t>
+template <ArithmeticType T, bool _Override = true>
 struct ScalarFiller {
   CONSTEXPR_VAR(Override);
   static constexpr bool AllowGetData{true};
-  using Traits = FillerTraits<ScalarFiller<Override, T>>;
+  using Traits = FillerTraits<ScalarFiller<T, Override>>;
   using Scalar = T;
 
   ScalarFiller(T &data) : m_data(data) {}
@@ -65,13 +65,13 @@ struct ScalarFiller {
 };
 
 //-> vector filler.
-template <bool _Override = true, typename T = Eigen::VectorXd>
+template <typename T, bool _Override = true>
 struct VectorFiller {
   CONSTEXPR_VAR(Override);
   static constexpr bool CanParallel{true};
   static constexpr bool AllowGetData{HasFunctionData<T>};
   using Scalar = typename T::Scalar;
-  using Traits = FillerTraits<VectorFiller<Override, T>>;
+  using Traits = FillerTraits<VectorFiller<T, Override>>;
 
   VectorFiller(T &data) : m_data(data) {}
   inline Scalar *data() FILLER_DATA_REQUIRES { return m_data.data(); }
@@ -105,17 +105,21 @@ struct VectorFiller {
       cmd;                                                       \
     }                                                            \
   }
-template <MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
-          bool _Override = true, typename T = Eigen::MatrixXd>
+//->FIXME: if the type is sparsematrix,
+//->       then the pattern should prepared before,
+//->       otherwise, parallel is not
+template <typename T, MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
+          bool _Override = true, bool _CanParallel = true>
 requires EigenDenseMatrixConcept<T> || EigenSparseMatrixConcept<T>
 struct MatrixFiller {
   CONSTEXPR_VAR(MatFillMode);
   CONSTEXPR_VAR(Override);
+  CONSTEXPR_VAR(CanParallel);
   static constexpr bool isDense{EigenDenseMatrixConcept<T>};
-  static constexpr bool CanParallel{true};
   static constexpr bool AllowGetData{HasFunctionData<T>};
   using Scalar = typename T::Scalar;
-  using Traits = FillerTraits<MatrixFiller<MatFillMode, Override, T>>;
+  using Traits =
+      FillerTraits<MatrixFiller<T, MatFillMode, Override, CanParallel>>;
 
   MatrixFiller(T &data) : m_data(data) {}
   inline index_t rows() const { return m_data.rows(); }
@@ -140,25 +144,25 @@ struct MatrixFiller {
   template <bool isOverride>
   inline void _fill(index_t r, index_t c, real_t val) {
     if constexpr (isOverride) {
-      _val(r, c) = val;
+      if constexpr (isDense) {
+        m_data(r, c) = val;
+      } else {
+        m_data.coeffRef(r, c) = val;
+      }
     } else {
-      _val(r, c) += val;
+      if constexpr (isDense) {
+        m_data(r, c) += val;
+      } else {
+        m_data.coeffRef(r, c) += val;
+      }
     }
   }
 
-  inline auto &_val(index_t r, index_t c) {
-    if constexpr (isDense) {
-      return m_data(r, c);
-    } else {
-      return m_data.coeffRef(r, c);
-    }
-  }
   T &m_data;
 };
 
 //-> coo filler.
-template <MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL,
-          typename T = coo_list_t<real_t>>
+template <typename T, MATRIX_FILL_MODE _MatFillMode = MATRIX_FILL_MODE::FULL>
 struct COOFiller {
   CONSTEXPR_VAR(MatFillMode);
   static constexpr bool Override{false};

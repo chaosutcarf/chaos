@@ -137,7 +137,7 @@ TEST_CASE("Test Scalar Filler", "[filler_wrapper]") {
     CHECK_THROWS(f.fill(1, 1, 1));
   }
   SECTION("Accumulate") {
-    ScalarFiller<false> f(res);
+    ScalarFiller<double, false> f(res);
     using type = decltype(f);
     CHECK(OneDimFillerConcept<type>);
     CHECK(TwoDimFillerConcept<type>);
@@ -160,5 +160,126 @@ TEST_CASE("Test Scalar Filler", "[filler_wrapper]") {
     //-> check throws
     CHECK_THROWS(f.fill<false>(0, 1, 1));
     CHECK_THROWS(f.fill<false>(1, 1));
+  }
+}
+
+TEST_CASE("Test Vector Filler", "[filler_wrapper]") {
+  vec3r_t res;
+  res.setZero();
+  SECTION("Override") {
+    VectorFiller f(res);
+    using type = decltype(f);
+    CHECK(OneDimFillerConcept<type>);
+    using Traits = type::Traits;
+    CHECK(Traits::Override());
+    CHECK(Traits::CanGetData());
+    CHECK(Traits::CanParallel());
+    CHECK(f.size() == res.size());
+    default_1d_batch_fill(f, vec3r_t::Ones());
+    CHECK(std::equal_to<vecxr_t>()(res, vec3r_t::Ones()));
+    default_1d_batch_fill(f, vec3r_t::Ones());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+    CHECK(f.data() == res.data());
+    f.setZero();
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Zero()));
+    f.fill(0, 1);
+    f.fill(1, 1);
+    f.fill(2, 1);
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+    CHECK_THROWS(f.fill(3, 1));
+  }
+
+  SECTION("Accumulate") {
+    VectorFiller<decltype(res), false> f(res);
+    using type = decltype(f);
+    CHECK(OneDimFillerConcept<type>);
+    using Traits = type::Traits;
+    CHECK(!Traits::Override());
+    CHECK(!Traits::CanGetData());
+    CHECK(Traits::CanParallel());
+    CHECK(f.size() == res.size());
+    default_1d_batch_fill(f, vec3r_t::Ones());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+    default_1d_batch_fill(f, vec3r_t::Ones());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Constant(2)));
+    CHECK_THROWS(f.fill(3, 1));
+  }
+}
+
+TEST_CASE("test Matrix filler", "[filler_wrapper]") {
+  SECTION("DenseMatrix") {
+    Eigen::Matrix<real_t, 3, 4> res;
+    res.setZero();
+    SECTION("Override") {
+      MatrixFiller f(res);
+      using type = decltype(f);
+      CHECK(TwoDimFillerConcept<type>);
+      using Traits = type::Traits;
+      CHECK(Traits::Override());
+      CHECK(Traits::CanParallel());
+      CHECK(Traits::CanGetData());
+      CHECK(f.rows() == 3);
+      CHECK(f.cols() == 4);
+      CHECK_THROWS(default_2d_batch_fill(f, mat33r_t::Zero()));
+      decltype(res) dat;
+      dat.setConstant(1);
+      default_2d_batch_fill(f, dat);
+      CHECK(std::equal_to<matxr_t>()(res, dat));
+      default_2d_batch_fill(f, dat);
+      CHECK(std::equal_to<matxr_t>()(res, dat));
+      CHECK(f.data() == res.data());
+    }
+    SECTION("Accumulate") {
+      MatrixFiller<decltype(res), MATRIX_FILL_MODE::FULL, false> f(res);
+      using type = decltype(f);
+      CHECK(TwoDimFillerConcept<type>);
+      using Traits = type::Traits;
+      CHECK(!Traits::Override());
+      CHECK(f.rows() == 3);
+      CHECK(f.cols() == 4);
+      decltype(res) dat;
+      dat.setConstant(1);
+      default_2d_batch_fill(f, dat);
+      CHECK(std::equal_to<matxr_t>()(res, dat));
+      default_2d_batch_fill(f, dat);
+      CHECK(std::equal_to<matxr_t>()(res, 2 * dat));
+    }
+  }
+  SECTION("SparseMatrix") {
+    csr_matr_t res(3, 4);
+    res.reserve(12);
+    SECTION("Override") {
+      MatrixFiller<decltype(res), MATRIX_FILL_MODE::FULL, true, false> f(res);
+      using type = decltype(f);
+      CHECK(TwoDimFillerConcept<type>);
+      using Traits = type::Traits;
+      CHECK(Traits::Override());
+      CHECK(f.rows() == 3);
+      CHECK(f.cols() == 4);
+      mat_t<real_t, 3, 4> dat;
+      dat.setConstant(1);
+      default_2d_batch_fill(f, dat);
+      res.makeCompressed();
+      CHECK(std::equal_to<matxr_t>()(res.toDense(), dat));
+      default_2d_batch_fill(MatrixFiller(res), dat);
+      CHECK(std::equal_to<matxr_t>()(res.toDense(), dat));
+    }
+    SECTION("Accumulate") {
+      MatrixFiller<decltype(res), MATRIX_FILL_MODE::FULL, false, false> f(res);
+      using type = decltype(f);
+      CHECK(TwoDimFillerConcept<type>);
+      using Traits = type::Traits;
+      CHECK(!Traits::Override());
+      CHECK(f.rows() == 3);
+      CHECK(f.cols() == 4);
+      mat_t<real_t, 3, 4> dat;
+      dat.setConstant(1);
+      default_2d_batch_fill(f, dat);
+      res.makeCompressed();
+      CHECK(std::equal_to<matxr_t>()(res.toDense(), dat));
+      default_2d_batch_fill(
+          MatrixFiller<decltype(res), MATRIX_FILL_MODE::FULL, false>(res), dat);
+      CHECK(std::equal_to<matxr_t>()(res.toDense(), 2 * dat));
+    }
   }
 }
