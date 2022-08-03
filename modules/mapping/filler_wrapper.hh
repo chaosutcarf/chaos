@@ -2,6 +2,7 @@
 
 #include "mapping/filler.hh"
 #include "mapping/filler_concepts.hh"
+#include "utils/logger/logger.h"
 
 namespace chaos::mapping {
 #define CONSTEXPR_VAR(name) static constexpr decltype(_##name) name{_##name};
@@ -142,23 +143,60 @@ struct MatrixFiller {
   }
 
  private:
-  template <bool isOverride>
-  inline void _fill(index_t r, index_t c, real_t val) {
-    if constexpr (isOverride) {
-      if constexpr (isDense) {
-        m_data(r, c) = val;
-      } else {
-        m_data.coeffRef(r, c) = val;
-      }
+  inline Scalar &_val(index_t r, index_t c) {
+    if constexpr (isDense) {
+      return m_data(r, c);
     } else {
-      if constexpr (isDense) {
-        m_data(r, c) += val;
-      } else {
-        m_data.coeffRef(r, c) += val;
-      }
+      return m_data.coeffRef(r, c);
     }
   }
 
+  template <bool isOverride>
+  inline void _fill(index_t r, index_t c, real_t val) {
+    if constexpr (isOverride) {
+      _val(r, c) = val;
+    } else {
+      _val(r, c) += val;
+    }
+  }
+
+  T &m_data;
+};
+
+template <typename T, bool _Override = true>
+struct GraFiller {
+  CONSTEXPR_VAR(Override);
+  static constexpr bool CanParallel{true};
+  static constexpr bool AllowGetData{HasFunctionData<T>};
+  using Traits = FillerTraits<GraFiller<T, Override>>;
+  using Scalar = typename T::Scalar;
+
+  GraFiller(T &data) : m_data(data) {}
+  inline index_t rows() const { return 1; }
+  inline index_t cols() const { return m_data.size(); }
+  inline void setZero() { m_data.setZero(); }
+  inline Scalar *data() FILLER_DATA_REQUIRES { return m_data.data(); }
+
+  template <bool isOverride = Override>
+  inline void fill(index_t r, index_t c, real_t val) FILLER_FILL_REQUIRES {
+    CHECK_2D_FILL(r, c, Override, isOverride);
+    if constexpr (isOverride) {
+      m_data[c] = val;
+    } else {
+      m_data[c] += val;
+    }
+  }
+
+  template <bool isOverride, UnaryAccessible U>
+  inline void fill(const U &rhs) FILLER_FILL_REQUIRES {
+    CHAOS_DEBUG_ASSERT(rhs.size() == m_data.size());
+#pragma omp parallel for
+    for (index_t i = 0; i < rhs.size(); ++i) {
+      fill<isOverride>(0, i, rhs[i]);
+    }
+  }
+
+ private:
   T &m_data;
 };
 
@@ -176,7 +214,7 @@ struct COOFiller {
   inline index_t cols() const { return m_cols; }
   inline void setZero() { m_data.clear(); }
 
-  template <bool isOverride>
+  template <bool isOverride = Override>
   inline void fill(index_t r, index_t c, real_t val) {
     CHECK_2D_FILL(r, c, Override, isOverride);
     MAT_EACH_FILL(MatFillMode, r, c, _fill(r, c, val));

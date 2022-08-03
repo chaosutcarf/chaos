@@ -48,20 +48,16 @@ inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
   static_assert(isArithmetic || isVector,
                 "U should be ArithmeticType || UnaryAccessible");
 
-  //-> check dim.
-  if constexpr (isArithmetic) {
-    CHAOS_DEBUG_ASSERT(filler.size() == 1, filler.size());
-  } else if constexpr (isVector) {
-    CHAOS_DEBUG_ASSERT(filler.size() == rhs.size(), filler.size(), rhs.size());
-  }
-
   CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
   if constexpr (ProvideBatchFill<Filler, U>) {
     filler.template fill<isOverride, U>(rhs);
   } else {
-    if constexpr (ArithmeticType<U>) {
+    if constexpr (isArithmetic) {
+      CHAOS_DEBUG_ASSERT(filler.size() == 1, filler.size());
       filler.template fill<isOverride>(0, rhs);
-    } else if constexpr (UnaryAccessible<U>) {
+    } else if constexpr (isVector) {
+      CHAOS_DEBUG_ASSERT(filler.size() == rhs.size(), filler.size(),
+                         rhs.size());
 #define RUN()                                    \
   for (index_t i = 0; i < filler.size(); ++i) {  \
     filler.template fill<isOverride>(i, rhs[i]); \
@@ -85,22 +81,19 @@ inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
   constexpr bool isMatrix = BinaryAccessible<U>;
   static_assert(isArithmetic || isMatrix,
                 "U should be ArithmeticType || BinaryAccessible");
-  if constexpr (isArithmetic) {
-    CHAOS_DEBUG_ASSERT(filler.rows() == 1 && filler.cols() == 1, filler.rows(),
-                       filler.cols());
-  } else if constexpr (isMatrix) {
-    CHAOS_DEBUG_ASSERT(
-        filler.rows() == rhs.rows() && filler.cols() == rhs.cols(),
-        filler.rows(), filler.cols(), rhs.rows(), rhs.cols());
-  }
 
   CHECK_OVERRIDE_FILLMODE(Traits::Override(), isOverride);
   if constexpr (ProvideBatchFill<Filler, U>) {
     filler.template fill<isOverride, U>(rhs);
   } else {
     if constexpr (isArithmetic) {
+      CHAOS_DEBUG_ASSERT(filler.rows() == 1 && filler.cols() == 1,
+                         filler.rows(), filler.cols());
       filler.template fill<isOverride>(0, 0, rhs);
     } else if constexpr (isMatrix) {
+      CHAOS_DEBUG_ASSERT(
+          filler.rows() == rhs.rows() && filler.cols() == rhs.cols(),
+          filler.rows(), filler.cols(), rhs.rows(), rhs.cols());
 #define RUN()                                                  \
   for (index_t r = 0; r < filler.rows(); ++r) {                \
     constexpr auto MatMode = Traits::MatFillMode();            \

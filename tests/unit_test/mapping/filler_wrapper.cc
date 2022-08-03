@@ -285,6 +285,44 @@ TEST_CASE("test Matrix filler", "[filler_wrapper]") {
   }
 }
 
+TEST_CASE("Test Gra Filler", "[filler_wrapper]") {
+  vec3r_t res;
+  res.setZero();
+  SECTION("Override") {
+    GraFiller f(res);
+    using type = decltype(f);
+    using Traits = FillerTraits<type>;
+    CHECK(TwoDimFillerConcept<type>);
+    CHECK(Traits::Override());
+    CHECK(Traits::CanParallel());
+    CHECK(Traits::CanGetData());
+    CHECK(Traits::MatFillMode() == MATRIX_FILL_MODE::FULL);
+    CHECK(f.rows() == 1);
+    CHECK(f.cols() == res.size());
+    CHECK_THROWS(f.fill(1, 1, 1));
+    default_2d_batch_fill(f, vec3r_t::Ones().transpose());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+    default_2d_batch_fill(f, vec3r_t::Ones().transpose());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+  }
+  SECTION("Accumulate") {
+    GraFiller<decltype(res), false> f(res);
+    using type = decltype(f);
+    using Traits = FillerTraits<type>;
+    CHECK(TwoDimFillerConcept<type>);
+    CHECK(Traits::Override() == false);
+    CHECK(Traits::CanParallel());
+    CHECK(!Traits::CanGetData());
+    CHECK(Traits::MatFillMode() == MATRIX_FILL_MODE::FULL);
+    CHECK(f.rows() == 1);
+    CHECK(f.cols() == res.size());
+    default_2d_batch_fill(f, vec3r_t::Ones().transpose());
+    CHECK(std::equal_to<vec3r_t>()(res, vec3r_t::Ones()));
+    default_2d_batch_fill(f, vec3r_t::Ones().transpose());
+    CHECK(std::equal_to<vec3r_t>()(res, 2 * vec3r_t::Ones()));
+  }
+}
+
 TEST_CASE("test coo filler", "[filler_wrapper]") {
   coo_list_t<real_t> res;
   COOFiller f(res, 3, 3);
