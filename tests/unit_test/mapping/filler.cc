@@ -23,32 +23,40 @@
 //   //---MatFillMode, Override, AllowGetData, Parallel---
 //   CHECK(TwoDimTraits<MATRIX_FILL_MODE::FULL, true, true, true>::CanGetData);
 //   CHECK(TwoDimTraits<MATRIX_FILL_MODE::FULL, true, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, true, false, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, true, false, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false, true, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false, false, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false, false, false>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, true, false,
+//   true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, true,
+//   false, false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL,
+//   false, true, true>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false, true,
+//   false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL, false,
+//   false, true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::FULL,
+//   false, false, false>::CanGetData);
 
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, true, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, false, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, false, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, true, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, false, true>::CanGetData);
-//   CHECK(
-//       !TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, false, false>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, true,
+//   true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true,
+//   true, false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER,
+//   true, false, true>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, true, false,
+//   false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, false,
+//   true, true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER,
+//   false, true, false>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, false,
+//   true>::CanGetData); CHECK(
+//       !TwoDimTraits<MATRIX_FILL_MODE::LOWER, false, false,
+//       false>::CanGetData);
 
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, true, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, false, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, false, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, true, true>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, true, false>::CanGetData);
-//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, false, true>::CanGetData);
-//   CHECK(
-//       !TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, false, false>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, true,
+//   true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true,
+//   true, false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER,
+//   true, false, true>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, true, false,
+//   false>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, false,
+//   true, true>::CanGetData); CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER,
+//   false, true, false>::CanGetData);
+//   CHECK(!TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, false,
+//   true>::CanGetData); CHECK(
+//       !TwoDimTraits<MATRIX_FILL_MODE::UPPER, false, false,
+//       false>::CanGetData);
 // }
 
 // TEST_CASE("test scalar filler", "[filler_basic]") {

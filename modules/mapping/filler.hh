@@ -41,7 +41,7 @@ constexpr bool Fillmode2Override() {
 
 template <int fillmode = -1, OneDimFillerConcept Filler, typename U>
 inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
-  using Traits = typename std::decay_t<Filler>::Traits;
+  using Traits = FillerTraits<Filler>;
   constexpr bool isOverride{Fillmode2Override<fillmode, Traits>()};
   constexpr bool isArithmetic = ArithmeticType<U>;
   constexpr bool isVector = UnaryAccessible<U>;
@@ -79,7 +79,7 @@ inline void default_1d_batch_fill(Filler &&filler, const U &rhs) {
 
 template <int fillmode = -1, TwoDimFillerConcept Filler, typename U>
 inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
-  using Traits = typename std::decay_t<Filler>::Traits;
+  using Traits = FillerTraits<Filler>;
   constexpr bool isOverride{Fillmode2Override<fillmode, Traits>()};
   constexpr bool isArithmetic = ArithmeticType<U>;
   constexpr bool isMatrix = BinaryAccessible<U>;

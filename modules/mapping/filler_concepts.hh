@@ -29,9 +29,8 @@ HAS_MEMBER(bool, AllowGetData);
 HAS_MEMBER(MATRIX_FILL_MODE, MatFillMode);
 #undef HAS_MEMBER
 
-template <typename _T>
-struct FillerTraits {
-  using T = std::decay_t<_T>;
+template <typename T>
+struct _FillerTraits {
 #define DEF_TRAITS(Type, Name, Default) \
   static constexpr Type Name() {        \
     if constexpr (HasMember##Name<T>) { \
@@ -54,6 +53,9 @@ struct FillerTraits {
     }
   }
 };
+
+template <typename T>
+using FillerTraits = _FillerTraits<std::decay_t<T>>;
 
 template <typename T>
 concept HasFunctionData = requires(T a) {

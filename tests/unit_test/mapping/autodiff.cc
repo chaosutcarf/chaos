@@ -17,8 +17,8 @@
 //   static real_t val(const Eigen::Ref<const vec_t<real_t>> &x) {
 //     return x.squaredNorm();
 //   }
-//   static vecxr_t jac(const Eigen::Ref<const vec_t<real_t>> &x) { return 2 * x; }
-//   static matxr_t hes(const Eigen::Ref<const vec_t<real_t>> &x) {
+//   static vecxr_t jac(const Eigen::Ref<const vec_t<real_t>> &x) { return 2 *
+//   x; } static matxr_t hes(const Eigen::Ref<const vec_t<real_t>> &x) {
 //     return matxr_t::Identity(x.size(), x.size()) * 2;
 //   }
 // };
@@ -129,8 +129,8 @@
 //       CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
 //     }
 //     SECTION("together.call") {
-//       f.ValJacHes(one_dim_filler_t(y), mat_filler_t(jac), mat_filler_t(hes), x);
-//       CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
+//       f.ValJacHes(one_dim_filler_t(y), mat_filler_t(jac), mat_filler_t(hes),
+//       x); CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
 //       CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
 //       CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
 //     }
@@ -244,8 +244,8 @@
 //       CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
 //     }
 //     SECTION("together.call") {
-//       f.ValJacHes(one_dim_filler_t(y), mat_filler_t(jac), mat_filler_t(hes), x);
-//       CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
+//       f.ValJacHes(one_dim_filler_t(y), mat_filler_t(jac), mat_filler_t(hes),
+//       x); CHECK(std::equal_to<vecxr_t>()(y, vector_expected::val(x)));
 //       CHECK(std::equal_to<matxr_t>()(jac, vector_expected::jac(x)));
 //       CHECK(std::equal_to<matxr_t>()(hes, vector_expected::hes(x)));
 //     }
