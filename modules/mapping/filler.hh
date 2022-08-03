@@ -103,8 +103,7 @@ inline void default_2d_batch_fill(Filler &&filler, const U &rhs) {
     } else if constexpr (MatMode == MATRIX_FILL_MODE::LOWER) { \
       c = 0, end = r + 1;                                      \
     } else if constexpr (MatMode == MATRIX_FILL_MODE::UPPER) { \
-      c = r;                                                   \
-      end = filler.cols();                                     \
+      c = r, end = filler.cols();                              \
     }                                                          \
     for (; c < end; ++c) {                                     \
       filler.template fill<isOverride>(r, c, rhs(r, c));       \
