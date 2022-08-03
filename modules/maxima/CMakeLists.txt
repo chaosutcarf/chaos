@@ -4,6 +4,7 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8")
 
 set(maxima_modules
   hyperelastic_strain_energy
+  spring_energy
   )
 
 foreach(module ${maxima_modules})

@@ -100,7 +100,7 @@ struct file_exist_valid_t : public params_valid_t<std::string> {
 
 template <typename EnumType>
 struct enum_transform_valid_t : public params_valid_t<EnumType> {
-  enum_transform_valid_t<EnumType>(const std::map<std::string, EnumType> &map)
+  enum_transform_valid_t(const std::map<std::string, EnumType> &map)
       : map(map) {}
   static std::shared_ptr<enum_transform_valid_t<EnumType>> create(
       const std::map<std::string, EnumType> &map) {
@@ -116,8 +116,7 @@ struct enum_transform_valid_t : public params_valid_t<EnumType> {
 
 template <typename ContainerType, typename ValidType>
 struct container_element_valid_t : public params_valid_t<ContainerType> {
-  container_element_valid_t<ContainerType, ValidType>(
-      const std::shared_ptr<ValidType> &valid)
+  container_element_valid_t(const std::shared_ptr<ValidType> &valid)
       : element_valid(valid) {}
   static std::shared_ptr<container_element_valid_t<ContainerType, ValidType>>
   create(const std::shared_ptr<ValidType> &valid) {

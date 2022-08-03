@@ -20,6 +20,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
     env:
+      CC: gcc-10
+      CXX: g++-10
       LD_LIBRARY_PATH: ${{github.workspace}}/3rd/lib
       CLANG_FORMAT: OFF
       CLANG_TIDY: OFF
@@ -45,7 +47,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{github.workspace}}/3rd
-          key: 3rd-${{ hashFiles('**/change-3rd-url.py', '**/deps.cmake') }}
+          key: ubt2004-gcc-3rd-${{ hashFiles('**/change-3rd-url.py', '**/deps.cmake') }}
 
       - name: Configure git
         env:

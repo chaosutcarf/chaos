@@ -47,19 +47,22 @@ template <template <class...> class Op, class... Args>
 using detected_t =
     typename details::detector<details::nonesuch, void, Op, Args...>::type;
 
-#define define_has_member(prefix, member_name)          \
-  template <typename prefix##T>                         \
-  class has_member_##member_name {                      \
-    typedef char yes_type;                              \
-    typedef long no_type;                               \
-    template <typename U>                               \
-    static yes_type test(decltype(&U::member_name));    \
-    template <typename U>                               \
-    static no_type test(...);                           \
-                                                        \
-   public:                                              \
-    static constexpr bool value =                       \
-        sizeof(test<prefix##T>(0)) == sizeof(yes_type); \
-  }
+#define EASY_VALUE(traits) \
+  template <typename T>    \
+  inline constexpr bool traits##_v = traits<T>::value;
+
+#define DEFINE_HAS_MEMBER(prefix, member_name)                        \
+  template <typename prefix##T>                                       \
+  class has_member_##member_name {                                    \
+    template <typename U>                                             \
+    static std::true_type test(decltype(&U::member_name));            \
+    template <typename U>                                             \
+    static std::false_type test(...);                                 \
+                                                                      \
+   public:                                                            \
+    static constexpr bool value =                                     \
+        std::is_same_v<decltype(test<prefix##T>(0)), std::true_type>; \
+  };                                                                  \
+  EASY_VALUE(has_member_##member_name);
 
 }  // namespace chaos

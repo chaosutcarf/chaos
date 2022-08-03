@@ -25,6 +25,7 @@ using real_t = double;
 #else
 using real_t = float;
 #endif
+using index_t = unsigned int;
 
 template <typename Scalar = real_t>
 using coo_t = Eigen::Triplet<Scalar>;

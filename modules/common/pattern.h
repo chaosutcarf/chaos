@@ -71,3 +71,18 @@
   }
 
 #define CRTPclass(Derived, Base) class Derived : public Base<Derived>
+
+#define CRTP_derived_interface(Derived, Base)                         \
+  inline Derived &derived() { return *static_cast<Derived *>(this); } \
+  inline const Derived &derived() const {                             \
+    return *static_cast<const Derived *>(this);                       \
+  }                                                                   \
+  inline Derived &const_cast_derived() const {                        \
+    return *static_cast<Derived *>(const_cast<Base *>(this));         \
+  }                                                                   \
+  inline const Derived &const_derived() const { return derived(); }
+
+#define MIXIN_core_interface(Core)                                             \
+  inline Core &core() { return *static_cast<Core *>(this); }                   \
+  inline const Core &core() const { return *static_cast<const Core *>(this); } \
+  inline const Core &const_core() const { return core(); }
